@@ -135,11 +135,11 @@ def combined_roidb(imdb_names, training=True):
 def combined_roidb_new(imdb_names):
     
     def get_training_roidb(imdb):
-    """Returns a roidb (Region of Interest database) for use in training."""
-    if cfg.TRAIN.USE_FLIPPED:
-      print('Appending horizontally-flipped training examples...')
-      imdb.append_flipped_images()
-      print('done')
+    	"""Returns a roidb (Region of Interest database) for use in training."""
+    	if cfg.TRAIN.USE_FLIPPED:
+      		print('Appending horizontally-flipped training examples...')
+      		imdb.append_flipped_images()
+      		print('done')
 
     print('Preparing training data...')
 
@@ -151,9 +151,9 @@ def combined_roidb_new(imdb_names):
     
     def get_roidb(imdb_name):
         imdb = get_imdb(imdb_name)
-        print 'Loaded dataset `{:s}` for training'.format(imdb.name)
+        print ('Loaded dataset `{:s}` for training').format(imdb.name)
         imdb.set_proposal_method(cfg.TRAIN.PROPOSAL_METHOD)
-        print 'Set proposal method: {:s}'.format(cfg.TRAIN.PROPOSAL_METHOD)
+        print ('Set proposal method: {:s}').format(cfg.TRAIN.PROPOSAL_METHOD)
         roidb = get_training_roidb(imdb)
         return roidb
 
