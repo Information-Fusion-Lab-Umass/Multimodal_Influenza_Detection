@@ -6,7 +6,7 @@ from __future__ import print_function
 import datasets
 import numpy as np
 from model.utils.config import cfg
-
+from datasets.factory import get_imdb
 import PIL
 import pdb
 
@@ -24,7 +24,7 @@ def prepare_roidb(imdb):
          for i in range(imdb.num_images)]
          
   for i in range(len(imdb.image_index)):
-    roidb[i]['img_id'] = imdb.image_id_at(i)
+    #roidb[i]['img_id'] = imdb.image_id_at(i)
     roidb[i]['image'] = imdb.image_path_at(i)
     if not (imdb.name.startswith('coco')):
       roidb[i]['width'] = sizes[i][0]
@@ -84,55 +84,55 @@ def filter_roidb(roidb):
 
     print('after filtering, there are %d images...' % (len(roidb)))
     return roidb
-'''
-def combined_roidb(imdb_names, training=True):
-  """
-  Combine multiple roidbs
-  """
 
-  def get_training_roidb(imdb):
-    """Returns a roidb (Region of Interest database) for use in training."""
-    if cfg.TRAIN.USE_FLIPPED:
-      print('Appending horizontally-flipped training examples...')
-      imdb.append_flipped_images()
-      print('done')
-
-    print('Preparing training data...')
-
-    prepare_roidb(imdb)
-    #ratio_index = rank_roidb_ratio(imdb)
-    print('done')
-
-    return imdb.roidb
-  
-  def get_roidb(imdb_name):
-    imdb = get_imdb(imdb_name)
-    print('Loaded dataset `{:s}` for training'.format(imdb.name))
-    imdb.set_proposal_method(cfg.TRAIN.PROPOSAL_METHOD)
-    print('Set proposal method: {:s}'.format(cfg.TRAIN.PROPOSAL_METHOD))
-    roidb = get_training_roidb(imdb)
-    return roidb
-
-  roidbs = [get_roidb(s) for s in imdb_names.split('+')]
-  roidb = roidbs[0]
-
-  if len(roidbs) > 1:
-    for r in roidbs[1:]:
-      roidb.extend(r)
-    tmp = get_imdb(imdb_names.split('+')[1])
-    imdb = datasets.imdb.imdb(imdb_names, tmp.classes)
-  else:
-    imdb = get_imdb(imdb_names)
-
-  if training:
-    roidb = filter_roidb(roidb)
-
-  ratio_list, ratio_index = rank_roidb_ratio(roidb)
-
-  return imdb, roidb, ratio_list, ratio_index
-'''
+#def combined_roidb(imdb_names, training=True):
+#  """
+#  Combine multiple roidbs
+#  """
+#
+#  def get_training_roidb(imdb):
+#    """Returns a roidb (Region of Interest database) for use in training."""
+#    if cfg.TRAIN.USE_FLIPPED:
+#      print('Appending horizontally-flipped training examples...')
+#      imdb.append_flipped_images()
+#      print('done')
+#
+#    print('Preparing training data...')
+#
+#    prepare_roidb(imdb)
+#    #ratio_index = rank_roidb_ratio(imdb)
+#    print('done')
+#
+#    return imdb.roidb
+#  
+#  def get_roidb(imdb_name):
+#    imdb = get_imdb(imdb_name)
+#    print('Loaded dataset `{:s}` for training'.format(imdb.name))
+#    imdb.set_proposal_method(cfg.TRAIN.PROPOSAL_METHOD)
+#    print('Set proposal method: {:s}'.format(cfg.TRAIN.PROPOSAL_METHOD))
+#    roidb = get_training_roidb(imdb)
+#    return roidb
+#
+#  roidbs = [get_roidb(s) for s in imdb_names.split('+')]
+#  roidb = roidbs[0]
+#
+#  if len(roidbs) > 1:
+#    for r in roidbs[1:]:
+#      roidb.extend(r)
+#    tmp = get_imdb(imdb_names.split('+')[1])
+#    imdb = datasets.imdb.imdb(imdb_names, tmp.classes)
+#  else:
+#    imdb = get_imdb(imdb_names)
+#
+#  if training:
+#    roidb = filter_roidb(roidb)
+#
+#  ratio_list, ratio_index = rank_roidb_ratio(roidb)
+#
+#  return imdb, roidb, ratio_list, ratio_index
+#
 #changed combined_roidb
-def combined_roidb_new(imdb_names):
+def combined_roidb_new(imdb_names, training=True):
     
     def get_training_roidb(imdb):
     	"""Returns a roidb (Region of Interest database) for use in training."""
@@ -141,19 +141,21 @@ def combined_roidb_new(imdb_names):
       		imdb.append_flipped_images()
       		print('done')
 
-    print('Preparing training data...')
+        print('Preparing training data...')
 
-    prepare_roidb(imdb)
-    #ratio_index = rank_roidb_ratio(imdb)
-    print('done')
+        prepare_roidb(imdb)
+        #ratio_index = rank_roidb_ratio(imdb)
+        print('done')
 
-    return imdb.roidb
+        return imdb.roidb
     
     def get_roidb(imdb_name):
+        #print(imdb_name)
         imdb = get_imdb(imdb_name)
-        print ('Loaded dataset `{:s}` for training').format(imdb.name)
+        #print(imdb.name)
+        print ('Loaded dataset %s for training' %(imdb.name))
         imdb.set_proposal_method(cfg.TRAIN.PROPOSAL_METHOD)
-        print ('Set proposal method: {:s}').format(cfg.TRAIN.PROPOSAL_METHOD)
+        #print ('Set proposal method: {:s}').format(cfg.TRAIN.PROPOSAL_METHOD)
         roidb = get_training_roidb(imdb)
         return roidb
 
@@ -165,4 +167,8 @@ def combined_roidb_new(imdb_names):
         imdb = datasets.imdb.imdb(imdb_names)
     else:
         imdb = get_imdb(imdb_names)
-    return imdb, roidb
+    
+    if training:
+        roidb = filter_roidb(roidb)
+    ratio_list, ratio_index = rank_roidb_ratio(roidb)
+    return imdb, roidb, ratio_list, ratio_index

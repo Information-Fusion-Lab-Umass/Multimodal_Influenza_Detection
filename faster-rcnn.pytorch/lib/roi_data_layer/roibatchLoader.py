@@ -187,6 +187,7 @@ class roibatchLoader(data.Dataset):
 
 
         # check the bounding box:
+        print(gt_boxes.size())
         not_keep = (gt_boxes[:,0] == gt_boxes[:,2]) | (gt_boxes[:,1] == gt_boxes[:,3])
         keep = torch.nonzero(not_keep == 0).view(-1)
 

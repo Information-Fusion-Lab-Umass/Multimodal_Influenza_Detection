@@ -12,10 +12,10 @@ import xml.dom.minidom as minidom
 import numpy as np
 import scipy.sparse
 import scipy.io as sio
-import utils.cython_bbox
+import model.utils.cython_bbox
 import cPickle
 import subprocess
-from fast_rcnn.config import cfg
+from model.utils.config import cfg
 
 class kaist_thermal(imdb):
     def __init__(self, image_set, devkit_path='/media/epsilon90/Shasvat/MS sem 3/IS/Data/KAIST/set06/V000/lwir/'):
@@ -23,6 +23,7 @@ class kaist_thermal(imdb):
         imdb.__init__(self, image_set)  # image_set: train04 or test
         self._image_set = image_set
         self._devkit_path = self._get_default_path()
+	self._devkit_path = '/home/snehabhattac/kaist_data/'
         self._data_path = os.path.join(self._devkit_path)
         self._classes = ('__background__', # always index 0
                          'pedestrian')
@@ -55,12 +56,12 @@ class kaist_thermal(imdb):
         """
         Construct an image path from the image's "index" identifier.
         """
-        image_path_1 = os.path.join(self._data_path, self._image_set, 'color',
-                                  index + self._image_ext)
-        image_path_2 = os.path.join(self._data_path, self._image_set, 'thermal',
-        assert os.path.exists(image_path), \
-                'Path does not exist: {}'.format(image_path)
-        return image_path
+        #image_path_1 = os.path.join(self._data_path, self._image_set, 'color',
+                                  #index + self._image_ext)
+        #image_path_2 = os.path.join(self._data_path, self._image_set, 'thermal',index + self._image_ext)
+        #assert (os.path.exists(image_path) ,  'Path does not exist: {}'.format(image_path))
+        image_path=os.path.join('/home/snehabhattac/kaist_data/lwir/', index+self._image_ext)
+	return image_path
 
     def _load_image_set_index(self):
         """
@@ -68,9 +69,12 @@ class kaist_thermal(imdb):
         """
         # Example path to image set file:
         # self._devkit_path + /VOCdevkit2007/VOC2007/ImageSets/Main/val.txt
-        image_set_file = os.path.join(self._data_path, self._image_set,
-                                      self._image_set + '.txt')
-        assert os.path.exists(image_set_file), \
+        #image_set_file = os.path.join(self._data_path, self._image_set,
+        #                              self._image_set + '.txt')
+        
+	image_set_file = '/home/snehabhattac/kaist_data/imagesetfile.txt'
+
+	assert os.path.exists(image_set_file), \
                 'Path does not exist: {}'.format(image_set_file)
         with open(image_set_file) as f:
             image_index = [x.strip() for x in f.readlines()]
@@ -212,7 +216,7 @@ class kaist_thermal(imdb):
         Load image and bounding boxes info from text file in the kaist dataset
         format.
         """
-        filename = os.path.join(self._data_path, self._image_set, 'annotations', index + '.txt')
+        filename = os.path.join(self._data_path, 'annotations/set05/V000', index + '.txt')
         # print 'Loading: {}'.format(filename)
 
         with open(filename) as f:
@@ -229,13 +233,17 @@ class kaist_thermal(imdb):
         ix = 0
         for obj in lines:
             # Make pixel indexes 0-based
+            
             info = obj.split()
+            if info[0]== "%":
+                continue
             x1 = float(info[1]) 
             y1 = float(info[2])
             x2 = float(info[3])
             y2 = float(info[4])
-            assert(x2>=x1)
-            assert(y2>=y1)
+            print x1, y1, x2, y2
+            #assert(x2>=x1)
+            #assert(y2>=y1)
             cls = self._class_to_ind['pedestrian']
             boxes[ix, :] = [x1-1, y1-1, x2-1, y2-1]
             gt_classes[ix] = cls

@@ -15,7 +15,9 @@ from datasets.pascal_voc import pascal_voc
 from datasets.coco import coco
 from datasets.imagenet import imagenet
 from datasets.vg import vg
-
+#from datasets.kaist_rgb import kaist_rgb
+#from datasets.kaist_thermal import kaist_thermal
+from datasets.kaist_fusion import kaist_thermal
 import numpy as np
 
 # Set up voc_<year>_<split>
@@ -41,6 +43,15 @@ for year in ['2015']:
   for split in ['test', 'test-dev']:
     name = 'coco_{}_{}'.format(year, split)
     __sets[name] = (lambda split=split, year=year: coco(split, year))
+
+imageset = 'train-all02';
+name = 'kaist_{}'.format(imageset)
+print (name)
+__sets[name] = (lambda imageset = imageset: kaist_thermal('train-all02'))
+
+#imageset = 'train-all02-fusion';
+#name = 'kaist_{}'.format(imageset)
+#__sets[name] = (lambda imageset = imageset: kaist_fusion('train-all02'))
 
 # Set up vg_<split>
 # for version in ['1600-400-20']:

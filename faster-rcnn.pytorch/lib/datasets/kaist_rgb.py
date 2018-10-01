@@ -5,7 +5,7 @@
 # Written by Ross Girshick
 # --------------------------------------------------------
 
-import datasets.caltech
+#import datasets.caltech
 import os
 from datasets.imdb import imdb
 import xml.dom.minidom as minidom
