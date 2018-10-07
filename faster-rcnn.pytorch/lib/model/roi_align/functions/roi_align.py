@@ -41,12 +41,17 @@ class RoIAlignFunction(Function):
 
         grad_input = self.rois.new(batch_size, num_channels, data_height,
                                   data_width).zero_()
-        
+        print(dir(roi_align))        
+        #roi_align_cuda.roi_align_backward_cuda(self.aligned_height,
+        #                                  self.aligned_width,
+        #                                  self.spatial_scale, grad_output,
+        #                                  self.rois, grad_input)
+
+        # print grad_input
         roi_align.roi_align_backward_cuda(self.aligned_height,
                                           self.aligned_width,
                                           self.spatial_scale, grad_output,
                                           self.rois, grad_input)
 
-        # print grad_input
 
         return grad_input, None

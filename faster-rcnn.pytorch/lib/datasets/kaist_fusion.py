@@ -19,7 +19,7 @@ from model.utils.config import cfg
 
 class kaist_thermal(imdb):
     def __init__(self, image_set, devkit_path='/media/epsilon90/Shasvat/MS sem 3/IS/Data/KAIST/set06/V000/lwir/'):
-        print image_set
+        
         imdb.__init__(self, image_set)  # image_set: train04 or test
         self._image_set = image_set
         self._devkit_path = self._get_default_path()
@@ -61,6 +61,7 @@ class kaist_thermal(imdb):
         #image_path_2 = os.path.join(self._data_path, self._image_set, 'thermal',index + self._image_ext)
         #assert (os.path.exists(image_path) ,  'Path does not exist: {}'.format(image_path))
         image_path=os.path.join('/home/snehabhattac/kaist_data/lwir/', index+self._image_ext)
+        #print(index,"INDEX!!!")
 	return image_path
 
     def _load_image_set_index(self):

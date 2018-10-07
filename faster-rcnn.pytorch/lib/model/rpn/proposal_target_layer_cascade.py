@@ -37,6 +37,7 @@ class _ProposalTargetLayer(nn.Module):
         self.BBOX_INSIDE_WEIGHTS = self.BBOX_INSIDE_WEIGHTS.type_as(gt_boxes)
 
         gt_boxes_append = gt_boxes.new(gt_boxes.size()).zero_()
+        print(gt_boxes_append.size(), "in proposal target layer")
         gt_boxes_append[:,:,1:5] = gt_boxes[:,:,:4]
 
         # Include ground-truth boxes in the set of candidate rois

@@ -63,6 +63,7 @@ class roibatchLoader(data.Dataset):
     # get the anchor index for current sample index
     # here we set the anchor index to the last one
     # sample in this group
+    print("index", index)
     minibatch_db = [self._roidb[index_ratio]]
     blobs = get_minibatch(minibatch_db, self._num_classes)
     data = torch.from_numpy(blobs['data'])
@@ -187,10 +188,20 @@ class roibatchLoader(data.Dataset):
 
 
         # check the bounding box:
+        #print(gt_  ggboxes.size())
         print(gt_boxes.size())
-        not_keep = (gt_boxes[:,0] == gt_boxes[:,2]) | (gt_boxes[:,1] == gt_boxes[:,3])
-        keep = torch.nonzero(not_keep == 0).view(-1)
-
+        #print(data)
+        
+        #not_keep = (gt_boxes[:,0] == gt_boxes[:,2]) | (gt_boxes[:,1] == gt_boxes[:,3])
+        #keep = torch.nonzero(not_keep == 0).view(-1)
+	if gt_boxes.size(0)==0:
+	    num_boxes=0
+	    padding_data = padding_data.permute(2, 0, 1).contiguous()
+            im_info = im_info.view(3)
+	    gt_boxes_padding = torch.FloatTensor(self.max_num_box, gt_boxes.size(0)).zero_()
+	    return padding_data, im_info, gt_boxes_padding, num_boxes
+	not_keep = (gt_boxes[:,0] == gt_boxes[:,2]) | (gt_boxes[:,1] == gt_boxes[:,3])
+        keep = torch.nonzero(not_keep == 0).view(-1)	
         gt_boxes_padding = torch.FloatTensor(self.max_num_box, gt_boxes.size(1)).zero_()
         if keep.numel() != 0:
             gt_boxes = gt_boxes[keep]
@@ -202,7 +213,7 @@ class roibatchLoader(data.Dataset):
             # permute trim_data to adapt to downstream processing
         padding_data = padding_data.permute(2, 0, 1).contiguous()
         im_info = im_info.view(3)
-
+        
         return padding_data, im_info, gt_boxes_padding, num_boxes
     else:
         data = data.permute(0, 3, 1, 2).contiguous().view(3, data_height, data_width)
@@ -210,7 +221,7 @@ class roibatchLoader(data.Dataset):
 
         gt_boxes = torch.FloatTensor([1,1,1,1,1])
         num_boxes = 0
-
+        
         return data, im_info, gt_boxes, num_boxes
 
   def __len__(self):

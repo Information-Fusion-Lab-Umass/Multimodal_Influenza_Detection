@@ -172,10 +172,14 @@ def bbox_overlaps_batch(anchors, gt_boxes):
 
     overlaps: (N, K) ndarray of overlap between boxes and query_boxes
     """
+    #print(gt_boxes.size())
+    print(gt_boxes.size(),"inside bbox")
     batch_size = gt_boxes.size(0)
-
-
-    if anchors.dim() == 2:
+    N=anchors.size(0)	
+    if len(gt_boxes.size())==2 or len(gt_boxes.size())==0:
+       overlaps=torch.zeros((batch_size,N,0,))		
+       return overlaps
+    elif anchors.dim() == 2:
 
         N = anchors.size(0)
         K = gt_boxes.size(1)
@@ -206,6 +210,7 @@ def bbox_overlaps_batch(anchors, gt_boxes):
             torch.max(boxes[:,:,:,1], query_boxes[:,:,:,1]) + 1)
         ih[ih < 0] = 0
         ua = anchors_area + gt_boxes_area - (iw * ih)
+        #IOU is overlaps
         overlaps = iw * ih / ua
 
         # mask the overlap here.

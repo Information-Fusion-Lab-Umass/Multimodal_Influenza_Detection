@@ -96,8 +96,15 @@ class _AnchorTargetLayer(nn.Module):
         bbox_outside_weights = gt_boxes.new(batch_size, inds_inside.size(0)).zero_()
 
         overlaps = bbox_overlaps_batch(anchors, gt_boxes)
+        print(overlaps.shape)
+	
+#############
+	if len(overlaps.size())==2:
 
-        max_overlaps, argmax_overlaps = torch.max(overlaps, 2)
+ 		overlaps=overlaps.unsqueeze(-1)
+		print(overlaps.size())
+##############	
+        max_overlaps, argmax_overlaps = torch.max(overlaps, 2,  keepdim=False)
         gt_max_overlaps, _ = torch.max(overlaps, 1)
 
         if not cfg.TRAIN.RPN_CLOBBER_POSITIVES:
