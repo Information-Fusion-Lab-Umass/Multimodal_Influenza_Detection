@@ -48,7 +48,7 @@ class RoIAlignFunction(Function):
         #                                  self.rois, grad_input)
 
         # print grad_input
-        roi_align.roi_align_backward_cuda(self.aligned_height,
+        roi_align.roi_align_backward(self.aligned_height,
                                           self.aligned_width,
                                           self.spatial_scale, grad_output,
                                           self.rois, grad_input)
