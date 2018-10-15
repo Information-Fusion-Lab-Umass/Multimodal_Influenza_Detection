@@ -76,8 +76,29 @@ def filter_roidb(roidb):
     # filter the image without bounding box.
     print('before filtering, there are %d images...' % (len(roidb)))
     i = 0
+    print('length of roidb inside filter_roidb() = ', len(roidb))
+    print('------------------------')
+    print(roidb[0]['boxes'])
+    print(len(roidb[0]['boxes']))
+    print(type(roidb[0]['boxes']))
+    print(type(roidb[0]['boxes'][0]))
+    print(len(roidb[0]['boxes'][0]))
+    print('------------------------')
     while i < len(roidb):
-      if len(roidb[i]['boxes']) == 0:
+      #print('inside while \n')
+      #print(len(roidb[i]['boxes']),'\n')
+      #print(type(roidb[i]['boxes']))
+      print('------------------------')
+      print(roidb[i]['boxes'])
+      print(len(roidb[i]['boxes']))
+      print(type(roidb[i]['boxes']))
+
+      print(type(roidb[i]['boxes'][0]))
+      print(len(roidb[i]['boxes'][0]))
+      print('------------------------')
+      if (len(roidb[i]['boxes'])-1) == 0:
+        print('inside if ')
+        print(i)
         del roidb[i]
         i -= 1
       i += 1
