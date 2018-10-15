@@ -1,0 +1,3 @@
+4246513 - first run - default parameters
+4247243 - lr = 10e^-5
+4247244 - lr = 10e^-7
