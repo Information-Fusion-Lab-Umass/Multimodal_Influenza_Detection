@@ -18,12 +18,12 @@ import subprocess
 from model.utils.config import cfg
 
 class kaist_thermal(imdb):
-    def __init__(self, image_set, devkit_path='/media/epsilon90/Shasvat/MS sem 3/IS/Data/KAIST/set06/V000/lwir/'):
+    def __init__(self, image_set, devkit_path='/home/dghose/Project/Influenza_Detection/Data/KAIST/Train/set05/V000/lwir/'):
         
         imdb.__init__(self, image_set)  # image_set: train04 or test
         self._image_set = image_set
         self._devkit_path = self._get_default_path()
-	self._devkit_path = '/home/snehabhattac/kaist_data/'
+	self._devkit_path = '/home/dghose/Project/Influenza_Detection/Data/KAIST/Train/'
         self._data_path = os.path.join(self._devkit_path)
         self._classes = ('__background__', # always index 0
                          'pedestrian')
@@ -60,7 +60,7 @@ class kaist_thermal(imdb):
                                   #index + self._image_ext)
         #image_path_2 = os.path.join(self._data_path, self._image_set, 'thermal',index + self._image_ext)
         #assert (os.path.exists(image_path) ,  'Path does not exist: {}'.format(image_path))
-        image_path=os.path.join('/home/snehabhattac/kaist_data/lwir/', index+self._image_ext)
+        image_path=os.path.join('/home/dghose/Project/Influenza_Detection/Data/KAIST/Train/set05/lwir/', index+self._image_ext)
         #print(index,"INDEX!!!")
 	return image_path
 
@@ -73,7 +73,7 @@ class kaist_thermal(imdb):
         #image_set_file = os.path.join(self._data_path, self._image_set,
         #                              self._image_set + '.txt')
         
-	image_set_file = '/home/snehabhattac/kaist_data/imagesetfile.txt'
+	image_set_file = '/home/dghose/Project/Influenza_Detection/Code/Multimodal_Influenza_Detection/faster-rcnn.pytorch/imagesetfile.txt'
 
 	assert os.path.exists(image_set_file), \
                 'Path does not exist: {}'.format(image_set_file)
@@ -209,7 +209,6 @@ class kaist_thermal(imdb):
             filename = os.path.join(IJCV_path, self.image_index[i] + '.mat')
             raw_data = sio.loadmat(filename)
             box_list.append((raw_data['boxes'][:top_k, :]-1).astype(np.uint16))
-
         return self.create_roidb_from_box_list(box_list, gt_roidb)
 
     def _load_revised_annotation(self, index):
@@ -217,7 +216,7 @@ class kaist_thermal(imdb):
         Load image and bounding boxes info from text file in the kaist dataset
         format.
         """
-        filename = os.path.join(self._data_path, 'annotations/set05/V000', index + '.txt')
+        filename = os.path.join('/home/dghose/Project/Influenza_Detection/Data/Labels/annotations/set05/V000', index + '.txt')
         # print 'Loading: {}'.format(filename)
 
         with open(filename) as f:
