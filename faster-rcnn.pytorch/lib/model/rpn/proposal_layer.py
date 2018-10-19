@@ -68,6 +68,7 @@ class _ProposalLayer(nn.Module):
         bbox_deltas = input[1]
         im_info = input[2]
         cfg_key = input[3]
+        #print(input)
 
         pre_nms_topN  = cfg[cfg_key].RPN_PRE_NMS_TOP_N
         post_nms_topN = cfg[cfg_key].RPN_POST_NMS_TOP_N
@@ -101,14 +102,15 @@ class _ProposalLayer(nn.Module):
         # Same story for the scores:
         scores = scores.permute(0, 2, 3, 1).contiguous()
         scores = scores.view(batch_size, -1)
-
+        
         # Convert anchors into proposals via bbox transformations
         proposals = bbox_transform_inv(anchors, bbox_deltas, batch_size)
-
+        #print(proposals)
         # 2. clip predicted boxes to image
         proposals = clip_boxes(proposals, im_info, batch_size)
         # proposals = clip_boxes_batch(proposals, im_info, batch_size)
-
+        #print(proposals)
+       
         # assign the score to 0 if it's non keep.
         # keep = self._filter_boxes(proposals, min_size * im_info[:, 2])
 
@@ -144,7 +146,7 @@ class _ProposalLayer(nn.Module):
             # 6. apply nms (e.g. threshold = 0.7)
             # 7. take after_nms_topN (e.g. 300)
             # 8. return the top proposals (-> RoIs top)
-
+            #print(torch.cat((proposals_single, scores_single), 1))
             keep_idx_i = nms(torch.cat((proposals_single, scores_single), 1), nms_thresh, force_cpu=not cfg.USE_GPU_NMS)
             keep_idx_i = keep_idx_i.long().view(-1)
 
