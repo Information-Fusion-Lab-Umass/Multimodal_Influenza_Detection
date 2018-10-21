@@ -23,8 +23,9 @@ class kaist_thermal(imdb):
         imdb.__init__(self, image_set)  # image_set: train04 or test
         self._image_set = image_set
         self._devkit_path = self._get_default_path()
-	self._devkit_path = '/home/dghose/Project/Influenza_Detection/Data/KAIST/Train/'
-        self._data_path = os.path.join(self._devkit_path)
+	#self._devkit_path = '/home/dghose/Project/Influenza_Detection/Data/KAIST/Train/'
+        self._devkit_path = '../../data/lwir/'
+	self._data_path = os.path.join(self._devkit_path)
         self._classes = ('__background__', # always index 0
                          'pedestrian')
         self._class_to_ind = dict(zip(self.classes, xrange(self.num_classes)))
@@ -32,7 +33,8 @@ class kaist_thermal(imdb):
         self._image_index = self._load_image_set_index()
         # Default to roidb handler
         self._roidb_handler = self.selective_search_roidb
-
+	print('classes')
+	print(self.classes)
         # PASCAL specific config options
         self.config = {'cleanup'     : True,
                        'use_salt'    : True,
@@ -60,8 +62,10 @@ class kaist_thermal(imdb):
                                   #index + self._image_ext)
         #image_path_2 = os.path.join(self._data_path, self._image_set, 'thermal',index + self._image_ext)
         #assert (os.path.exists(image_path) ,  'Path does not exist: {}'.format(image_path))
-        image_path=os.path.join('/home/dghose/Project/Influenza_Detection/Data/KAIST/Train/set05/lwir/', index+self._image_ext)
-        #print(index,"INDEX!!!")
+        #image_path=os.path.join('/home/dghose/Project/Influenza_Detection/Data/KAIST/Train/set05/lwir/', index+self._image_ext)
+        image_path=os.path.join('../../data/lwir/', index+self._image_ext)
+
+	#print(index,"INDEX!!!")
 	return image_path
 
     def _load_image_set_index(self):
@@ -73,8 +77,8 @@ class kaist_thermal(imdb):
         #image_set_file = os.path.join(self._data_path, self._image_set,
         #                              self._image_set + '.txt')
         
-	image_set_file = '/home/dghose/Project/Influenza_Detection/Code/Multimodal_Influenza_Detection/faster-rcnn.pytorch/imagesetfile.txt'
-
+	#image_set_file = '/home/dghose/Project/Influenza_Detection/Code/Multimodal_Influenza_Detection/faster-rcnn.pytorch/imagesetfile.txt'
+	image_set_file='../../data/imagesetfile.txt'
 	assert os.path.exists(image_set_file), \
                 'Path does not exist: {}'.format(image_set_file)
         with open(image_set_file) as f:
@@ -126,6 +130,7 @@ class kaist_thermal(imdb):
             return roidb
 
         if self._image_set != 'test-all':
+	    print('in test all---calling load revised annotation and then slective search db')
             gt_roidb = self.gt_roidb()
             ss_roidb = self._load_selective_search_roidb(gt_roidb)
             roidb = imdb.merge_roidbs(gt_roidb, ss_roidb)
@@ -144,7 +149,7 @@ class kaist_thermal(imdb):
         assert os.path.exists(filename), \
                'Selective search data not found at: {}'.format(filename)
         raw_data = sio.loadmat(filename)['boxes'].ravel()
-
+	print('in selective searchDB')
         box_list = []
         for i in xrange(raw_data.shape[0]):
             box_list.append(raw_data[i][:, :] - 1)
@@ -216,18 +221,20 @@ class kaist_thermal(imdb):
         Load image and bounding boxes info from text file in the kaist dataset
         format.
         """
-        filename = os.path.join('/home/dghose/Project/Influenza_Detection/Data/Labels/annotations/set05/V000', index + '.txt')
-        # print 'Loading: {}'.format(filename)
 
+        #filename = os.path.join('/home/dghose/Project/Influenza_Detection/Data/Labels/annotations/set05/V000', index + '.txt')
+        # print 'Loading: {}'.format(filename)
+	filename=os.path.join('../../data/annotations/set05/V000',index+'.txt')
         with open(filename) as f:
             lines = f.readlines()
 
         num_objs = len(lines)
-
-        boxes = np.zeros((num_objs, 4), dtype=np.uint16)
-        gt_classes = np.zeros((num_objs), dtype=np.int32)
-        overlaps = np.zeros((num_objs, self.num_classes), dtype=np.float32)
-        seg_areas = np.zeros((num_objs), dtype=np.float32)
+	
+	
+        boxes = np.zeros((num_objs-1, 4), dtype=np.uint16)
+        gt_classes = np.zeros((num_objs-1), dtype=np.int32)
+        overlaps = np.zeros((num_objs-1, self.num_classes), dtype=np.float32)
+        seg_areas = np.zeros((num_objs-1), dtype=np.float32)
 
         # Load object bounding boxes into a data frame.
         ix = 0
@@ -241,18 +248,52 @@ class kaist_thermal(imdb):
             y1 = float(info[2])
             x2 = float(info[3])
             y2 = float(info[4])
-            print x1, y1, x2, y2
+            #print x1, y1, x2, y2
             #assert(x2>=x1)
             #assert(y2>=y1)
             cls = self._class_to_ind['pedestrian']
+	    if cls==0:
+		print('index')
+		print(index)
+		print('ix')
+		print(ix)
+	    if index =='I00383':
+		print('num_obj in image')
+		print(num_objs)	    
+		print('x1 y1 x2 y2')
+		print(x1)
+		print(y1)
+		print(x2)
+		print(y2)
+	    temp1=x1==x2
+	    temp2=y1==y2
+	    if temp1==True:
+		print('xmin==xmax')
+		print(index)
+		print(temp1)
+	
+ 	    if temp2==True:
+		print('ymin==ymax')
+		print(index)
+		print(temp2)
+	    if x1==-1 or x2==-1 or y1==-1 or y2==-1:
+		print('-1 in annotation')
+	    #print(x2)
+	    #print(y2)
             boxes[ix, :] = [x1-1, y1-1, x2-1, y2-1]
             gt_classes[ix] = cls
             overlaps[ix, cls] = 1.0
             seg_areas[ix] = (x2 - x1 + 1) * (y2 - y1 + 1)
             ix = ix + 1
+        #print(index)
+	if index=='I00383':
+		print(overlaps)
 
+		
         overlaps = scipy.sparse.csr_matrix(overlaps)
-
+	if index=='I00383':
+		print('after esoteric transformation')
+		print(overlaps)
         return {'boxes' : boxes,
                 'gt_classes': gt_classes,
                 'gt_overlaps' : overlaps,
