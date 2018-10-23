@@ -62,7 +62,7 @@ class _AnchorTargetLayer(nn.Module):
         height, width = rpn_cls_score.size(2), rpn_cls_score.size(3)
 
         batch_size = gt_boxes.size(0)
-
+	
         feat_height, feat_width = rpn_cls_score.size(2), rpn_cls_score.size(3)
         shift_x = np.arange(0, feat_width) * self._feat_stride
         shift_y = np.arange(0, feat_height) * self._feat_stride
@@ -89,10 +89,13 @@ class _AnchorTargetLayer(nn.Module):
 
         # keep only inside anchors
         anchors = all_anchors[inds_inside, :]
-
+	print('gt_box in anchor target')
+	print(gt_boxes)
         # label: 1 is positive, 0 is negative, -1 is dont care
         labels = gt_boxes.new(batch_size, inds_inside.size(0)).fill_(-1)
-        bbox_inside_weights = gt_boxes.new(batch_size, inds_inside.size(0)).zero_()
+        print('lables')
+	print(labels)
+	bbox_inside_weights = gt_boxes.new(batch_size, inds_inside.size(0)).zero_()
         bbox_outside_weights = gt_boxes.new(batch_size, inds_inside.size(0)).zero_()
 
         overlaps = bbox_overlaps_batch(anchors, gt_boxes)
