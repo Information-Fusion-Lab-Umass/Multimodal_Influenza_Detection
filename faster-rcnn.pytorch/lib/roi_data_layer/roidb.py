@@ -19,6 +19,8 @@ def prepare_roidb(imdb):
   """
 
   roidb = imdb.roidb
+  print(roidb[0])
+  #print(len(roidb))
   if not (imdb.name.startswith('coco')):
     sizes = [PIL.Image.open(imdb.image_path_at(i)).size
          for i in range(imdb.num_images)]
@@ -31,10 +33,22 @@ def prepare_roidb(imdb):
       roidb[i]['height'] = sizes[i][1]
     # need gt_overlaps as a dense array for argmax
     gt_overlaps = roidb[i]['gt_overlaps'].toarray()
+    if i==383:
+    	print('index')
+    	print(i) 
+    	print('dense-array')
+    	print(gt_overlaps)
+	print('sparse_arr')
+	print(roidb[i]['gt_overlaps'])	
     # max overlap with gt over classes (columns)
     max_overlaps = gt_overlaps.max(axis=1)
     # gt class that had the max overlap
     max_classes = gt_overlaps.argmax(axis=1)
+    if i==383:
+    	print('max_classes')
+    	print(max_classes)
+    	print('max_overlaps')
+    	print(max_overlaps)
     roidb[i]['max_classes'] = max_classes
     roidb[i]['max_overlaps'] = max_overlaps
     # sanity checks
@@ -96,7 +110,7 @@ def filter_roidb(roidb):
       #print(type(roidb[i]['boxes'][0]))
       #print(len(roidb[i]['boxes'][0]))
       #print('------------------------')
-      if (len(roidb[i]['boxes'])-1) == 0:
+      if (len(roidb[i]['boxes'])) == 0:
         #print('inside if ')
         #print(i)
         del roidb[i]
@@ -173,6 +187,7 @@ def combined_roidb_new(imdb_names, training=True):
     def get_roidb(imdb_name):
         #print(imdb_name)
         imdb = get_imdb(imdb_name)
+	print(type(imdb))
         #print(imdb.name)
         print ('Loaded dataset %s for training' %(imdb.name))
         imdb.set_proposal_method(cfg.TRAIN.PROPOSAL_METHOD)

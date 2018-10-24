@@ -63,7 +63,7 @@ class _RPN(nn.Module):
         rpn_conv1 = F.relu(self.RPN_Conv(base_feat), inplace=True)
         # get rpn classification score
         rpn_cls_score = self.RPN_cls_score(rpn_conv1)
-        print rpn_cls_score
+        #print rpn_cls_score
 
         rpn_cls_score_reshape = self.reshape(rpn_cls_score, 2)
         rpn_cls_prob_reshape = F.softmax(rpn_cls_score_reshape, 1)
@@ -71,7 +71,8 @@ class _RPN(nn.Module):
 
         # get rpn offsets to the anchor boxes
         rpn_bbox_pred = self.RPN_bbox_pred(rpn_conv1)
-
+	print('rpn_bbox_pred')
+	#print(np.isnan(rpn_bbox_pred))
         # proposal layer
         cfg_key = 'TRAIN' if self.training else 'TEST'
 
