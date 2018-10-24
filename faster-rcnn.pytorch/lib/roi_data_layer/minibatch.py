@@ -20,8 +20,8 @@ import cv2
 def get_minibatch(roidb, num_classes):
   """Given a roidb, construct a minibatch sampled from it."""
   num_images = len(roidb)
-  print('num_images')
-  print(num_images)
+  #print('num_images')
+  #print(num_images)
   # Sample random scales to use for each image in this batch
   random_scale_inds = npr.randint(0, high=len(cfg.TRAIN.SCALES),
                   size=num_images)
@@ -31,12 +31,12 @@ def get_minibatch(roidb, num_classes):
 
   # Get the input image blob, formatted for caffe
   im_blob, im_scales = _get_image_blob(roidb, random_scale_inds)
-  print('im_blob.shape')
-  print(im_blob.shape)
-  print('im_blob[0,:,:,0]==im_blob[0,:,:,1]')
-  print(im_blob[0,:,:,0]==im_blob[0,:,:,1])
-  print(im_blob[0,:,:,1]==im_blob[0,:,:,2])
-  print(im_blob[0,:,:,0])
+  #print('im_blob.shape')
+  #print(im_blob.shape)
+  #print('im_blob[0,:,:,0]==im_blob[0,:,:,1]')
+  #print(im_blob[0,:,:,0]==im_blob[0,:,:,1])
+  #print(im_blob[0,:,:,1]==im_blob[0,:,:,2])
+  #print(im_blob[0,:,:,0])
   blobs = {'data': im_blob}
 
   assert len(im_scales) == 1, "Single batch only"
@@ -54,12 +54,12 @@ def get_minibatch(roidb, num_classes):
   gt_boxes[:, 4] = roidb[0]['gt_classes'][gt_inds]
   blobs['gt_boxes'] = gt_boxes
   print('hi! I am in get_minibatch()')
-  print(gt_boxes)
+  #print(gt_boxes)
   blobs['im_info'] = np.array(
     [[im_blob.shape[1], im_blob.shape[2], im_scales[0]]],
     dtype=np.float32)
   print('im_info')
-  print(blobs['im_info'])
+  #print(blobs['im_info'])
   #blobs['img_id'] = roidb[0]['img_id']
 
   return blobs
@@ -77,7 +77,7 @@ def _get_image_blob(roidb, scale_inds):
     #im = imread(roidb[i]['image'])
     print(im.shape)	
     if len(im.shape) == 2:
-      print('im.shape==2')
+      #print('im.shape==2')
       im = im[:,:,np.newaxis]
       im = np.concatenate((im,im,im), axis=2)
     # flip the channel, since the original one using cv2

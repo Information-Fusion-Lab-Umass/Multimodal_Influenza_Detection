@@ -34,38 +34,96 @@ def bbox_transform(ex_rois, gt_rois):
     return targets
 
 def bbox_transform_batch(ex_rois, gt_rois):
-
+    print("inside bbox_transform_batch")
+    print("ex_rois")
+    print(ex_rois)
+    print("gt_rois")
+    print(gt_rois)
+    print("ex_rois.dim()")
+    print(ex_rois.dim())
     if ex_rois.dim() == 2:
+        print("inside if")
         ex_widths = ex_rois[:, 2] - ex_rois[:, 0] + 1.0
+        print("ex_widths")
+        print(ex_widths)
         ex_heights = ex_rois[:, 3] - ex_rois[:, 1] + 1.0
+        print("ex_heights")
+        print(ex_heights)
         ex_ctr_x = ex_rois[:, 0] + 0.5 * ex_widths
+        print("ex_ctr_x")
+        print(ex_ctr_x)
         ex_ctr_y = ex_rois[:, 1] + 0.5 * ex_heights
+        print("ex_ctr_y")
+        print(ex_ctr_y)
 
         gt_widths = gt_rois[:, :, 2] - gt_rois[:, :, 0] + 1.0
+        print("gt_widths")
+        print(gt_widths)
         gt_heights = gt_rois[:, :, 3] - gt_rois[:, :, 1] + 1.0
+        print("gt_heights")
+        print(gt_heights)
         gt_ctr_x = gt_rois[:, :, 0] + 0.5 * gt_widths
+        print("gt_ctr_x")
+        print(gt_ctr_x)
         gt_ctr_y = gt_rois[:, :, 1] + 0.5 * gt_heights
+        print("gt_ctr_y")
+        print(gt_ctr_y)
 
         targets_dx = (gt_ctr_x - ex_ctr_x.view(1,-1).expand_as(gt_ctr_x)) / ex_widths
+        print("targets_dx")
+        print(targets_dx)
         targets_dy = (gt_ctr_y - ex_ctr_y.view(1,-1).expand_as(gt_ctr_y)) / ex_heights
+        print("targets_dy")
+        print(targets_dy)
         targets_dw = torch.log(gt_widths / ex_widths.view(1,-1).expand_as(gt_widths))
+        print("targets_dw")
+        print(targets_dw)
         targets_dh = torch.log(gt_heights / ex_heights.view(1,-1).expand_as(gt_heights))
+        print("targets_dh")
+        print(targets_dh)
 
     elif ex_rois.dim() == 3:
+        print("inside elif")
         ex_widths = ex_rois[:, :, 2] - ex_rois[:, :, 0] + 1.0
+        print("ex_widths")
+        print(ex_widths)
         ex_heights = ex_rois[:,:, 3] - ex_rois[:,:, 1] + 1.0
+        print("ex_heights")
+        print(ex_heights)
         ex_ctr_x = ex_rois[:, :, 0] + 0.5 * ex_widths
+        print("ex_ctr_x")
+        print(ex_ctr_x)
         ex_ctr_y = ex_rois[:, :, 1] + 0.5 * ex_heights
+        print("ex_ctr_y")        
+        print(ex_ctr_y)
 
         gt_widths = gt_rois[:, :, 2] - gt_rois[:, :, 0] + 1.0
+        print("gt_widths")
+        print(gt_widths)
         gt_heights = gt_rois[:, :, 3] - gt_rois[:, :, 1] + 1.0
+        print("gt_heights")
+        print(gt_heights)
         gt_ctr_x = gt_rois[:, :, 0] + 0.5 * gt_widths
+        print("gt_ctr_x")
+        print(gt_ctr_x)
         gt_ctr_y = gt_rois[:, :, 1] + 0.5 * gt_heights
+        print("gt_ctr_y")
+        print(gt_ctr_y)
 
         targets_dx = (gt_ctr_x - ex_ctr_x) / ex_widths
+        print("targets_dx")
+        print(targets_dx)
         targets_dy = (gt_ctr_y - ex_ctr_y) / ex_heights
+        print("targets_dy")
+        print(targets_dy)
+        print("NAN STARTS HERE")
         targets_dw = torch.log(gt_widths / ex_widths)
+        print("targets_dw")
+        print(targets_dw)
         targets_dh = torch.log(gt_heights / ex_heights)
+        print("targets_dh")
+        print(targets_dh)
+        print("NAN ENDS HERE")
     else:
         raise ValueError('ex_roi input dimension is not correct.')
 
