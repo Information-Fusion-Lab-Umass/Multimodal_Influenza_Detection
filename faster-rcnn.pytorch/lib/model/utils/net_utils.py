@@ -74,12 +74,12 @@ def _smooth_l1_loss(bbox_pred, bbox_targets, bbox_inside_weights, bbox_outside_w
     sigma_2 = sigma ** 2
     #print('bbox_targets')
     #print(bbox_targets)	
-    print('bbox_preds')
+    #print('bbox_preds')
     #print(bbox_pred)
     box_diff = bbox_pred - bbox_targets
-    print('type(box_diff)')
-    print(type(box_diff))
-    print('box_dff')
+    #print('type(box_diff)')
+    #print(type(box_diff))
+    #print('box_dff')
     #print(box_diff)
     in_box_diff = bbox_inside_weights * box_diff
     abs_in_box_diff = torch.abs(in_box_diff)

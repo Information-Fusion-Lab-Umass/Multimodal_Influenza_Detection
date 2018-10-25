@@ -174,20 +174,20 @@ def combined_roidb_new(imdb_names, training=True):
     	if cfg.TRAIN.USE_FLIPPED:
       		print('Appending horizontally-flipped training examples...')
       		imdb.append_flipped_images()
-      		print('done')
+      		#print('done')
 
-        print('Preparing training data...')
+        #print('Preparing training data...')
 
         prepare_roidb(imdb)
         #ratio_index = rank_roidb_ratio(imdb)
-        print('done')
+        #print('done')
 
         return imdb.roidb
     
     def get_roidb(imdb_name):
         #print(imdb_name)
         imdb = get_imdb(imdb_name)
-	print(type(imdb))
+	#print(type(imdb))
         #print(imdb.name)
         print ('Loaded dataset %s for training' %(imdb.name))
         imdb.set_proposal_method(cfg.TRAIN.PROPOSAL_METHOD)
