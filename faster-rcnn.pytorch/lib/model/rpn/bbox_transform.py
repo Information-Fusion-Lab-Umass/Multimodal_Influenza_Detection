@@ -117,7 +117,13 @@ def bbox_transform_batch(ex_rois, gt_rois):
         print("targets_dy")
         print(targets_dy)
         print("NAN STARTS HERE")
+        temp = gt_widths/ex_widths
+        print("temp")
+        print(temp)
         targets_dw = torch.log(gt_widths / ex_widths)
+        print("targets_dw")
+        print(targets_dw)
+        targets_dw = torch.clamp(targets_dw, min = 1e-8)
         print("targets_dw")
         print(targets_dw)
         targets_dh = torch.log(gt_heights / ex_heights)
