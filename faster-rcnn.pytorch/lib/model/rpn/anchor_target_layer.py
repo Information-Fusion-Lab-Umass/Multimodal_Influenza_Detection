@@ -58,21 +58,24 @@ class _AnchorTargetLayer(nn.Module):
         gt_boxes = input[1]
         im_info = input[2]
         num_boxes = input[3]
-  	print('gt_boxes.shape in anchor_target_layer')
-	print(gt_boxes.shape)
-	print('gt_boxes in anchor target layer')
+  	#print('gt_boxes.shape in anchor_target_layer')
+	#print(gt_boxes.shape)
+	#print('gt_boxes in anchor target layer')
 	print(gt_boxes)
         
 	################here we pre-process gt_boxes in such a way that the x1<x2 && y1< y2
 	for k in range(gt_boxes.size(1)):
 		if(gt_boxes[:,k,0]>gt_boxes[:,k,2]):
-			temp=gt_boxes[:,k,0]
+			temp=gt_boxes[:,k,0].clone()
 			gt_boxes[:,k,0]=gt_boxes[:,k,2]
+			#print(temp)
 			gt_boxes[:,k,2]=temp	
-			temp=gt_boxes[:,k,1]
+			#print(gt_boxes[:,k,2])
+		if(gt_boxes[:,k,1]>gt_boxes[:,k,3]):
+			temp=gt_boxes[:,k,1].clone()
                         gt_boxes[:,k,1]=gt_boxes[:,k,3]
                         gt_boxes[:,k,3]=temp
-	print('gt_box after processinf')
+	#print('gt_box after processinf')
 	print(gt_boxes)
 	
 	###################################
@@ -80,81 +83,81 @@ class _AnchorTargetLayer(nn.Module):
 
 	# map of shape (..., H, W)
         height, width = rpn_cls_score.size(2), rpn_cls_score.size(3)
-        print("height, width")
-        print(height, width)
+        #print("height, width")
+        #print(height, width)
 
         batch_size = gt_boxes.size(0)
 	
         feat_height, feat_width = rpn_cls_score.size(2), rpn_cls_score.size(3)
-        print("feature height and width")
-        print(feat_height, feat_width)
+        #print("feature height and width")
+        #print(feat_height, feat_width)
         shift_x = np.arange(0, feat_width) * self._feat_stride
-        print("shift_x")
-        print(shift_x)
+        #print("shift_x")
+        #print(shift_x)
         shift_y = np.arange(0, feat_height) * self._feat_stride
-        print("shift_y")
-        print(shift_y)
+        #print("shift_y")
+        #print(shift_y)
         shift_x, shift_y = np.meshgrid(shift_x, shift_y)
         shifts = torch.from_numpy(np.vstack((shift_x.ravel(), shift_y.ravel(),
                                   shift_x.ravel(), shift_y.ravel())).transpose())
         shifts = shifts.contiguous().type_as(rpn_cls_score).float()
-        print("shifts")
-        print(shifts)
+        #print("shifts")
+        #print(shifts)
 
         A = self._num_anchors
-        print("A")
-        print(A)
+        #print("A")
+        #print(A)
         K = shifts.size(0)
-        print("K")
-        print(K)
+        #print("K")
+        #print(K)
 
         self._anchors = self._anchors.type_as(gt_boxes) # move to specific gpu.
         all_anchors = self._anchors.view(1, A, 4) + shifts.view(K, 1, 4)
         all_anchors = all_anchors.view(K * A, 4)
-        print("all_anchors")
-        print(all_anchors)
+        #print("all_anchors")
+        #print(all_anchors)
         
         total_anchors = int(K * A)
-        print("total anchors")
-        print(total_anchors)        
+        #print("total anchors")
+        #print(total_anchors)        
 
 
         keep = ((all_anchors[:, 0] >= -self._allowed_border) &
                 (all_anchors[:, 1] >= -self._allowed_border) &
                 (all_anchors[:, 2] < long(im_info[0][1]) + self._allowed_border) &
                 (all_anchors[:, 3] < long(im_info[0][0]) + self._allowed_border))
-        print("keep")
-        print(keep)
+        #print("keep")
+        #print(keep)
 
 
         inds_inside = torch.nonzero(keep).view(-1)
-        print("inds_inside")
-        print(inds_inside)        
+        #print("inds_inside")
+        #print(inds_inside)        
 
 
         # keep only inside anchors
         anchors = all_anchors[inds_inside, :]
-        print(anchors.shape)
-        print((anchors))
-	print('gt_box in anchor target')
+        #print(anchors.shape)
+        #print((anchors))
+	#print('gt_box in anchor target')
 	#print(gt_boxes)
         # label: 1 is positive, 0 is negative, -1 is dont care
         labels = gt_boxes.new(batch_size, inds_inside.size(0)).fill_(-1)
-        print('labels')
-	print(labels)
+        #print('labels')
+	#print(labels)
 	
         bbox_inside_weights = gt_boxes.new(batch_size, inds_inside.size(0)).zero_()
-        print("bbox_inside_weights")
-        print(bbox_inside_weights)
+        #print("bbox_inside_weights")
+        #print(bbox_inside_weights)
         bbox_outside_weights = gt_boxes.new(batch_size, inds_inside.size(0)).zero_()
-        print("bbox_outside_weights")
-        print(bbox_outside_weights)        
+        #print("bbox_outside_weights")
+        #print(bbox_outside_weights)        
 
 
         overlaps = bbox_overlaps_batch(anchors, gt_boxes)
-        print(overlaps.shape)
-	print('overlaps')
-	print(overlaps)
+        #print(overlaps.shape)
+	#print('overlaps')
+	#print(overlaps)
 	'''
 #############
 	#if len(overlaps.size())==2:
@@ -169,15 +172,15 @@ class _AnchorTargetLayer(nn.Module):
         gt_max_overlaps, _ = torch.max(overlaps, 1)
         print("gt_max_overlaps")
         print(gt_max_overlaps)        
-	print('ye nahi')
+	#print('ye nahi')
         if not cfg.TRAIN.RPN_CLOBBER_POSITIVES:
             labels[max_overlaps < cfg.TRAIN.RPN_NEGATIVE_OVERLAP] = 0
             print("inside if not")
             
         gt_max_overlaps[gt_max_overlaps==0] = 1e-5
         keep = torch.sum(overlaps.eq(gt_max_overlaps.view(batch_size,1,-1).expand_as(overlaps)), 2)
-        print("keep - 1")
-        print(keep)
+        #print("keep - 1")
+        #print(keep)
         if torch.sum(keep) > 0:
             labels[keep>0] = 1
 
@@ -188,21 +191,21 @@ class _AnchorTargetLayer(nn.Module):
             labels[max_overlaps < cfg.TRAIN.RPN_NEGATIVE_OVERLAP] = 0
 
         num_fg = int(cfg.TRAIN.RPN_FG_FRACTION * cfg.TRAIN.RPN_BATCHSIZE)
-        print("num fg")
-        print(num_fg)
+        #print("num fg")
+        #print(num_fg)
         sum_fg = torch.sum((labels == 1).int(), 1)
-        print("sum_fg")
-        print(sum_fg)
+        #print("sum_fg")
+        #print(sum_fg)
         sum_bg = torch.sum((labels == 0).int(), 1)
-        print("sum_bg")
-        print(sum_bg)
+        #print("sum_bg")
+        #print(sum_bg)
         for i in range(batch_size):
             # subsample positive labels if we have too many
             if sum_fg[i] > num_fg:
-                print("inside if")
+                #print("inside if")
                 fg_inds = torch.nonzero(labels[i] == 1).view(-1)
-                print("fg_inds")
-                print(fg_inds)
+                #print("fg_inds")
+                #print(fg_inds)
                 # torch.randperm seems has a bug on multi-gpu setting that cause the segfault.
                 # See https://github.com/pytorch/pytorch/issues/1868 for more details.
                 # use numpy instead.
@@ -213,14 +216,14 @@ class _AnchorTargetLayer(nn.Module):
 
 #           num_bg = cfg.TRAIN.RPN_BATCHSIZE - sum_fg[i]
             num_bg = cfg.TRAIN.RPN_BATCHSIZE - torch.sum((labels == 1).int(), 1)[i]
-            print("num_bg")
-            print(num_bg)
+            #print("num_bg")
+            #print(num_bg)
             # subsample negative labels if we have too many
             if sum_bg[i] > num_bg:
-                print("inside if")
+                #print("inside if")
                 bg_inds = torch.nonzero(labels[i] == 0).view(-1)
-                print("bg_inds")
-                print(bg_inds)
+                #print("bg_inds")
+                #print(bg_inds)
                 #rand_num = torch.randperm(bg_inds.size(0)).type_as(gt_boxes).long()
 
                 rand_num = torch.from_numpy(np.random.permutation(bg_inds.size(0))).type_as(gt_boxes).long()
@@ -228,8 +231,8 @@ class _AnchorTargetLayer(nn.Module):
                 labels[i][disable_inds] = -1
 
         offset = torch.arange(0, batch_size)*gt_boxes.size(1)
-        print("offset")
-        print(offset)
+        #print("offset")
+        #print(offset)
         argmax_overlaps = argmax_overlaps + offset.view(batch_size, 1).type_as(argmax_overlaps)
         print("argmax_overlaps")
         print(argmax_overlaps)
