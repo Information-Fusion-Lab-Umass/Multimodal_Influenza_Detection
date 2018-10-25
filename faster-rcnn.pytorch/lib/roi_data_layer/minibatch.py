@@ -31,6 +31,10 @@ def get_minibatch(roidb, num_classes):
 
   # Get the input image blob, formatted for caffe
   im_blob, im_scales = _get_image_blob(roidb, random_scale_inds)
+  #print('im_blob<0')
+  #print(im_blob<0)
+  print('after interpolation')
+  print(im_blob[:,:,0])
   #print('im_blob.shape')
   #print(im_blob.shape)
   #print('im_blob[0,:,:,0]==im_blob[0,:,:,1]')
@@ -75,15 +79,17 @@ def _get_image_blob(roidb, scale_inds):
   for i in range(num_images):
     im = cv2.imread(roidb[i]['image'],cv2.IMREAD_GRAYSCALE)
     #im = imread(roidb[i]['image'])
-    print(im.shape)	
+    print(im.shape)
+   	
     if len(im.shape) == 2:
-      #print('im.shape==2')
+      print('im.shape==2')
       im = im[:,:,np.newaxis]
       im = np.concatenate((im,im,im), axis=2)
     # flip the channel, since the original one using cv2
     # rgb -> bgr
     im = im[:,:,::-1]
-
+    print('image before mean subtraction')
+    print(im[:,:,0])
     if roidb[i]['flipped']:
       im = im[:, ::-1, :]
     target_size = cfg.TRAIN.SCALES[scale_inds[i]]

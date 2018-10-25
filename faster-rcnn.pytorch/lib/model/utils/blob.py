@@ -36,6 +36,8 @@ def prep_im_for_blob(im, pixel_means, target_size, max_size):
     """Mean subtract and scale an image for use in a blob."""
 
     im = im.astype(np.float32, copy=False)
+    print('pixel means')
+    print(pixel_means)
     im -= pixel_means
     # im = im[:, :, ::-1]
     im_shape = im.shape
@@ -46,7 +48,15 @@ def prep_im_for_blob(im, pixel_means, target_size, max_size):
     # if np.round(im_scale * im_size_max) > max_size:
     #     im_scale = float(max_size) / float(im_size_max)
     # im = imresize(im, im_scale)
+    print('after mean subtraction and before interpolation')
+    print(im.shape)
+    print(im[:,:,0].shape)
+    print(im[:,:,0]==im[:,:,1])
+    print(im[:,:,0]==im[:,:,2])
+    print(im[:,:,0])
     im = cv2.resize(im, None, None, fx=im_scale, fy=im_scale,
                     interpolation=cv2.INTER_LINEAR)
-
+    print('after interpolation')
+    print(im.shape)
+    print(im[:,:,0])
     return im, im_scale

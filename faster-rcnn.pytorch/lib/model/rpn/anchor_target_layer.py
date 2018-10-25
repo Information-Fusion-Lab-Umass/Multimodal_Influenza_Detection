@@ -58,8 +58,27 @@ class _AnchorTargetLayer(nn.Module):
         gt_boxes = input[1]
         im_info = input[2]
         num_boxes = input[3]
+  	print('gt_boxes.shape in anchor_target_layer')
+	print(gt_boxes.shape)
+	print('gt_boxes in anchor target layer')
+	print(gt_boxes)
+        
+	################here we pre-process gt_boxes in such a way that the x1<x2 && y1< y2
+	for k in range(gt_boxes.size(1)):
+		if(gt_boxes[:,k,0]>gt_boxes[:,k,2]):
+			temp=gt_boxes[:,k,0]
+			gt_boxes[:,k,0]=gt_boxes[:,k,2]
+			gt_boxes[:,k,2]=temp	
+			temp=gt_boxes[:,k,1]
+                        gt_boxes[:,k,1]=gt_boxes[:,k,3]
+                        gt_boxes[:,k,3]=temp
+	print('gt_box after processinf')
+	print(gt_boxes)
+	
+	###################################
 
-        # map of shape (..., H, W)
+
+	# map of shape (..., H, W)
         height, width = rpn_cls_score.size(2), rpn_cls_score.size(3)
         print("height, width")
         print(height, width)
@@ -115,6 +134,8 @@ class _AnchorTargetLayer(nn.Module):
 
         # keep only inside anchors
         anchors = all_anchors[inds_inside, :]
+        print(anchors.shape)
+        print((anchors))
 	print('gt_box in anchor target')
 	#print(gt_boxes)
         # label: 1 is positive, 0 is negative, -1 is dont care
@@ -132,20 +153,23 @@ class _AnchorTargetLayer(nn.Module):
 
         overlaps = bbox_overlaps_batch(anchors, gt_boxes)
         print(overlaps.shape)
-	
+	print('overlaps')
+	print(overlaps)
+	'''
 #############
-	if len(overlaps.size())==2:
-
+	#if len(overlaps.size())==2:
+#
  		overlaps=overlaps.unsqueeze(-1)
 		print(overlaps.size())
-##############	
-        max_overlaps, argmax_overlaps = torch.max(overlaps, 2,  keepdim=False)
+##############
+	'''	
+        max_overlaps, argmax_overlaps = torch.max(overlaps, 2)
         print("max_overlaps, argmax_overlaps")
         print(max_overlaps, argmax_overlaps)
         gt_max_overlaps, _ = torch.max(overlaps, 1)
         print("gt_max_overlaps")
         print(gt_max_overlaps)        
-
+	print('ye nahi')
         if not cfg.TRAIN.RPN_CLOBBER_POSITIVES:
             labels[max_overlaps < cfg.TRAIN.RPN_NEGATIVE_OVERLAP] = 0
             print("inside if not")
@@ -209,6 +233,8 @@ class _AnchorTargetLayer(nn.Module):
         argmax_overlaps = argmax_overlaps + offset.view(batch_size, 1).type_as(argmax_overlaps)
         print("argmax_overlaps")
         print(argmax_overlaps)
+	print('gt_boxes.view(-1,5)[argmax_overlaps.view(-1), :].view(batch_size, -1, 5')
+	print(gt_boxes.view(-1,5)[argmax_overlaps.view(-1), :].view(batch_size, -1, 5))
         bbox_targets = _compute_targets_batch(anchors, gt_boxes.view(-1,5)[argmax_overlaps.view(-1), :].view(batch_size, -1, 5))
         print("bbox_targets")
         print(bbox_targets)

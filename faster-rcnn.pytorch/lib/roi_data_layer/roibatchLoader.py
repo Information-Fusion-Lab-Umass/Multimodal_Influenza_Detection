@@ -194,12 +194,6 @@ class roibatchLoader(data.Dataset):
         
         #not_keep = (gt_boxes[:,0] == gt_boxes[:,2]) | (gt_boxes[:,1] == gt_boxes[:,3])
         #keep = torch.nonzero(not_keep == 0).view(-1)
-	if gt_boxes.size(0)==0:
-	    num_boxes=0
-	    padding_data = padding_data.permute(2, 0, 1).contiguous()
-            im_info = im_info.view(3)
-	    gt_boxes_padding = torch.FloatTensor(self.max_num_box, gt_boxes.size(0)).zero_()
-	    return padding_data, im_info, gt_boxes_padding, num_boxes
 	not_keep = (gt_boxes[:,0] == gt_boxes[:,2]) | (gt_boxes[:,1] == gt_boxes[:,3])
         keep = torch.nonzero(not_keep == 0).view(-1)	
         gt_boxes_padding = torch.FloatTensor(self.max_num_box, gt_boxes.size(1)).zero_()
