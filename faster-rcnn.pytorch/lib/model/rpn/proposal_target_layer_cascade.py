@@ -97,20 +97,33 @@ class _ProposalTargetLayer(nn.Module):
     def _compute_targets_pytorch(self, ex_rois, gt_rois):
         """Compute bounding-box regression targets for an image."""
 
+        print("Inside Compute Target PyTorch")
         assert ex_rois.size(1) == gt_rois.size(1)
         assert ex_rois.size(2) == 4
         assert gt_rois.size(2) == 4
 
+        print("ex_rois in compute targets pytorch")
+        print(ex_rois)
+        print("gt_rois in compute targets pytorch")
+        print(gt_rois)
         batch_size = ex_rois.size(0)
+        print("batch_size")
+        print(batch_size)
         rois_per_image = ex_rois.size(1)
+        print("rois_per_image")
+        print(rois_per_image)
 
         targets = bbox_transform_batch(ex_rois, gt_rois)
-
+        print("second call to bbox_transform batch")
+        print("targets")
+        print(targets)
         if cfg.TRAIN.BBOX_NORMALIZE_TARGETS_PRECOMPUTED:
             # Optionally normalize targets by a precomputed mean and stdev
+            print("inside if")
             targets = ((targets - self.BBOX_NORMALIZE_MEANS.expand_as(targets))
                         / self.BBOX_NORMALIZE_STDS.expand_as(targets))
-
+            print("new_targets")
+            print(targets)
         return targets
 
 

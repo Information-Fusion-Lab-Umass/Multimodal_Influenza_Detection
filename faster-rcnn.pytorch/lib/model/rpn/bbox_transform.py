@@ -137,49 +137,48 @@ def bbox_transform_batch(ex_rois, gt_rois):
         #print("targets_dx")
         #print(targets_dx)
         targets_dy = (gt_ctr_y - ex_ctr_y) / ex_heights
-<<<<<<< HEAD
         print("targets_dy")
         print(targets_dy)
         print("NAN STARTS HERE")
         temp = gt_widths/ex_widths
         print("temp")
         print(temp)
-        targets_dw = torch.log(gt_widths / ex_widths)
+        targets_dw = torch.log(temp)
         print("targets_dw")
         print(targets_dw)
-        targets_dw = torch.clamp(targets_dw, min = 1e-8)
-        print("targets_dw")
-        print(targets_dw)
-=======
+        print(targets_dw.shape)
+        #targets_dw = torch.clamp(targets_dw, min = 1e-8)
+        #print("targets_dw")
+        #print(targets_dw)
         #print("targets_dy")
         #print(targets_dy)
         #print("NAN STARTS HERE")
->>>>>>> 5e84598dfdc6e5594211358e002345467cfc877d
-	temp=(gt_widths / ex_widths)
+	#temp=(gt_widths / ex_widths)
         #print('temp')
 	#print(temp)
-	targets_dw = torch.log(temp)
-	
-<<<<<<< HEAD
-        print("targets_dw")
-        print(targets_dw)
-	print('clamp')
-=======
+	#targets_dw = torch.log(temp)
         #print("targets_dw")
         #print(targets_dw)
 	#print('clamp')
-	
->>>>>>> 5e84598dfdc6e5594211358e002345467cfc877d
-        targets_dh = torch.log(gt_heights / ex_heights)
-        #print("targets_dh")
+        #print("targets_dw")
+        #print(targets_dw)
+	#print('clamp')
+        temp2=(gt_heights / ex_heights)
+        print('gt_heights/ex_heights')
+        print(temp2)
+        targets_dh = torch.log(temp2)
+        print("targets_dh")
         #print(targets_dh)
-        #print("NAN ENDS HERE")
+        print("NAN ENDS HERE")
     else:
         raise ValueError('ex_roi input dimension is not correct.')
 
     targets = torch.stack(
         (targets_dx, targets_dy, targets_dw, targets_dh),2)
 
+    print('kya tu idharmar rha hai??')
+    print(targets)
+    print(targets.shape)
     return targets
 
 def bbox_transform_inv(boxes, deltas, batch_size):

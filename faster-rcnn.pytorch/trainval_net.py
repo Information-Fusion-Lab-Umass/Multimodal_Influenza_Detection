@@ -333,14 +333,21 @@ if __name__ == '__main__':
       rpn_loss_cls, rpn_loss_box, \
       RCNN_loss_cls, RCNN_loss_bbox, \
       rois_label = fasterRCNN(im_data, im_info, gt_boxes, num_boxes)
+      print("after fasterRCNN in trainval_net.py")
+      print("rois_label")
+      print(rois_label)
       #print(rois_label>0)
       loss = rpn_loss_cls.mean() + rpn_loss_box.mean() \
            + RCNN_loss_cls.mean() + RCNN_loss_bbox.mean()
       loss_temp += loss.item()
+      print("loss temp")
+      print(loss_temp)
 
       # backward
       optimizer.zero_grad()
+      print("inside backward pass")
       loss.backward()
+      print("after loss backward")
       if args.net == "vgg16":
           clip_gradient(fasterRCNN, 10.)
       optimizer.step()

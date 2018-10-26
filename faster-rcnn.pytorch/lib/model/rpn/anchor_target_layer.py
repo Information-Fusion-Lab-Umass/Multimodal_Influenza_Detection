@@ -239,6 +239,7 @@ class _AnchorTargetLayer(nn.Module):
 	print('gt_boxes.view(-1,5)[argmax_overlaps.view(-1), :].view(batch_size, -1, 5')
 	print(gt_boxes.view(-1,5)[argmax_overlaps.view(-1), :].view(batch_size, -1, 5))
         bbox_targets = _compute_targets_batch(anchors, gt_boxes.view(-1,5)[argmax_overlaps.view(-1), :].view(batch_size, -1, 5))
+        print('back from bbox_transform#####:::#####')
         print("bbox_targets")
         print(bbox_targets)
         # use a single value instead of 4 values for easy index.
@@ -309,4 +310,10 @@ def _unmap(data, count, inds, batch_size, fill=0):
 def _compute_targets_batch(ex_rois, gt_rois):
     """Compute bounding-box regression targets for an image."""
 
-    return bbox_transform_batch(ex_rois, gt_rois[:, :, :4])
+    print('entering bbox transform batch')
+    ret_val=bbox_transform_batch(ex_rois, gt_rois[:, :, :4])
+    print('ret_val in compute_targets_batch')
+    print(ret_val)
+    return ret_val
+    
+    

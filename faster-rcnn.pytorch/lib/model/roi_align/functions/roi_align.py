@@ -13,6 +13,7 @@ class RoIAlignFunction(Function):
         self.feature_size = None
 
     def forward(self, features, rois):
+        print("Hello, I am in forward function of ROI Align Function")
         self.rois = rois
         self.feature_size = features.size()
 
@@ -36,22 +37,24 @@ class RoIAlignFunction(Function):
 
     def backward(self, grad_output):
         #assert(self.feature_size is not None and grad_output.is_cuda)
-
+        print("Hello I am in backward function of ROI Align Function")
         batch_size, num_channels, data_height, data_width = self.feature_size
 
         grad_input = self.rois.new(batch_size, num_channels, data_height,
                                   data_width).zero_()
-        print(dir(roi_align))        
-        #roi_align_cuda.roi_align_backward_cuda(self.aligned_height,
-        #                                  self.aligned_width,
-        #                                  self.spatial_scale, grad_output,
-        #                                  self.rois, grad_input)
-
-        # print grad_input
-        roi_align.roi_align_backward(self.aligned_height,
+        print("printing dir(roi_align)")
+        print(dir(roi_align))
+        #initially commented out roi_align_cuda       
+        roi_align.roi_align_backward_cuda(self.aligned_height,
                                           self.aligned_width,
                                           self.spatial_scale, grad_output,
                                           self.rois, grad_input)
-
+        print("after back prop cuda function call")
+        # print grad_input
+        #roi_align.roi_align_backward(self.aligned_height,
+        #                                  self.aligned_width,
+        #                                  self.spatial_scale, grad_output,
+        #                                  self.rois, grad_input)
+        print("after back prop function call")
 
         return grad_input, None

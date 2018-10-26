@@ -24,10 +24,10 @@ class AffineGridGenFunction(Function):
         self.batchgrid = input1.new(torch.Size([input1.size(0)]) + self.grid.size()).zero_()
         for i in range(input1.size(0)):
             self.batchgrid[i] = self.grid.astype(self.batchgrid[i])
-
-        # if input1.is_cuda:
-        #    self.batchgrid = self.batchgrid.cuda()
-        #    output = output.cuda()
+        ## if statement initially commented out
+        if input1.is_cuda:
+            self.batchgrid = self.batchgrid.cuda()
+            output = output.cuda()
 
         for i in range(input1.size(0)):
             output = torch.bmm(self.batchgrid.view(-1, self.height*self.width, 3), torch.transpose(input1, 1, 2)).view(-1, self.height, self.width, 2)
@@ -37,10 +37,10 @@ class AffineGridGenFunction(Function):
     def backward(self, grad_output):
 
         grad_input1 = self.input1.new(self.input1.size()).zero_()
-
-        # if grad_output.is_cuda:
-        #    self.batchgrid = self.batchgrid.cuda()
-        #    grad_input1 = grad_input1.cuda()
+        #if statement initially commented out
+        if grad_output.is_cuda:
+            self.batchgrid = self.batchgrid.cuda()
+            grad_input1 = grad_input1.cuda()
 
         grad_input1 = torch.baddbmm(grad_input1, torch.transpose(grad_output.view(-1, self.height*self.width, 2), 1,2), self.batchgrid.view(-1, self.height*self.width, 3))
         return grad_input1
