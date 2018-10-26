@@ -71,7 +71,7 @@ class _RPN(nn.Module):
 
         # get rpn offsets to the anchor boxes
         rpn_bbox_pred = self.RPN_bbox_pred(rpn_conv1)
-	print('rpn_bbox_pred')
+	#print('rpn_bbox_pred')
 	#print(np.isnan(rpn_bbox_pred))
         # proposal layer
         cfg_key = 'TRAIN' if self.training else 'TEST'

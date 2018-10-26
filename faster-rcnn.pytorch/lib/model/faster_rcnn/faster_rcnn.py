@@ -39,7 +39,7 @@ class _fasterRCNN(nn.Module):
     def forward(self, im_data, im_info, gt_boxes, num_boxes):
         batch_size = im_data.size(0)
 	
-	print("Inside Faster R-CNN")
+	#print("Inside Faster R-CNN")
         im_info = im_info.data
 	#print("im_info")
 	#print(im_info)
@@ -60,9 +60,9 @@ class _fasterRCNN(nn.Module):
 	#print('rois')
 	#print(rois.size())
 	#print(rois)
-	print('printing losses')
-	print(rpn_loss_cls)
-	print(rpn_loss_bbox)
+	#print('printing losses')
+	#print(rpn_loss_cls)
+	#print(rpn_loss_bbox)
 	
         # if it is training phrase, then use ground trubut bboxes for refining
         if self.training:

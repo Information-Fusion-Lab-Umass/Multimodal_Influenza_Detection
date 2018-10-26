@@ -248,8 +248,8 @@ class kaist_thermal(imdb):
             y1 = float(info[2])
             x2 = float(info[3])
             y2 = float(info[4])
-	    print('x1,y1,x2,y2')
-            print x1, y1, x2, y2
+	    #print('x1,y1,x2,y2')
+            #print x1, y1, x2, y2
             #assert(x2>=x1)
             #assert(y2>=y1)
             cls = self._class_to_ind['pedestrian']

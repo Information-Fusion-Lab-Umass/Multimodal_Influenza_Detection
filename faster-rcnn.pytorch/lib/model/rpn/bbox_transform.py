@@ -35,10 +35,10 @@ def bbox_transform(ex_rois, gt_rois):
 
 def bbox_transform_batch(ex_rois, gt_rois):
     #print("inside bbox_transform_batch")
-    print("ex_rois")
-    print(ex_rois)
-    print("gt_rois")
-    print(gt_rois)
+    #print("ex_rois")
+    #print(ex_rois)
+    #print("gt_rois")
+    #print(gt_rois)
     #print(gt_rois.shape)
     '''
     if gt_rois[:,:,2]>gt_rois[:,:,0]:
@@ -61,7 +61,7 @@ def bbox_transform_batch(ex_rois, gt_rois):
     #print("ex_rois.dim()")
     #print(ex_rois.dim())
     if ex_rois.dim() == 2:
-        print("inside if")
+        #print("inside if")
         #print('check ex_rois')
    	#print(ex_rois[:,0]>ex_rois[:,2])
         #print(ex_rois[:,1]>ex_rois[:,3])
@@ -137,16 +137,16 @@ def bbox_transform_batch(ex_rois, gt_rois):
         #print("targets_dx")
         #print(targets_dx)
         targets_dy = (gt_ctr_y - ex_ctr_y) / ex_heights
-        print("targets_dy")
-        print(targets_dy)
-        print("NAN STARTS HERE")
+        #print("targets_dy")
+        #print(targets_dy)
+        #print("NAN STARTS HERE")
         temp = gt_widths/ex_widths
-        print("temp")
-        print(temp)
+        #print("temp")
+        #print(temp)
         targets_dw = torch.log(temp)
-        print("targets_dw")
-        print(targets_dw)
-        print(targets_dw.shape)
+        #print("targets_dw")
+        #print(targets_dw)
+        #print(targets_dw.shape)
         #targets_dw = torch.clamp(targets_dw, min = 1e-8)
         #print("targets_dw")
         #print(targets_dw)
@@ -164,21 +164,21 @@ def bbox_transform_batch(ex_rois, gt_rois):
         #print(targets_dw)
 	#print('clamp')
         temp2=(gt_heights / ex_heights)
-        print('gt_heights/ex_heights')
-        print(temp2)
+        #print('gt_heights/ex_heights')
+        #print(temp2)
         targets_dh = torch.log(temp2)
-        print("targets_dh")
+        #print("targets_dh")
         #print(targets_dh)
-        print("NAN ENDS HERE")
+        #print("NAN ENDS HERE")
     else:
         raise ValueError('ex_roi input dimension is not correct.')
 
     targets = torch.stack(
         (targets_dx, targets_dy, targets_dw, targets_dh),2)
 
-    print('kya tu idharmar rha hai??')
-    print(targets)
-    print(targets.shape)
+    #print('kya tu idharmar rha hai??')
+    #print(targets)
+    #print(targets.shape)
     return targets
 
 def bbox_transform_inv(boxes, deltas, batch_size):
@@ -327,14 +327,14 @@ def bbox_overlaps_batch(anchors, gt_boxes):
         ua = anchors_area + gt_boxes_area - (iw * ih)
         #IOU is overlaps
         overlaps = iw * ih / ua
-	print('iw')
-	print(iw)
-	print('ih')
-	print(ih)
-	print('ua')
-	print(ua)
-	print('overlaps')
-	print(overlaps)
+	#print('iw')
+	#print(iw)
+	#print('ih')
+	#print(ih)
+	#print('ua')
+	#print(ua)
+	#print('overlaps')
+	#print(overlaps)
         # mask the overlap here.
         overlaps.masked_fill_(gt_area_zero.view(batch_size, 1, K).expand(batch_size, N, K), 0)
         overlaps.masked_fill_(anchors_area_zero.view(batch_size, N, 1).expand(batch_size, N, K), -1)

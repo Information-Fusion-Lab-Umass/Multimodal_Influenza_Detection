@@ -53,7 +53,7 @@ class _AnchorTargetLayer(nn.Module):
         #   apply predicted bbox deltas at cell i to each of the 9 anchors
         # filter out-of-image anchors
         
-        print("Inside Anchor Target Layer")
+        #print("Inside Anchor Target Layer")
         rpn_cls_score = input[0]
         gt_boxes = input[1]
         im_info = input[2]
@@ -167,15 +167,15 @@ class _AnchorTargetLayer(nn.Module):
 ##############
 	'''	
         max_overlaps, argmax_overlaps = torch.max(overlaps, 2)
-        print("max_overlaps, argmax_overlaps")
-        print(max_overlaps, argmax_overlaps)
+        #print("max_overlaps, argmax_overlaps")
+        #print(max_overlaps, argmax_overlaps)
         gt_max_overlaps, _ = torch.max(overlaps, 1)
-        print("gt_max_overlaps")
-        print(gt_max_overlaps)        
+        #print("gt_max_overlaps")
+        #print(gt_max_overlaps)        
 	#print('ye nahi')
         if not cfg.TRAIN.RPN_CLOBBER_POSITIVES:
             labels[max_overlaps < cfg.TRAIN.RPN_NEGATIVE_OVERLAP] = 0
-            print("inside if not")
+            #print("inside if not")
             
         gt_max_overlaps[gt_max_overlaps==0] = 1e-5
         keep = torch.sum(overlaps.eq(gt_max_overlaps.view(batch_size,1,-1).expand_as(overlaps)), 2)
@@ -234,18 +234,18 @@ class _AnchorTargetLayer(nn.Module):
         #print("offset")
         #print(offset)
         argmax_overlaps = argmax_overlaps + offset.view(batch_size, 1).type_as(argmax_overlaps)
-        print("argmax_overlaps")
-        print(argmax_overlaps)
-	print('gt_boxes.view(-1,5)[argmax_overlaps.view(-1), :].view(batch_size, -1, 5')
-	print(gt_boxes.view(-1,5)[argmax_overlaps.view(-1), :].view(batch_size, -1, 5))
+        #print("argmax_overlaps")
+        #print(argmax_overlaps)
+	#print('gt_boxes.view(-1,5)[argmax_overlaps.view(-1), :].view(batch_size, -1, 5')
+	#print(gt_boxes.view(-1,5)[argmax_overlaps.view(-1), :].view(batch_size, -1, 5))
         bbox_targets = _compute_targets_batch(anchors, gt_boxes.view(-1,5)[argmax_overlaps.view(-1), :].view(batch_size, -1, 5))
-        print('back from bbox_transform#####:::#####')
-        print("bbox_targets")
-        print(bbox_targets)
+        #print('back from bbox_transform#####:::#####')
+        #print("bbox_targets")
+        #print(bbox_targets)
         # use a single value instead of 4 values for easy index.
         bbox_inside_weights[labels==1] = cfg.TRAIN.RPN_BBOX_INSIDE_WEIGHTS[0]
-        print("bbox_inside_weights")
-        print(bbox_inside_weights)
+        #print("bbox_inside_weights")
+        #print(bbox_inside_weights)
         if cfg.TRAIN.RPN_POSITIVE_WEIGHT < 0:
             num_examples = torch.sum(labels[i] >= 0)
             positive_weights = 1.0 / num_examples.item()
@@ -310,10 +310,10 @@ def _unmap(data, count, inds, batch_size, fill=0):
 def _compute_targets_batch(ex_rois, gt_rois):
     """Compute bounding-box regression targets for an image."""
 
-    print('entering bbox transform batch')
+    #print('entering bbox transform batch')
     ret_val=bbox_transform_batch(ex_rois, gt_rois[:, :, :4])
-    print('ret_val in compute_targets_batch')
-    print(ret_val)
+    #print('ret_val in compute_targets_batch')
+    #print(ret_val)
     return ret_val
     
     
