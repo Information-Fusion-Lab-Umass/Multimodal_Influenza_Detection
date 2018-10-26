@@ -189,7 +189,7 @@ class roibatchLoader(data.Dataset):
 
         # check the bounding box:
         #print(gt_  ggboxes.size())
-        print(gt_boxes.size())
+        #print(gt_boxes.size())
         #print(data)
         
         #not_keep = (gt_boxes[:,0] == gt_boxes[:,2]) | (gt_boxes[:,1] == gt_boxes[:,3])
