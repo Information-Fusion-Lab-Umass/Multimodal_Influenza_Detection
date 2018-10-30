@@ -43,7 +43,7 @@ class RoIAlignFunction(Function):
         grad_input = self.rois.new(batch_size, num_channels, data_height,
                                   data_width).zero_()
         #print("printing dir(roi_align)")
-        print(dir(roi_align))
+        #print(dir(roi_align))
         #initially commented out roi_align_cuda       
         roi_align.roi_align_backward_cuda(self.aligned_height,
                                           self.aligned_width,

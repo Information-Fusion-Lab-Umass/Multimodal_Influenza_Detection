@@ -5,15 +5,44 @@
 4270635 - 1 epoch lr =10e-7 ratio = 0.5, 1,2 - successful
 -------------------------------------------------------------------------
 4273542 - first run on GPU - 20 epochs lr = 10e-9 ratio = 0.5, 1, 2
+faster_rcnn_1_20_2615.pth
+loss = 1.6907
 4273616 - 20 epochs lr = 10e-9 scales = default ratio = 0.5, 1, 2
+faster_rcnn_1_20_2615.pth
+loss = 1.2773
 4273631 - 20 epochs lr = 10e-9 scales = default ratio = 0.1, 0.2, 0.3
+faster_rcnn_1_20_2615.pth
+loss = 1.2374
 4273643 - 100 epochs lr = 10e-9 scales = default ratio = 0.1, 0.2, 0.3
+72 epochs
+loss = 1.4894
 4273644 - 100 epochs lr = 10e-5 scales = default ratio = 0.1, 0.2, 0.3
+81 epochs
+loss = 0.4349
 4273653 - 100 epochs -- all default parameters
+76 epochs
+loss = 0.1403
 4273657 - 100 epochs lr = 10e-5 scales = 1, 2, 3, 4 ratios = default
+77 epochs
+loss = 1.1619
 4273660 - 100 epochs lr = 10e-5 scales = 0.1, 0.2, 0.3, 0.4 ratios = default
+80 epochs
+loss = 3.9342
 4273661 - 100 epochs lr = 10e-5 scales = 10, 20, 30, 40 ratios = default
+80 epochs
+loss = 1.2294
 4273684 - 100 epochs lr = 10e-5 scales = 10, 20, 30, 40 ratios = 0.01, 0.02, 0.03
+error
 4273665 - 100 epochs lr = 10e-5 scales = 10, 20, 30, 40 ratios = 10, 20, 30
+76 epochs
+loss = 1.4973
 4273682 - 100 epochs lr = 10e-5 scales = 0.1, 0.2, 0.3, 0.4 ratios = 10, 20, 30
+70 epochs
+loss = 10.6781
 4273686 - 100 epochs lr = 10e-3 scales = 0.1, 0.2, 0.3, 0.4 ratios = 0.01, 0.02, 0.03
+75 epochs
+loss = 10.9998
+---------------------------------------------------------------------------------
+weight saved
+4277241 - all default parameters - 50 epochs
+

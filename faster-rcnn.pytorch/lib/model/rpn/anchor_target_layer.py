@@ -61,7 +61,7 @@ class _AnchorTargetLayer(nn.Module):
   	#print('gt_boxes.shape in anchor_target_layer')
 	#print(gt_boxes.shape)
 	#print('gt_boxes in anchor target layer')
-	print(gt_boxes)
+	#print(gt_boxes)
         
 	################here we pre-process gt_boxes in such a way that the x1<x2 && y1< y2
 	for k in range(gt_boxes.size(1)):
@@ -76,7 +76,7 @@ class _AnchorTargetLayer(nn.Module):
                         gt_boxes[:,k,1]=gt_boxes[:,k,3]
                         gt_boxes[:,k,3]=temp
 	#print('gt_box after processinf')
-	print(gt_boxes)
+	#print(gt_boxes)
 	
 	###################################
 

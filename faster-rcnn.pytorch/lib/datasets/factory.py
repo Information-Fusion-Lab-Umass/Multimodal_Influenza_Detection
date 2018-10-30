@@ -73,6 +73,7 @@ for split in ['train', 'val', 'val1', 'val2', 'test']:
 def get_imdb(name):
   """Get an imdb (image database) by name."""
   if name not in __sets:
+    print(name)
     raise KeyError('Unknown dataset: {}'.format(name))
   #print type(__sets[name])
   #print __sets[name]()
