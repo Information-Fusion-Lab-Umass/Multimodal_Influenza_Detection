@@ -141,6 +141,7 @@ class imdb(object):
     """
     # Record max overlap value for each gt box
     # Return vector of overlap values
+    print("inside evaluate_recall")
     areas = {'all': 0, 'small': 1, 'medium': 2, 'large': 3,
              '96-128': 4, '128-256': 5, '256-512': 6, '512-inf': 7}
     area_ranges = [[0 ** 2, 1e5 ** 2],  # all
