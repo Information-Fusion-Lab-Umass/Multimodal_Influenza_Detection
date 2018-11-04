@@ -1,7 +1,8 @@
 import _init_paths
 from model.utils.config import cfg, cfg_from_file, cfg_from_list
 from datasets.factory import get_imdb
-from datasets.imdb import imdb.imdb.evaluate_recall
+from datasets.imdb import imdb
+#from datasets.imdb import imdb.imdb.evaluate_recall
 #from imdb import evaluate_recall
 import argparse
 import time, os, sys
@@ -33,14 +34,18 @@ if __name__ == '__main__':
 
     print('Called with args:')
     print(args)
-
-    imdb = get_imdb(args.imdb_name)
+    classes = ('__background__', 'pedestrian')
+    imdb_1 = get_imdb(args.imdb_name)
+    print(imdb_1)
+    imdb_2 = imdb(args.imdb_name, classes)
+    print("imdb_2.classes")
+    print(imdb_2.classes)
     print("get imdb called")
-    imdb.set_proposal_method(args.method)
+    imdb_1.set_proposal_method(args.method)
     print("set proposal method called")
     if args.rpn_file is not None:
         print('inside if not')
-        imdb.config['rpn_file'] = args.rpn_file
+        imdb_1.config['rpn_file'] = args.rpn_file
 
     candidate_boxes = None
     if 0:
@@ -53,7 +58,7 @@ if __name__ == '__main__':
         print(candidate_boxes)
 
     ar, gt_overlaps, recalls, thresholds = \
-        imdb.evaluate_recall(candidate_boxes=candidate_boxes)
+        imdb_1.evaluate_recall(candidate_boxes=candidate_boxes)
     print("ar")
     print(ar)
     print("gt_overlaps")
