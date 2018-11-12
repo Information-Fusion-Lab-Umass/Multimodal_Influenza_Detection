@@ -142,7 +142,7 @@ def voc_eval(detpath,
 
   # extract gt objects for this class
   class_recs = {}
-  npos = 0.0001#0
+  npos = 0 #0.0001#0
   for imagename in imagenames:
     R = [obj for obj in recs[imagename] if obj['name'] == classname]
     bbox = np.array([x['bbox'] for x in R])
@@ -181,26 +181,50 @@ def voc_eval(detpath,
       bb = BB[d, :].astype(float)
       ovmax = -np.inf
       BBGT = R['bbox'].astype(float)
+      print ("BBGT")
+      print (BBGT)
 
       if BBGT.size > 0:
         # compute overlaps
         # intersection
+        print("inside if")  
         ixmin = np.maximum(BBGT[:, 0], bb[0])
+        print("ixmin")
+        print(ixmin)
         iymin = np.maximum(BBGT[:, 1], bb[1])
+        print("iymin")
+        print(iymin)
         ixmax = np.minimum(BBGT[:, 2], bb[2])
+        print("ixmax")
+        print(ixmax)
         iymax = np.minimum(BBGT[:, 3], bb[3])
-        iw = np.maximum(ixmax - ixmin + 1., 0.)
-        ih = np.maximum(iymax - iymin + 1., 0.)
+        print("iymax")
+        print(iymax)
+        iw = np.maximum(np.absolute(ixmax - ixmin + 1.), 0.)
+        print ("iw")
+        print (iw)
+        ih = np.maximum(np.absolute(iymax - iymin + 1.), 0.)
+        print ("ih")
+        print(ih)
         inters = iw * ih
+        print("intersection")
+        print(inters)
 
         # union
         uni = ((bb[2] - bb[0] + 1.) * (bb[3] - bb[1] + 1.) +
                (BBGT[:, 2] - BBGT[:, 0] + 1.) *
                (BBGT[:, 3] - BBGT[:, 1] + 1.) - inters)
-
+        print("union")
+        print(uni)
         overlaps = inters / uni
+        print("overlaps")
+        print(overlaps)
         ovmax = np.max(overlaps)
+        print("ovmax")
+        print(ovmax)
         jmax = np.argmax(overlaps)
+        print("jmax")
+        print(jmax)
 
       if ovmax > ovthresh:
         if not R['difficult'][jmax]:
