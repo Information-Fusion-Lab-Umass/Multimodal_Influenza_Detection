@@ -14,6 +14,7 @@ import numpy as np
 
 def parse_rec(filename):
   """ Parse a PASCAL VOC xml file """
+  '''
   tree = ET.parse(filename)
   objects = []
   for obj in tree.findall('object'):
@@ -28,7 +29,19 @@ def parse_rec(filename):
                           int(bbox.find('xmax').text),
                           int(bbox.find('ymax').text)]
     objects.append(obj_struct)
-
+  '''
+  objects = []
+  with open(filename, 'rw+') as fo:
+    lines = fo.readlines()
+    for i in range(1, len(lines)):
+        data = lines[i].split(' ')
+        #print("inside parse_rec")
+        #print(data)
+        obj_struct = {}
+        obj_struct['name'] = data[0]
+        obj_struct['bbox'] = [data[1], data[2], data[3], data[4]]
+        obj_struct['difficult'] = data[5]
+        objects.append(obj_struct)
   return objects
 
 
@@ -129,7 +142,7 @@ def voc_eval(detpath,
 
   # extract gt objects for this class
   class_recs = {}
-  npos = 0
+  npos = 0.0001#0
   for imagename in imagenames:
     R = [obj for obj in recs[imagename] if obj['name'] == classname]
     bbox = np.array([x['bbox'] for x in R])
@@ -144,7 +157,8 @@ def voc_eval(detpath,
   detfile = detpath.format(classname)
   with open(detfile, 'r') as f:
     lines = f.readlines()
-
+    print("detections")
+    #print(lines)
   splitlines = [x.strip().split(' ') for x in lines]
   image_ids = [x[0] for x in splitlines]
   confidence = np.array([float(x[1]) for x in splitlines])
@@ -200,7 +214,11 @@ def voc_eval(detpath,
 
   # compute precision recall
   fp = np.cumsum(fp)
+  print ("false positive")
+  print (fp)
   tp = np.cumsum(tp)
+  print ("true positive")
+  print (tp)
   rec = tp / float(npos)
   # avoid divide by zero in case the first detection matches a difficult
   # ground truth

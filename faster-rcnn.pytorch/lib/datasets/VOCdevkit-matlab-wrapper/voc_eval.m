@@ -46,12 +46,12 @@ do_eval = (str2num(year) <= 2007) | ~strcmp(test_set, 'test');
   disp('Inside if');
   tic;
   [recall, prec, ap] = VOCevaldet(VOCopts, comp_id, cls, true);
-  disp('recall')
-  disp(recall)
-  disp('precision')
-  disp(prec)
-  disp('ap')
-  disp(ap)
+  disp('recall')%nan
+  %disp(recall)
+  disp('precision')%0
+  %disp(prec)
+  disp('ap')%nan
+  %disp(ap)
   ap_auc = xVOCap(recall, prec);
   disp('ap_auc')
   disp(ap_auc)
