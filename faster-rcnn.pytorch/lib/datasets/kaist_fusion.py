@@ -16,6 +16,8 @@ import model.utils.cython_bbox
 import cPickle
 import subprocess
 from model.utils.config import cfg
+from .voc_eval import voc_eval
+
 
 class kaist_thermal(imdb):
     def __init__(self, image_set, devkit_path='/home/dghose/Project/Influenza_Detection/Data/KAIST/Train/set05/V000/lwir/'):
@@ -27,7 +29,7 @@ class kaist_thermal(imdb):
         self._devkit_path = '../../data/lwir/'
 	self._data_path = os.path.join(self._devkit_path)
         self._classes = ('__background__', # always index 0
-                         'pedestrian')
+                         'person')
         self._class_to_ind = dict(zip(self.classes, xrange(self.num_classes)))
         self._image_ext = '.jpg'
         self._image_index = self._load_image_set_index()
@@ -252,7 +254,7 @@ class kaist_thermal(imdb):
             #print x1, y1, x2, y2
             #assert(x2>=x1)
             #assert(y2>=y1)
-            cls = self._class_to_ind['pedestrian']
+            cls = self._class_to_ind['person']
 	    #if cls==0:
 		#print('index')
 		#print(index)
@@ -329,6 +331,54 @@ class kaist_thermal(imdb):
                                        dets[k, 2] + 1, dets[k, 3] + 1))
         return comp_id
 
+    def _get_voc_results_file_template(self):
+        # VOCdevkit/results/VOC2007/Main/<comp_id>_det_test_aeroplane.txt
+        filename = '/home/dghose/Project/Influenza_Detection/Code/Multimodal_Influenza_Detection/faster-rcnn.pytorch/pedestrian.txt'
+        path = os.path.join(filename)
+        return path
+
+
+
+    def _do_python_eval(self, output_dir='output'):
+        annopath = os.path.join('/home/dghose/Project/Influenza_Detection/Data/Labels/annotations/set05/V000', '{:s}.txt')
+        imagesetfile = '/home/dghose/Project/Influenza_Detection/Code/Multimodal_Influenza_Detection/faster-rcnn.pytorch/imagesetfile.txt'
+        cachedir = os.path.join(self._devkit_path, 'annotations_cache')
+        aps = []
+        # The PASCAL VOC metric changed in 2010
+        #use_07_metric = True if int(self._year) < 2010 else False
+        #print('VOC07 metric? ' + ('Yes' if use_07_metric else 'No'))
+        if not os.path.isdir(output_dir):
+            os.mkdir(output_dir)
+        for i, cls in enumerate(self._classes):
+            if cls == '__background__':
+                continue
+            filename = '/home/dghose/Project/Influenza_Detection/Code/Multimodal_Influenza_Detection/faster-rcnn.pytorch/pedestrian.txt'
+            rec, prec, ap = voc_eval(
+                filename, annopath, imagesetfile, cls, cachedir, ovthresh=0.5,
+                use_07_metric = False)
+            aps += [ap]
+            print('AP for {} = {:.4f}'.format(cls, ap))
+            with open(os.path.join(output_dir, cls + '_pr.pkl'), 'wb') as f:
+                cPickle.dump({'rec': rec, 'prec': prec, 'ap': ap}, f)
+        print('Mean AP = {:.4f}'.format(np.mean(aps)))
+        print('~~~~~~~~')
+        print('Results:')
+        for ap in aps:
+            print('{:.3f}'.format(ap))
+        print('{:.3f}'.format(np.mean(aps)))
+        print('~~~~~~~~')
+        print('')
+        print('--------------------------------------------------------------')
+        print('Results computed with the **unofficial** Python eval code.')
+        print('Results should be very close to the official MATLAB eval code.')
+        print('Recompute with `./tools/reval.py --matlab ...` for your paper.')
+        print('-- Thanks, The Management')
+        print('--------------------------------------------------------------')
+
+
+
+
+
     def _do_matlab_eval(self, comp_id, output_dir='output'):
         rm_results = self.config['cleanup']
 
@@ -345,7 +395,15 @@ class kaist_thermal(imdb):
 
     def evaluate_detections(self, all_boxes, output_dir):
         comp_id = self._write_voc_results_file(all_boxes)
-        self._do_matlab_eval(comp_id, output_dir)
+        #self._do_matlab_eval(comp_id, output_dir)
+        self._do_python_eval(output_dir)
+        if self.config['cleanup']:
+            for cls in self._classes:
+                if cls == '__background__':
+                    continue
+                filename = self._get_voc_results_file_template().format(cls)
+                os.remove(filename)
+    
 
     def competition_mode(self, on):
         if on:

@@ -296,7 +296,8 @@ if __name__ == '__main__':
             all_boxes[j][i] = cls_dets.cpu().numpy()
           else:
             all_boxes[j][i] = empty_array
-
+      #print('all_boxes')
+      #print(all_boxes)  
       # Limit to max_per_image detections *over all classes*
       if max_per_image > 0:
           image_scores = np.hstack([all_boxes[j][i][:, -1]
