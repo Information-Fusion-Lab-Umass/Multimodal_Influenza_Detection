@@ -64,7 +64,9 @@ class kaist_thermal(imdb):
                                   #index + self._image_ext)
         #image_path_2 = os.path.join(self._data_path, self._image_set, 'thermal',index + self._image_ext)
         #assert (os.path.exists(image_path) ,  'Path does not exist: {}'.format(image_path))
-        image_path=os.path.join('/home/dghose/Project/Influenza_Detection/Data/KAIST/Train/set05/lwir/', index+self._image_ext)
+        #image_path=os.path.join('/home/dghose/Project/Influenza_Detection/Data/KAIST/Train/set05/lwir/', index+self._image_ext)
+        image_path=os.path.join('/home/dghose/Project/Influenza_Detection/Data/KAIST/Train/set05/sample/', index+self._image_ext)
+
         #image_path=os.path.join('../../data/lwir/', index+self._image_ext)
 
 	#print(index,"INDEX!!!")
@@ -79,8 +81,10 @@ class kaist_thermal(imdb):
         #image_set_file = os.path.join(self._data_path, self._image_set,
         #                              self._image_set + '.txt')
         
-	image_set_file = '/home/dghose/Project/Influenza_Detection/Code/Multimodal_Influenza_Detection/faster-rcnn.pytorch/imagesetfile.txt'
-	#image_set_file='../../data/imagesetfile.txt'
+	#image_set_file = '/home/dghose/Project/Influenza_Detection/Code/Multimodal_Influenza_Detection/faster-rcnn.pytorch/imagesetfile.txt'
+	image_set_file = '/home/dghose/Project/Influenza_Detection/Code/Multimodal_Influenza_Detection/faster-rcnn.pytorch/imagesetfile_overfit_test.txt'
+
+        #image_set_file='../../data/imagesetfile.txt'
 	assert os.path.exists(image_set_file), \
                 'Path does not exist: {}'.format(image_set_file)
         with open(image_set_file) as f:
@@ -341,7 +345,9 @@ class kaist_thermal(imdb):
 
     def _do_python_eval(self, output_dir='output'):
         annopath = os.path.join('/home/dghose/Project/Influenza_Detection/Data/Labels/annotations/set05/V000', '{:s}.txt')
-        imagesetfile = '/home/dghose/Project/Influenza_Detection/Code/Multimodal_Influenza_Detection/faster-rcnn.pytorch/imagesetfile.txt'
+        #imagesetfile = '/home/dghose/Project/Influenza_Detection/Code/Multimodal_Influenza_Detection/faster-rcnn.pytorch/imagesetfile.txt'
+        imagesetfile = '/home/dghose/Project/Influenza_Detection/Code/Multimodal_Influenza_Detection/faster-rcnn.pytorch/imagesetfile_overfit_test.txt'
+
         cachedir = os.path.join(self._devkit_path, 'annotations_cache')
         aps = []
         # The PASCAL VOC metric changed in 2010
@@ -356,7 +362,15 @@ class kaist_thermal(imdb):
             rec, prec, ap = voc_eval(
                 filename, annopath, imagesetfile, cls, cachedir, ovthresh=0.5,
                 use_07_metric = False)
+            print("precision")
+            print(prec)
+            print("recall")
+            print(rec)
+            print("ap")
+            print(ap)
             aps += [ap]
+            print("aps")
+            print(aps)
             print('AP for {} = {:.4f}'.format(cls, ap))
             with open(os.path.join(output_dir, cls + '_pr.pkl'), 'wb') as f:
                 cPickle.dump({'rec': rec, 'prec': prec, 'ap': ap}, f)

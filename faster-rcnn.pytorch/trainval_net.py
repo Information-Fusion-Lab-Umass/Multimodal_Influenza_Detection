@@ -55,7 +55,7 @@ def parse_args():
                       default=1, type=int)
   parser.add_argument('--epochs', dest='max_epochs',
                       help='number of epochs to train',
-                      default=50, type=int)#20
+                      default=100, type=int)#20
   parser.add_argument('--disp_interval', dest='disp_interval',
                       help='number of iterations to display',
                       default=10, type=int)#100
@@ -113,7 +113,7 @@ def parse_args():
                       default=1, type=int)
   parser.add_argument('--checkepoch', dest='checkepoch',
                       help='checkepoch to load model',
-                      default=1, type=int)
+                      default=10, type=int)
   parser.add_argument('--checkpoint', dest='checkpoint',
                       help='checkpoint to load model',
                       default=0, type=int)
@@ -184,7 +184,7 @@ if __name__ == '__main__':
   elif args.dataset == "kaist":
       args.imdb_name = "kaist_train-all02"
       args.imdbval_name = "train-all02"
-      args.set_cfgs = ['ANCHOR_SCALES', '[4.0, 8.0, 16.0, 32.0]', 'ANCHOR_RATIOS', '[0.5, 1, 2]', 'MAX_NUM_GT_BOXES', '30']#scales=[4,8,16,32] ratios = [0.5, 1, 2]--default
+      args.set_cfgs = ['ANCHOR_SCALES', '[0.25, 0.5, 1, 2]', 'ANCHOR_RATIOS', '[0.5, 1, 2]', 'MAX_NUM_GT_BOXES', '30']#scales=[4,8,16,32] ratios = [0.5, 1, 2]--default
   
   args.cfg_file = "cfgs/{}_ls.yml".format(args.net) if args.large_scale else "cfgs/{}.yml".format(args.net)
 
