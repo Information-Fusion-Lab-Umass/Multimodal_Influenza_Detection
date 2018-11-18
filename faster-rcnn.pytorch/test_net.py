@@ -316,9 +316,14 @@ if __name__ == '__main__':
       sys.stdout.flush()
 
       if vis:
+<<<<<<< HEAD
           cv2.imwrite('visualize'+str(i)+'.png', im2show)
           
 	  #pdb.set_trace()
+=======
+          cv2.imwrite('visualize/result'+str(i)+'.png', im2show)
+          #pdb.set_trace()
+>>>>>>> bf18f4960e6aaaad61a8fb1767dfe7e7ce40c8e9
           #cv2.imshow('test', im2show)
           #cv2.waitKey(0)
 

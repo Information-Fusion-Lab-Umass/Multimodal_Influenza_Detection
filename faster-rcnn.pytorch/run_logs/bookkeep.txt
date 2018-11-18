@@ -45,4 +45,7 @@ loss = 10.9998
 ---------------------------------------------------------------------------------
 weight saved
 4277241 - all default parameters - 50 epochs
-
+---------------------------------------------------------------------------------
+pretraining with vgg16 weights from https://download.pytorch.org/models/vgg16-397923af.pth
+4151601 - 50 epochs all default parameters 0 pixel means
+4351845 - 50 epochs all default parameters default pixel means

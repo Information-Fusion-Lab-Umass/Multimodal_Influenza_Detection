@@ -84,7 +84,7 @@ def voc_eval(detpath,
              imagesetfile,
              classname,
              cachedir,
-             ovthresh=0.5,
+             ovthresh=0.5,#0.5
              use_07_metric=False):
   """rec, prec, ap = voc_eval(detpath,
                               annopath,
@@ -150,6 +150,8 @@ def voc_eval(detpath,
     difficult = np.array([x['difficult'] for x in R]).astype(np.bool)
     det = [False] * len(R)
     npos = npos + sum(~difficult)
+    #print("npos")
+    #print(npos)
     class_recs[imagename] = {'bbox': bbox,
                              'difficult': difficult,
                              'det': det}
@@ -182,50 +184,50 @@ def voc_eval(detpath,
       bb = BB[d, :].astype(float)
       ovmax = -np.inf
       BBGT = R['bbox'].astype(float)
-      print ("BBGT")
-      print (BBGT)
+      #print ("BBGT")
+      #print (BBGT)
 
       if BBGT.size > 0:
         # compute overlaps
         # intersection
-        print("inside if")  
+       # print("inside if")  
         ixmin = np.maximum(BBGT[:, 0], bb[0])
-        print("ixmin")
-        print(ixmin)
+        #print("ixmin")
+        #print(ixmin)
         iymin = np.maximum(BBGT[:, 1], bb[1])
-        print("iymin")
-        print(iymin)
+        #print("iymin")
+        #print(iymin)
         ixmax = np.minimum(BBGT[:, 2], bb[2])
-        print("ixmax")
-        print(ixmax)
+        #print("ixmax")
+        #print(ixmax)
         iymax = np.minimum(BBGT[:, 3], bb[3])
-        print("iymax")
-        print(iymax)
+        #print("iymax")
+        #print(iymax)
         iw = np.maximum(np.absolute(ixmax - ixmin + 1.), 0.)
-        print ("iw")
-        print (iw)
+        #print ("iw")
+        #print (iw)
         ih = np.maximum(np.absolute(iymax - iymin + 1.), 0.)
-        print ("ih")
-        print(ih)
+        #print ("ih")
+        #print(ih)
         inters = iw * ih
-        print("intersection")
-        print(inters)
+        #print("intersection")
+        #print(inters)
 
         # union
         uni = ((bb[2] - bb[0] + 1.) * (bb[3] - bb[1] + 1.) +
                (BBGT[:, 2] - BBGT[:, 0] + 1.) *
                (BBGT[:, 3] - BBGT[:, 1] + 1.) - inters)
-        print("union")
-        print(uni)
+        #print("union")
+        #print(uni)
         overlaps = inters / uni
-        print("overlaps")
-        print(overlaps)
+        #print("overlaps")
+        #print(overlaps)
         ovmax = np.max(overlaps)
-        print("ovmax")
-        print(ovmax)
+        #print("ovmax")
+        #print(ovmax)
         jmax = np.argmax(overlaps)
-        print("jmax")
-        print(jmax)
+        #print("jmax")
+        #print(jmax)
 
       if ovmax > ovthresh:
         if not R['difficult'][jmax]:
@@ -241,13 +243,31 @@ def voc_eval(detpath,
   fp = np.cumsum(fp)
   print ("false positive")
   print (fp)
+  print(fp.shape)
+  print(fp[:100])
+  print(fp[-100:])
+  print(tp.shape)
   tp = np.cumsum(tp)
   print ("true positive")
-  print (tp)
+  print (tp[:100])
+  print(tp[-100:])
+  print('npos')
+  print(npos)
+  #temp=npos-tp
+  #print('false negative')
+  #print(temp[:100])
+  #print()
+  #print()
   rec = tp / float(npos)
   # avoid divide by zero in case the first detection matches a difficult
   # ground truth
+  print("recall")
+  print (rec)
   prec = tp / np.maximum(tp + fp, np.finfo(np.float64).eps)
+  print("prec")
+  print(prec)
   ap = voc_ap(rec, prec, use_07_metric)
+  print("ap")
+  print(ap)
 
   return rec, prec, ap

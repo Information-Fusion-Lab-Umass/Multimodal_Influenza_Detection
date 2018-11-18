@@ -35,6 +35,8 @@ from model.faster_rcnn.resnet import resnet
 #adding import
 from datasets.factory import get_imdb
 
+from torchsummary import summary
+
 def parse_args():
   """
   Parse input arguments
@@ -53,7 +55,7 @@ def parse_args():
                       default=1, type=int)
   parser.add_argument('--epochs', dest='max_epochs',
                       help='number of epochs to train',
-                      default=20, type=int)#20
+                      default=100, type=int)#20
   parser.add_argument('--disp_interval', dest='disp_interval',
                       help='number of iterations to display',
                       default=10, type=int)#100
@@ -111,7 +113,7 @@ def parse_args():
                       default=1, type=int)
   parser.add_argument('--checkepoch', dest='checkepoch',
                       help='checkepoch to load model',
-                      default=1, type=int)
+                      default=10, type=int)
   parser.add_argument('--checkpoint', dest='checkpoint',
                       help='checkpoint to load model',
                       default=0, type=int)
@@ -182,7 +184,7 @@ if __name__ == '__main__':
   elif args.dataset == "kaist":
       args.imdb_name = "kaist_train-all02"
       args.imdbval_name = "train-all02"
-      args.set_cfgs = ['ANCHOR_SCALES', '[4.0, 8.0, 16.0, 32.0]', 'ANCHOR_RATIOS', '[0.5, 1, 2]', 'MAX_NUM_GT_BOXES', '30']#scales=[4,8,16,32] ratios = [0.5, 1, 2]--default
+      args.set_cfgs = ['ANCHOR_SCALES', '[0.25, 0.5, 1, 2]', 'ANCHOR_RATIOS', '[0.5, 1, 2]', 'MAX_NUM_GT_BOXES', '30']#scales=[4,8,16,32] ratios = [0.5, 1, 2]--default
   
   args.cfg_file = "cfgs/{}_ls.yml".format(args.net) if args.large_scale else "cfgs/{}.yml".format(args.net)
 
@@ -246,11 +248,11 @@ if __name__ == '__main__':
   if args.net == 'vgg16':
     fasterRCNN = vgg16(imdb.classes, pretrained=True, class_agnostic=args.class_agnostic)
   elif args.net == 'res101':
-    fasterRCNN = resnet(imdb.classes, 101, pretrained=True, class_agnostic=args.class_agnostic)
+    fasterRCNN = resnet(imdb.classes, 101, pretrained=False, class_agnostic=args.class_agnostic)
   elif args.net == 'res50':
-    fasterRCNN = resnet(imdb.classes, 50, pretrained=True, class_agnostic=args.class_agnostic)
+    fasterRCNN = resnet(imdb.classes, 50, pretrained=False, class_agnostic=args.class_agnostic)
   elif args.net == 'res152':
-    fasterRCNN = resnet(imdb.classes, 152, pretrained=True, class_agnostic=args.class_agnostic)
+    fasterRCNN = resnet(imdb.classes, 152, pretrained=False, class_agnostic=args.class_agnostic)
   else:
     print("network is not defined")
     pdb.set_trace()
@@ -281,6 +283,7 @@ if __name__ == '__main__':
   if args.cuda:
     fasterRCNN.cuda()
   
+  print(fasterRCNN,(3,600,800))
 
 
   if args.resume:
