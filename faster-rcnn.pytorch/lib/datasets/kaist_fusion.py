@@ -25,7 +25,8 @@ class kaist_thermal(imdb):
         imdb.__init__(self, image_set)  # image_set: train04 or test
         self._image_set = image_set
         self._devkit_path = self._get_default_path()
-	self._devkit_path = '/home/dghose/Project/Influenza_Detection/Data/KAIST/Train/'
+	#self._devkit_path = '/home/dghose/Project/Influenza_Detection/Data/KAIST/Train/' #train
+        self._devkit_path = '/home/dghose/Project/Influenza_Detection/Data/KAIST/Test/' #test
         #self._devkit_path = '../../data/overfit/'
 	self._data_path = os.path.join(self._devkit_path)
         self._classes = ('__background__', # always index 0
@@ -64,9 +65,10 @@ class kaist_thermal(imdb):
                                   #index + self._image_ext)
         #image_path_2 = os.path.join(self._data_path, self._image_set, 'thermal',index + self._image_ext)
         #assert (os.path.exists(image_path) ,  'Path does not exist: {}'.format(image_path))
-        #image_path=os.path.join('/home/dghose/Project/Influenza_Detection/Data/KAIST/Train/set05/lwir/', index+self._image_ext)
+        #image_path=os.path.join('/home/dghose/Project/Influenza_Detection/Data/KAIST/Train/set05/lwir/', index+self._image_ext) #train
+        image_path=os.path.join('/home/dghose/Project/Influenza_Detection/Data/KAIST/Test/set06/V000/sample', index+self._image_ext) #test
         #image_path=os.path.join('../../data/overfit/', index+self._image_ext)
-        image_path=os.path.join('/home/dghose/Project/Influenza_Detection/Data/KAIST/Train/set05/sample/', index+self._image_ext) #overfit
+        #image_path=os.path.join('/home/dghose/Project/Influenza_Detection/Data/KAIST/Train/set05/sample/', index+self._image_ext) #overfit
         #image_path=os.path.join('../../data/lwir/', index+self._image_ext)
 	#print(index,"INDEX!!!")
 	return image_path
@@ -80,9 +82,11 @@ class kaist_thermal(imdb):
         #image_set_file = os.path.join(self._data_path, self._image_set,
         #                              self._image_set + '.txt')
         
-	#image_set_file = '/home/dghose/Project/Influenza_Detection/Code/Multimodal_Influenza_Detection/faster-rcnn.pytorch/imagesetfile.txt'
+	#image_set_file = '/home/dghose/Project/Influenza_Detection/Code/Multimodal_Influenza_Detection/faster-rcnn.pytorch/imagesetfile.txt' #train
+        image_set_file = '/home/dghose/Project/Influenza_Detection/Code/Multimodal_Influenza_Detection/faster-rcnn.pytorch/imagesetfile_test_set06.txt' #test
+
 	#image_set_file='../../data/imagesetfile_overfit.txt'
-	image_set_file = '/home/dghose/Project/Influenza_Detection/Code/Multimodal_Influenza_Detection/faster-rcnn.pytorch/imagesetfile_overfit_test.txt' #overfit
+	#image_set_file = '/home/dghose/Project/Influenza_Detection/Code/Multimodal_Influenza_Detection/faster-rcnn.pytorch/imagesetfile_overfit_test.txt' #overfit
         #image_set_file='../../data/imagesetfile.txt'
 	assert os.path.exists(image_set_file), \
                 'Path does not exist: {}'.format(image_set_file)
@@ -227,7 +231,8 @@ class kaist_thermal(imdb):
         format.
         """
 
-        filename = os.path.join('/home/dghose/Project/Influenza_Detection/Data/Labels/annotations/set05/V000', index + '.txt')
+        #filename = os.path.join('/home/dghose/Project/Influenza_Detection/Data/Labels/annotations/set05/V000', index + '.txt') #train
+        filename = os.path.join('/home/dghose/Project/Influenza_Detection/Data/Labels/annotations/set06/V000', index + '.txt') #test
         # print 'Loading: {}'.format(filename)
 	#filename=os.path.join('../../data/annotations/set05/V000',index+'.txt')
         with open(filename) as f:
@@ -253,41 +258,10 @@ class kaist_thermal(imdb):
             y1 = float(info[2])
             x2 = float(info[3])
             y2 = float(info[4])
-	    #print('x1,y1,x2,y2')
-            #print x1, y1, x2, y2
-            #assert(x2>=x1)
-            #assert(y2>=y1)
             cls = self._class_to_ind['person']
-	    #if cls==0:
-		#print('index')
-		#print(index)
-		#print('ix')
-		#print(ix)
-	    #if index =='I00383':
-		#print('num_obj in image')
-		#print(num_objs)	    
-		#print('x1 y1 x2 y2')
-		#print(x1)
-		#print(y1)
-		#print(x2)
-		#print(y2)
-	    #temp1=x1==x2
-	    #temp2=y1==y2
-	    #if temp1==True:
-		#print('xmin==xmax')
-		#print(index)
-		#print(temp1)
-	
- 	    #if temp2==True:
-		#print('ymin==ymax')
-		#print(index)
-		#print(temp2)
-	    #if x1==-1 or x2==-1 or y1==-1 or y2==-1:
-		#print('-1 in annotation')
-	    #print(x2)
-	    #print(y2)
-	    x2=x2+x1
-	    y2=y1+y2
+            # adjusting for annotation format 
+            x2 = x1 + x2
+            y2 = y1 + y2
             boxes[ix, :] = [x1-1, y1-1, x2-1, y2-1]
             gt_classes[ix] = cls
             overlaps[ix, cls] = 1.0
@@ -338,7 +312,8 @@ class kaist_thermal(imdb):
 
     def _get_voc_results_file_template(self):
         # VOCdevkit/results/VOC2007/Main/<comp_id>_det_test_aeroplane.txt
-        filename = '/home/dghose/Project/Influenza_Detection/Code/Multimodal_Influenza_Detection/faster-rcnn.pytorch/pedestrian.txt'
+        #filename = '/home/dghose/Project/Influenza_Detection/Code/Multimodal_Influenza_Detection/faster-rcnn.pytorch/pedestrian.txt' #train
+        filename = 'pedestrian.txt' #test
         #filename='pedestrian.txt'
 	path = os.path.join(filename)
         return path
@@ -346,15 +321,18 @@ class kaist_thermal(imdb):
 
 
     def _do_python_eval(self, output_dir='output'):
-        annopath = os.path.join('/home/dghose/Project/Influenza_Detection/Data/Labels/annotations/set05/V000', '{:s}.txt')
+        #annopath = os.path.join('/home/dghose/Project/Influenza_Detection/Data/Labels/annotations/set05/V000', '{:s}.txt') #train
+        annopath = os.path.join('/home/dghose/Project/Influenza_Detection/Data/Labels/annotations/set06/V000', '{:s}.txt') #test
         #annopath=os.path.join('../../data/annotations/set05/V000','{:s}.txt')
 	#imagesetfile = '/home/dghose/Project/Influenza_Detection/Code/Multimodal_Influenza_Detection/faster-rcnn.pytorch/imagesetfile.txt'
         #imagesetfile='../../data/imagesetfile_overfit.txt'
-	cachedir = os.path.join(self._devkit_path, 'annotations_cache')
+	
+        cachedir = os.path.join(self._devkit_path, 'annotations_cache')
 
         #annopath = os.path.join('/home/dghose/Project/Influenza_Detection/Data/Labels/annotations/set05/V000', '{:s}.txt')
-        #imagesetfile = '/home/dghose/Project/Influenza_Detection/Code/Multimodal_Influenza_Detection/faster-rcnn.pytorch/imagesetfile.txt'
-        imagesetfile = '/home/dghose/Project/Influenza_Detection/Code/Multimodal_Influenza_Detection/faster-rcnn.pytorch/imagesetfile_overfit_test.txt'#overfit
+        #imagesetfile = '/home/dghose/Project/Influenza_Detection/Code/Multimodal_Influenza_Detection/faster-rcnn.pytorch/imagesetfile.txt' #train
+        imagesetfile = '/home/dghose/Project/Influenza_Detection/Code/Multimodal_Influenza_Detection/faster-rcnn.pytorch/imagesetfile_test_set06.txt' #test
+        #imagesetfile = '/home/dghose/Project/Influenza_Detection/Code/Multimodal_Influenza_Detection/faster-rcnn.pytorch/imagesetfile_overfit_test.txt'#overfit
 
         cachedir = os.path.join(self._devkit_path, 'annotations_cache')
 

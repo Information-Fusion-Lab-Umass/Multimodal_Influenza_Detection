@@ -49,6 +49,12 @@ name = 'kaist_{}'.format(imageset)
 print (name)
 __sets[name] = (lambda imageset = imageset: kaist_thermal('train-all02'))
 
+imageset = 'test-all02';
+name = 'kaist_{}'.format(imageset)
+print (name)
+__sets[name] = (lambda imageset = imageset: kaist_thermal('test-all02'))
+
+
 #imageset = 'train-all02-fusion';
 #name = 'kaist_{}'.format(imageset)
 #__sets[name] = (lambda imageset = imageset: kaist_fusion('train-all02'))
