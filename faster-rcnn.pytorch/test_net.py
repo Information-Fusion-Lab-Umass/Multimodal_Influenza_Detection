@@ -127,7 +127,7 @@ if __name__ == '__main__':
   elif args.dataset == "kaist":
       args.imdb_name = "kaist_train-all02"
       args.imdbval_name = "kaist_train-all02"
-      args.set_cfgs = ['ANCHOR_SCALES', '[4, 8, 16, 32]', 'ANCHOR_RATIOS', '[0.5,1,2]', 'MAX_NUM_GT_BOXES', '30']#scales=[4,8,16,32]--default
+      args.set_cfgs = ['ANCHOR_SCALES', '[0.05, 0.1, 0.25, 0.5]', 'ANCHOR_RATIOS', '[0.5,1,2]', 'MAX_NUM_GT_BOXES', '30']#scales=[4,8,16,32]--default
   
   args.cfg_file = "cfgs/{}_ls.yml".format(args.net) if args.large_scale else "cfgs/{}.yml".format(args.net)
 
@@ -153,7 +153,7 @@ if __name__ == '__main__':
 
   # initilize the network here.
   if args.net == 'vgg16':
-    fasterRCNN = vgg16(imdb.classes, pretrained=False, class_agnostic=args.class_agnostic)
+    fasterRCNN = vgg16(imdb.classes, pretrained=True, class_agnostic=args.class_agnostic)
   elif args.net == 'res101':
     fasterRCNN = resnet(imdb.classes, 101, pretrained=False, class_agnostic=args.class_agnostic)
   elif args.net == 'res50':
@@ -292,7 +292,7 @@ if __name__ == '__main__':
             keep = nms(cls_dets, cfg.TEST.NMS)
             cls_dets = cls_dets[keep.view(-1).long()]
             if vis:
-              im2show = vis_detections(im2show, imdb.classes[j], cls_dets.cpu().numpy(), 0.3)
+              im2show = vis_detections(im2show, imdb.classes[j], cls_dets.cpu().numpy(), 0.7)
             all_boxes[j][i] = cls_dets.cpu().numpy()
           else:
             all_boxes[j][i] = empty_array
@@ -316,14 +316,10 @@ if __name__ == '__main__':
       sys.stdout.flush()
 
       if vis:
-<<<<<<< HEAD
-          cv2.imwrite('visualize'+str(i)+'.png', im2show)
-          
+          #cv2.imwrite('visualize'+str(i)+'.png', im2show)
 	  #pdb.set_trace()
-=======
           cv2.imwrite('visualize/result'+str(i)+'.png', im2show)
           #pdb.set_trace()
->>>>>>> bf18f4960e6aaaad61a8fb1767dfe7e7ce40c8e9
           #cv2.imshow('test', im2show)
           #cv2.waitKey(0)
 

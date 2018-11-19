@@ -56,8 +56,8 @@ def vis_detections(im, class_name, dets, thresh=0.8):
         #print('dets')
         #print(dets[i])
         if score > thresh:
-            #cv2.rectangle(im, bbox[0:2], bbox[2:4], (0, 204, 0), 2) #original
-            cv2.rectangle(im, bbox[2:4], bbox[0:2], (0, 204, 0), 2)
+            cv2.rectangle(im, bbox[0:2], bbox[2:4], (0, 204, 0), 2) #original
+            #cv2.rectangle(im, bbox[2:4], bbox[0:2], (0, 204, 0), 2)
             cv2.putText(im, '%s: %.3f' % (class_name, score), (bbox[0], bbox[1] + 15), cv2.FONT_HERSHEY_PLAIN,
                         1.0, (0, 0, 255), thickness=1)
     return im

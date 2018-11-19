@@ -184,7 +184,7 @@ if __name__ == '__main__':
   elif args.dataset == "kaist":
       args.imdb_name = "kaist_train-all02"
       args.imdbval_name = "train-all02"
-      args.set_cfgs = ['ANCHOR_SCALES', '[0.25, 0.5, 1, 2]', 'ANCHOR_RATIOS', '[0.5, 1, 2]', 'MAX_NUM_GT_BOXES', '30']#scales=[4,8,16,32] ratios = [0.5, 1, 2]--default
+      args.set_cfgs = ['ANCHOR_SCALES', '[0.05, 0.1, 0.25, 0.5]', 'ANCHOR_RATIOS', '[0.5, 1, 2]', 'MAX_NUM_GT_BOXES', '30']#scales=[4,8,16,32] ratios = [0.5, 1, 2]--default
   
   args.cfg_file = "cfgs/{}_ls.yml".format(args.net) if args.large_scale else "cfgs/{}.yml".format(args.net)
 

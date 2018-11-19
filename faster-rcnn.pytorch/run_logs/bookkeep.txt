@@ -49,3 +49,9 @@ weight saved
 pretraining with vgg16 weights from https://download.pytorch.org/models/vgg16-397923af.pth
 4151601 - 50 epochs all default parameters 0 pixel means
 4351845 - 50 epochs all default parameters default pixel means
+---------------------------------------------------------------------------------
+4382115 - 50 epochs scales 0.25, 0.5, 1, 2 --> promising results
+4382117 - 100 epochs default scales and ratios --> bad results
+4382127 - 100 epochs scales 0.05, 0.1, 0.25, 0.5, 1, 2, default ratio
+---------------------------------------------------------------------------------
+4382195 - best results so far

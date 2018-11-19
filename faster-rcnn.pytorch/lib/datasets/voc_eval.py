@@ -37,6 +37,8 @@ def parse_rec(filename):
         data = lines[i].split(' ')
         #print("inside parse_rec")
         #print(data)
+        data[3] = data[3] + data[1]
+        data[4] = data[4] + data[2]
         obj_struct = {}
         obj_struct['name'] = data[0]
         obj_struct['bbox'] = [data[1], data[2], data[3], data[4]]

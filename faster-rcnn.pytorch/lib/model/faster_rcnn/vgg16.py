@@ -18,11 +18,8 @@ import pdb
 
 class vgg16(_fasterRCNN):
   def __init__(self, classes, pretrained=False, class_agnostic=False):
-<<<<<<< HEAD
-    self.model_path = 'models/vgg16/pretrained_weights/vgg16-397923af.pth'
-=======
+    #self.model_path = 'models/vgg16/pretrained_weights/vgg16-397923af.pth'
     self.model_path = '/home/dghose/Project/Influenza_Detection/Code/Multimodal_Influenza_Detection/faster-rcnn.pytorch/models/vgg16/pretrained_weights/vgg16-397923af.pth'
->>>>>>> bf18f4960e6aaaad61a8fb1767dfe7e7ce40c8e9
     self.dout_base_model = 512
     self.pretrained = pretrained
     self.class_agnostic = class_agnostic
