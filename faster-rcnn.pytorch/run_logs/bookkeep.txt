@@ -55,3 +55,7 @@ pretraining with vgg16 weights from https://download.pytorch.org/models/vgg16-39
 4382127 - 100 epochs scales 0.05, 0.1, 0.25, 0.5, 1, 2, default ratio
 ---------------------------------------------------------------------------------
 4382195 - best results so far
+4382266 - overfitting best model for complete set05 - 20 epochs
+---------------------------------------------------------------------------------
+4387704 - 20 epochs on complete dataset
+
