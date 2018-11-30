@@ -57,5 +57,9 @@ pretraining with vgg16 weights from https://download.pytorch.org/models/vgg16-39
 4382195 - best results so far
 4382266 - overfitting best model for complete set05 - 20 epochs
 ---------------------------------------------------------------------------------
-4387704 - 20 epochs on complete dataset
+4387733 - 10 epochs on complete dataset
+4388549 - same as above - log file available
+---------------------------------------------------------------------------------
+4399488 - testing on complete test set
+4414200 - first run with metric corrected - precision 0.45
 

@@ -37,8 +37,8 @@ def parse_rec(filename):
         data = lines[i].split(' ')
         #print("inside parse_rec")
         #print(data)
-        data[3] = data[3] + data[1]
-        data[4] = data[4] + data[2]
+        data[3] =str(int(data[3]) +int(data[1]))
+        data[4] = str(int(data[4]) + int(data[2]))
         obj_struct = {}
         obj_struct['name'] = data[0]
         obj_struct['bbox'] = [data[1], data[2], data[3], data[4]]
@@ -147,11 +147,12 @@ def voc_eval(detpath,
   class_recs = {}
   npos = 0 #0.0001#0
   for imagename in imagenames:
-    R = [obj for obj in recs[imagename] if obj['name'] == classname]
-    bbox = np.array([x['bbox'] for x in R])
+    R = [obj for obj in recs[imagename]]
+    bbox=np.array([x['bbox'] for x in R])
     difficult = np.array([x['difficult'] for x in R]).astype(np.bool)
     det = [False] * len(R)
-    npos = npos + sum(~difficult)
+    npos=npos+len(R)
+    #npos = npos + sum(~difficult)
     #print("npos")
     #print(npos)
     class_recs[imagename] = {'bbox': bbox,
@@ -232,11 +233,10 @@ def voc_eval(detpath,
         #print(jmax)
 
       if ovmax > ovthresh:
-        if not R['difficult'][jmax]:
-          if not R['det'][jmax]:
+        if not R['det'][jmax]:
             tp[d] = 1.
             R['det'][jmax] = 1
-          else:
+        else:
             fp[d] = 1.
       else:
         fp[d] = 1.
@@ -253,8 +253,8 @@ def voc_eval(detpath,
   print ("true positive")
   print (tp[:100])
   print(tp[-100:])
-  print('npos')
-  print(npos)
+  #print('npos')
+  #print(npos)
   #temp=npos-tp
   #print('false negative')
   #print(temp[:100])
