@@ -55,7 +55,7 @@ def parse_args():
                       default=1, type=int)
   parser.add_argument('--epochs', dest='max_epochs',
                       help='number of epochs to train',
-                      default=50, type=int)#20
+                      default=10, type=int)#20
   parser.add_argument('--disp_interval', dest='disp_interval',
                       help='number of iterations to display',
                       default=100, type=int)#100
@@ -102,7 +102,7 @@ def parse_args():
 # set training session
   parser.add_argument('--s', dest='session',
                       help='training session',
-                      default=2, type=int)
+                      default=4, type=int)
 
 # resume trained model
   parser.add_argument('--r', dest='resume',

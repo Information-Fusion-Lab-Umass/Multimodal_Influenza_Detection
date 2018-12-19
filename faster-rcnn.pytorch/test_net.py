@@ -318,7 +318,7 @@ if __name__ == '__main__':
       if vis:
           #cv2.imwrite('visualize'+str(i)+'.png', im2show)
 	  #pdb.set_trace()
-          cv2.imwrite('visualize_complete_test_set/result'+str(i)+'.png', im2show)
+          cv2.imwrite('new_annotations_visualize_complete_test_set/result'+str(i)+'.png', im2show)
           #pdb.set_trace()
           #cv2.imshow('test', im2show)
           #cv2.waitKey(0)
