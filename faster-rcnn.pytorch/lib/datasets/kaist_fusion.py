@@ -30,7 +30,7 @@ class kaist_thermal(imdb):
         '''
         self._image_set = image_set
         self._devkit_path = self._get_default_path()#mnt/nfs/scratch1/dghose/Kaist/
-        self._data_path = os.path.join(self._devkit_path)
+        self._data_path = (self._devkit_path)
         self._classes = ('__background__', # always index 0
                          'person')
         self._class_to_ind = dict(zip(self.classes, xrange(self.num_classes)))
@@ -62,15 +62,15 @@ class kaist_thermal(imdb):
         Construct an image path from the image's "index" identifier.
         """
        
-        image_path=os.path.join(self._data_path, self._image_set,index + self._image_ext) #train
+        image_path=(self._data_path, self._image_set,index + self._image_ext) #train
         return image_path
 
     def _load_image_set_index(self):
         """
         Load the indexes listed in this dataset's image set file.
         """
-        image_set_file = os.path.join(self._data_path, 'Imagesetfiles/' + self._image_set+ '.txt')
-		assert os.path.exists(image_set_file), \
+        image_set_file =(self._data_path+ '/Imagesetfiles/' + self._image_set+ '.txt')
+	assert os.path.exists(image_set_file), \
                 'Path does not exist: {}'.format(image_set_file)
         with open(image_set_file) as f:
             image_index = [x.strip() for x in f.readlines()]
@@ -81,7 +81,7 @@ class kaist_thermal(imdb):
         """
         Return the default path where kaist dataset is expected to be installed.
         """
-        return os.path.join(cfg.DATA_DIR)
+        return (cfg.DATA_DIR)
 
     def gt_roidb(self):
         """
@@ -89,7 +89,7 @@ class kaist_thermal(imdb):
 
         This function loads/saves from/to a cache file to speed up future calls.
         """
-        cache_file = os.path.join(self.cache_path, self.name + '_gt_roidb.pkl')
+        cache_file =(self.cache_path, self.name + '_gt_roidb.pkl')
         if os.path.exists(cache_file):
             with open(cache_file, 'rb') as fid:
                 roidb = cPickle.load(fid)   
@@ -111,7 +111,7 @@ class kaist_thermal(imdb):
 
         This function loads/saves from/to a cache file to speed up future calls.
         """
-        cache_file = os.path.join(self.cache_path,
+        cache_file = (self.cache_path,
                                   self.name + '_selective_search_roidb.pkl')
 
         if os.path.exists(cache_file):
@@ -213,7 +213,7 @@ class kaist_thermal(imdb):
         format.
         """
 
-        filename = os.path.join(self._data_path,'anno_',self._image_set, index +'.txt') #train
+        filename =(self._data_path,'anno_',self._image_set, index +'.txt') #train
         
         with open(filename) as f:
             lines = f.readlines()
@@ -286,17 +286,17 @@ class kaist_thermal(imdb):
 
     def _get_voc_results_file_template(self):
         filename=output_dir+'/' + 'det_' + self._image_set + '.txt'
-        path = os.path.join(filename)
+        path=(filename)
         return path
 
 
 
     def _do_python_eval(self, output_dir='output'):
-        annopath = os.path.join(self._data_path, 'anno_',self._image_set, '{:s}.txt') #test
+        annopath = (self._data_path, 'anno_',self._image_set, '{:s}.txt') #test
         
-        cachedir = os.path.join(self._data_path, self._image_set+'_annotations_cache')
+        cachedir = (self._data_path, self._image_set+'_annotations_cache')
 
-        imagesetfile = os.path.join(self._data_path, 'Imagesetfiles/' + self._image_set+ '.txt')
+        imagesetfile = (self._data_path, 'Imagesetfiles/' + self._image_set+ '.txt')
         
         aps = []
         if not os.path.isdir(output_dir):
@@ -318,7 +318,7 @@ class kaist_thermal(imdb):
             print("aps")
             print(aps)
             print('AP for {} = {:.4f}'.format(cls, ap))
-            with open(os.path.join(output_dir, self.image_set + '_pr.pkl'), 'wb') as f:
+            with open((output_dir, self.image_set + '_pr.pkl'), 'wb') as f:
                 cPickle.dump({'rec': rec, 'prec': prec, 'ap': ap}, f)
         print('Mean AP = {:.4f}'.format(np.mean(aps)))
         print('~~~~~~~~')

@@ -46,10 +46,11 @@ for year in ['2015']:
 
 #for split in ['combined_train','combined_test','day_train','day_test','night_train','night_test', \
 #'train_combined_salient_ir','test_combined_salient_ir','train_subset','salient_combined_train','salient_combined_test']
-for split in ['day_train','day_test','night_train','night_test']
-name = 'kaist_{}'.format(imageset)
-#print (name)
-__sets[name] = (lambda imageset = imageset: kaist_thermal(split))
+for split in ['day_train','day_test','night_train','night_test']:
+  name=split
+  #name = 'kaist_{}'.format(split)
+#rint (name)
+  __sets[name] = (lambda split= split: kaist_thermal(split))
 
 
 #imageset = 'train-all02-fusion';
