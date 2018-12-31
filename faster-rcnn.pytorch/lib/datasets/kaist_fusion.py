@@ -62,7 +62,7 @@ class kaist_thermal(imdb):
         Construct an image path from the image's "index" identifier.
         """
        
-        image_path=(self._data_path, self._image_set,index + self._image_ext) #train
+        image_path=(self._data_path +'/'+ self._image_set + '/' + index + self._image_ext) #train
         return image_path
 
     def _load_image_set_index(self):
@@ -89,7 +89,7 @@ class kaist_thermal(imdb):
 
         This function loads/saves from/to a cache file to speed up future calls.
         """
-        cache_file =(self.cache_path, self.name + '_gt_roidb.pkl')
+        cache_file =(self.cache_path + '/' +self.name + '/'+  '_gt_roidb.pkl')
         if os.path.exists(cache_file):
             with open(cache_file, 'rb') as fid:
                 roidb = cPickle.load(fid)   
@@ -213,7 +213,7 @@ class kaist_thermal(imdb):
         format.
         """
 
-        filename =(self._data_path,'anno_',self._image_set, index +'.txt') #train
+        filename =(self._data_path+ '/anno_'+self._image_set '/' + index +'.txt') #train
         
         with open(filename) as f:
             lines = f.readlines()
@@ -292,11 +292,11 @@ class kaist_thermal(imdb):
 
 
     def _do_python_eval(self, output_dir='output'):
-        annopath = (self._data_path, 'anno_',self._image_set, '{:s}.txt') #test
+        annopath = (self._data_path +'/anno_'+ self._image_set+ '/' + '{:s}.txt') #test
         
-        cachedir = (self._data_path, self._image_set+'_annotations_cache')
+        cachedir = (self._data_path + '/' + self._image_set+'_annotations_cache')
 
-        imagesetfile = (self._data_path, 'Imagesetfiles/' + self._image_set+ '.txt')
+        imagesetfile = (self._data_path + '/Imagesetfiles/' + self._image_set+ '.txt')
         
         aps = []
         if not os.path.isdir(output_dir):
