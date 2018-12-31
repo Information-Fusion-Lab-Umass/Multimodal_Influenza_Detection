@@ -19,7 +19,7 @@ import pdb
 class vgg16(_fasterRCNN):
   def __init__(self, classes, pretrained=False, class_agnostic=False):
     #self.model_path = 'models/vgg16/pretrained_weights/vgg16-397923af.pth'
-    self.model_path = '/home/dghose/Project/Influenza_Detection/Code/Multimodal_Influenza_Detection/faster-rcnn.pytorch/models/vgg16/pretrained_weights/vgg16-397923af.pth'
+    self.model_path = '../../mnt/nfs/scratch1/shasvatmukes/models/vgg16/pretrained_weights/vgg16-397923af.pth'
     self.dout_base_model = 512
     self.pretrained = pretrained
     self.class_agnostic = class_agnostic
@@ -34,13 +34,12 @@ class vgg16(_fasterRCNN):
         vgg.load_state_dict({k:v for k,v in state_dict.items() if k in vgg.state_dict()})
 
     vgg.classifier = nn.Sequential(*list(vgg.classifier._modules.values())[:-1])
-
-    # not using the last maxpool layer
-    self.RCNN_base = nn.Sequential(*list(vgg.features._modules.values())[:-1])
-
+    for child in vgg.children():
+        self.RCNN_base_before_pool = nn.Sequential(*list(child[0:23]))
+        self.RCNN_base_after_pool = nn.Sequential(*list(child[24:27]))
     # Fix the layers before conv3:
     for layer in range(10):
-      for p in self.RCNN_base[layer].parameters(): p.requires_grad = False
+        for p in self.RCNN_base_before_pool[layer].parameters(): p.requires_grad = False
 
     # self.RCNN_base = _RCNN_base(vgg.features, self.classes, self.dout_base_model)
 
@@ -50,9 +49,9 @@ class vgg16(_fasterRCNN):
     self.RCNN_cls_score = nn.Linear(4096, self.n_classes)
 
     if self.class_agnostic:
-      self.RCNN_bbox_pred = nn.Linear(4096, 4)
+        self.RCNN_bbox_pred = nn.Linear(4096, 4)
     else:
-      self.RCNN_bbox_pred = nn.Linear(4096, 4 * self.n_classes)      
+        self.RCNN_bbox_pred = nn.Linear(4096, 4 * self.n_classes)      
 
   def _head_to_tail(self, pool5):
     

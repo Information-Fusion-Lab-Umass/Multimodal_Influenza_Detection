@@ -22,13 +22,15 @@ from .voc_eval import voc_eval_miss_rate
 class kaist_thermal(imdb):
     def __init__(self, image_set, devkit_path='/home/dghose/Project/Influenza_Detection/Data/KAIST/Train/combined_train'):
         
-        imdb.__init__(self, image_set)  # image_set: train04 or test
+        imdb.__init__(self, image_set)  
+        '''
+         image_set: ['combined_train','combined_test','day_train','day_test','night_train','night_test', \
+         'train_combined_salient_ir','test_combined_salient_ir',
+         'train_subset','salient_combined_train','salient_combined_test']
+        '''
         self._image_set = image_set
-        self._devkit_path = self._get_default_path()
-	self._devkit_path = '/home/dghose/Project/Influenza_Detection/Data/KAIST/Train/night_train' #train
-        #self._devkit_path = '/home/dghose/Project/Influenza_Detection/Data/KAIST/Test/night_test' #test
-        #self._devkit_path = '../../data/overfit/'
-	self._data_path = os.path.join(self._devkit_path)
+        self._devkit_path = self._get_default_path()#mnt/nfs/scratch1/dghose/Kaist/
+        self._data_path = os.path.join(self._devkit_path)
         self._classes = ('__background__', # always index 0
                          'person')
         self._class_to_ind = dict(zip(self.classes, xrange(self.num_classes)))
@@ -36,9 +38,7 @@ class kaist_thermal(imdb):
         self._image_index = self._load_image_set_index()
         # Default to roidb handler
         self._roidb_handler = self.selective_search_roidb
-	#print('classes')
-	#print(self.classes)
-        # PASCAL specific config options
+	    # PASCAL specific config options
         self.config = {'cleanup'     : True,
                        'use_salt'    : True,
                        'use_diff'    : False,
@@ -61,40 +61,19 @@ class kaist_thermal(imdb):
         """
         Construct an image path from the image's "index" identifier.
         """
-        #image_path_1 = os.path.join(self._data_path, self._image_set, 'color',
-                                  #index + self._image_ext)
-        #image_path_2 = os.path.join(self._data_path, self._image_set, 'thermal',index + self._image_ext)
-        #assert (os.path.exists(image_path) ,  'Path does not exist: {}'.format(image_path))
-        #image_path=os.path.join('/home/dghose/Project/Influenza_Detection/Data/KAIST/Train/set05/lwir/', index+self._image_ext) 
-        #print(index)
-        image_path=os.path.join('/home/dghose/Project/Influenza_Detection/Data/KAIST/Train/night_train', index+self._image_ext) #train
-        #image_path=os.path.join('/home/dghose/Project/Influenza_Detection/Data/KAIST/Test/night_test', index+self._image_ext) #test
-        #image_path=os.path.join('../../data/overfit/', index+self._image_ext)
-        #image_path=os.path.join('/home/dghose/Project/Influenza_Detection/Data/KAIST/Train/set05/sample/', index+self._image_ext) #overfit
-        #image_path=os.path.join('../../data/lwir/', index+self._image_ext)
-	#print(index,"INDEX!!!")
-	return image_path
+       
+        image_path=os.path.join(self._data_path, self._image_set,index + self._image_ext) #train
+        return image_path
 
     def _load_image_set_index(self):
         """
         Load the indexes listed in this dataset's image set file.
         """
-        # Example path to image set file:
-        # self._devkit_path + /VOCdevkit2007/VOC2007/ImageSets/Main/val.txt
-        #image_set_file = os.path.join(self._data_path, self._image_set,
-        #                              self._image_set + '.txt')
-        
-	#image_set_file = '/home/dghose/Project/Influenza_Detection/Code/Multimodal_Influenza_Detection/faster-rcnn.pytorch/Imagesetfiles/night_test_imagesetfile.txt' #test
-        image_set_file = '/home/dghose/Project/Influenza_Detection/Code/Multimodal_Influenza_Detection/faster-rcnn.pytorch/Imagesetfiles/night_train_imagesetfile.txt' #train
-
-	#image_set_file='../../data/imagesetfile_overfit.txt'
-	#image_set_file = '/home/dghose/Project/Influenza_Detection/Code/Multimodal_Influenza_Detection/faster-rcnn.pytorch/imagesetfile_overfit_test.txt' #overfit
-        #image_set_file='../../data/imagesetfile.txt'
-	assert os.path.exists(image_set_file), \
+        image_set_file = os.path.join(self._data_path, 'Imagesetfiles/' + self._image_set+ '.txt')
+		assert os.path.exists(image_set_file), \
                 'Path does not exist: {}'.format(image_set_file)
         with open(image_set_file) as f:
             image_index = [x.strip() for x in f.readlines()]
-        #print(image_index)
         return image_index
 
 
@@ -102,7 +81,7 @@ class kaist_thermal(imdb):
         """
         Return the default path where kaist dataset is expected to be installed.
         """
-        return os.path.join(cfg.DATA_DIR, 'kaist')
+        return os.path.join(cfg.DATA_DIR)
 
     def gt_roidb(self):
         """
@@ -113,7 +92,7 @@ class kaist_thermal(imdb):
         cache_file = os.path.join(self.cache_path, self.name + '_gt_roidb.pkl')
         if os.path.exists(cache_file):
             with open(cache_file, 'rb') as fid:
-                roidb = cPickle.load(fid)
+                roidb = cPickle.load(fid)   
             print '{} gt roidb loaded from {}'.format(self.name, cache_file)
             return roidb
 
@@ -234,10 +213,8 @@ class kaist_thermal(imdb):
         format.
         """
 
-        #filename = os.path.join('/home/dghose/Project/Influenza_Detection/Data/Labels/annotations/anno_night_test', index + '.txt') #test
-        filename = os.path.join('/home/dghose/Project/Influenza_Detection/Data/Labels/annotations/anno_night_train', index + '.txt') #train
-        # print 'Loading: {}'.format(filename)
-	#filename=os.path.join('../../data/annotations/set05/V000',index+'.txt')
+        filename = os.path.join(self._data_path,'anno_',self._image_set, index +'.txt') #train
+        
         with open(filename) as f:
             lines = f.readlines()
 
@@ -265,28 +242,15 @@ class kaist_thermal(imdb):
             # adjusting for annotation format 
             x2 = x1 + x2
             y2 = y1 + y2
-            #print("x1")
-            #print(x1)
-            #print("y1")
-            #print(y1)
-            #print("x2")
-            #print(x2)
-            #print("y2")
-            #print(y2)
+            
             boxes[ix, :] = [x1, y1, x2, y2] #removed -1 from each coordinate
             gt_classes[ix] = cls
             overlaps[ix, cls] = 1.0
             seg_areas[ix] = (x2 - x1 + 1) * (y2 - y1 + 1)
             ix = ix + 1
-        #print(index)
-	#if index=='I00383':
-		#print(overlaps)
 
 		
         overlaps = scipy.sparse.csr_matrix(overlaps)
-	#if index=='I00383':
-		#print('after esoteric transformation')
-		#print(overlaps)
         return {'boxes' : boxes,
                 'gt_classes': gt_classes,
                 'gt_overlaps' : overlaps,
@@ -294,20 +258,19 @@ class kaist_thermal(imdb):
                 'seg_areas' : seg_areas}
 
     def _write_voc_results_file(self, all_boxes):
-        use_salt = self.config['use_salt']
-        comp_id = 'comp4'
-        if use_salt:
-            comp_id += '-{}'.format(os.getpid())
+        #use_salt = self.config['use_salt']
+        #comp_id = 'comp4'
+        #if use_salt:
+        #    comp_id += '-{}'.format(os.getpid())
 
-        # VOCdevkit/results/VOC2007/Main/comp4-44503_det_test_aeroplane.txt
-        path = os.path.join(self._devkit_path, 'results', 'kaist',
-                            'Main', comp_id + '_')
+        #path = os.path.join(self._devkit_path, 'results', 'kaist',
+        #                    'Main', comp_id + '_')
         for cls_ind, cls in enumerate(self.classes):
             if cls == '__background__':
                 continue
-            print 'Writing {} VOC results file'.format(cls)
-            #filename = path + 'det_' + self._image_set + '_' + cls + '.txt'
-            filename='person_night.txt'
+            print 'Writing {} Kaist results file'.format(cls)
+            # save the predictions here
+            filename=output_dir+'/' + 'det_' + self._image_set + '.txt'
             with open(filename, 'wt') as f:
                 for im_ind, index in enumerate(self.image_index):
                     dets = all_boxes[cls_ind][im_ind]
@@ -322,43 +285,27 @@ class kaist_thermal(imdb):
         return comp_id
 
     def _get_voc_results_file_template(self):
-        # VOCdevkit/results/VOC2007/Main/<comp_id>_det_test_aeroplane.txt
-        #filename = '/home/dghose/Project/Influenza_Detection/Code/Multimodal_Influenza_Detection/faster-rcnn.pytorch/pedestrian.txt' 
-        filename = '/home/dghose/Project/Influenza_Detection/Code/Multimodal_Influenza_Detection/faster-rcnn.pytorch/person_night.txt'
-        #filename='pedestrian.txt'
-	path = os.path.join(filename)
+        filename=output_dir+'/' + 'det_' + self._image_set + '.txt'
+        path = os.path.join(filename)
         return path
 
 
 
     def _do_python_eval(self, output_dir='output'):
-        annopath = os.path.join('/home/dghose/Project/Influenza_Detection/Data/Labels/annotations/anno_night_test', '{:s}.txt') #test
-        #annopath = os.path.join('/home/dghose/Project/Influenza_Detection/Data/Labels/annotations/anno_day_train', '{:s}.txt') #train
-        #annopath=os.path.join('../../data/annotations/set05/V000','{:s}.txt')
-	#imagesetfile = '/home/dghose/Project/Influenza_Detection/Code/Multimodal_Influenza_Detection/faster-rcnn.pytorch/imagesetfile.txt'
-        #imagesetfile='../../data/imagesetfile_overfit.txt'
-	
-        cachedir = os.path.join(self._devkit_path, 'annotations_cache')
+        annopath = os.path.join(self._data_path, 'anno_',self._image_set, '{:s}.txt') #test
+        
+        cachedir = os.path.join(self._data_path, self._image_set+'_annotations_cache')
 
-        #annopath = os.path.join('/home/dghose/Project/Influenza_Detection/Data/Labels/annotations/set05/V000', '{:s}.txt')
-        imagesetfile = '/home/dghose/Project/Influenza_Detection/Code/Multimodal_Influenza_Detection/faster-rcnn.pytorch/Imagesetfiles/night_test_imagesetfile.txt' #test
-        #imagesetfile = '/home/dghose/Project/Influenza_Detection/Code/Multimodal_Influenza_Detection/faster-rcnn.pytorch/Imagesetfiles/day_train_imagesetfile.txt' #train
-        #imagesetfile = '/home/dghose/Project/Influenza_Detection/Code/Multimodal_Influenza_Detection/faster-rcnn.pytorch/imagesetfile_overfit_test.txt'#overfit
-
-        cachedir = os.path.join(self._devkit_path, 'annotations_cache')
-
+        imagesetfile = os.path.join(self._data_path, 'Imagesetfiles/' + self._image_set+ '.txt')
+        
         aps = []
-        # The PASCAL VOC metric changed in 2010
-        #use_07_metric = True if int(self._year) < 2010 else False
-        #print('VOC07 metric? ' + ('Yes' if use_07_metric else 'No'))
         if not os.path.isdir(output_dir):
             os.mkdir(output_dir)
         for i, cls in enumerate(self._classes):
             if cls == '__background__':
                 continue
-            #filename = '/home/dghose/Project/Influenza_Detection/Code/Multimodal_Influenza_Detection/faster-rcnn.pytorch/pedestrian.txt'
-            filename='/home/dghose/Project/Influenza_Detection/Code/Multimodal_Influenza_Detection/faster-rcnn.pytorch/person_night.txt'
-	    rec, prec, ap = voc_eval_miss_rate(
+            filename=output_dir+'/' + 'det_' + self._image_set + '.txt'
+            rec, prec, ap = voc_eval_miss_rate(
                 filename, annopath, imagesetfile, cls, cachedir, ovthresh=0.5,
                 use_07_metric = False)
             print("precision")
@@ -371,7 +318,7 @@ class kaist_thermal(imdb):
             print("aps")
             print(aps)
             print('AP for {} = {:.4f}'.format(cls, ap))
-            with open(os.path.join(output_dir, cls + '_pr.pkl'), 'wb') as f:
+            with open(os.path.join(output_dir, self.image_set + '_pr.pkl'), 'wb') as f:
                 cPickle.dump({'rec': rec, 'prec': prec, 'ap': ap}, f)
         print('Mean AP = {:.4f}'.format(np.mean(aps)))
         print('~~~~~~~~')

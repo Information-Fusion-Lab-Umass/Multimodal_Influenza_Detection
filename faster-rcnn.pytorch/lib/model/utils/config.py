@@ -264,10 +264,13 @@ __C.RNG_SEED = 3
 __C.EPS = 1e-14
 
 # Root directory of project
-__C.ROOT_DIR = osp.abspath(osp.join(osp.dirname(__file__), '..', '..', '..'))
+#__C.ROOT_DIR = osp.abspath(osp.join(osp.dirname(__file__), '..', '..', '..'))
+__C.ROOT_DIR = osp.abspath(osp.join('mnt/nfs/scratch1/dghose/'))
 
 # Data directory
-__C.DATA_DIR = osp.abspath(osp.join(__C.ROOT_DIR, 'data'))
+#__C.DATA_DIR = osp.abspath(osp.join(__C.ROOT_DIR, 'data'))
+__C.DATA_DIR = osp.abspath(osp.join(__C.ROOT_DIR, 'Kaist/'))
+
 
 # Name (or path to) the matlab executable
 __C.MATLAB = 'matlab'
@@ -310,7 +313,7 @@ def get_output_dir(imdb, weights_filename):
   A canonical path is built using the name from an imdb and a network
   (if not None).
   """
-  outdir = osp.abspath(osp.join(__C.ROOT_DIR, 'output', __C.EXP_DIR, imdb.name))
+  outdir = osp.abspath(osp.join(__C.DATA_DIR, 'output', imdb.name))
   if weights_filename is None:
     weights_filename = 'default'
   outdir = osp.join(outdir, weights_filename)
