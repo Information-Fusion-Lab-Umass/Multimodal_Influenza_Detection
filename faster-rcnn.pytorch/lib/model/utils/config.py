@@ -70,7 +70,7 @@ __C.TRAIN.TRIM_HEIGHT = 600
 __C.TRAIN.TRIM_WIDTH = 600
 
 # Images to use per minibatch
-__C.TRAIN.IMS_PER_BATCH = 1
+__C.TRAIN.IMS_PER_BATCH = 2
 
 # Minibatch size (number of regions of interest [ROIs])
 __C.TRAIN.BATCH_SIZE = 128
@@ -265,10 +265,10 @@ __C.EPS = 1e-14
 
 # Root directory of project
 #__C.ROOT_DIR = osp.abspath(osp.join(osp.dirname(__file__), '..', '..', '..'))
-__C.ROOT_DIR = osp.abspath('../../mnt/nfs/scratch1/dghose/')
+__C.ROOT_DIR = osp.abspath('../../../../../../../mnt/nfs/scratch1/dghose/')
 
 # Data directory
-__C.DATA_DIR = osp.abspath(osp.join(__C.ROOT_DIR, 'KAIST'))
+__C.DATA_DIR = osp.abspath(osp.join(__C.ROOT_DIR, 'Kaist'))
 
 # Name (or path to) the matlab executable
 __C.MATLAB = 'matlab'

@@ -77,8 +77,9 @@ def _get_image_blob(roidb, scale_inds):
   processed_ims = []
   im_scales = []
   for i in range(num_images):
-    im = cv2.imread(roidb[i]['image'],cv2.IMREAD_GRAYSCALE)
+    im = cv2.imread(roidb[i]['image'],-1)
     #im = imread(roidb[i]['image'])
+    #print('im_shape')
     #print(im.shape)
    	
     if len(im.shape) == 2:
@@ -87,6 +88,7 @@ def _get_image_blob(roidb, scale_inds):
       im = np.concatenate((im,im,im), axis=2)
     # flip the channel, since the original one using cv2
     # rgb -> bgr
+    #print(im.shape)
     im = im[:,:,::-1]
     #print('image before mean subtraction')
     #print(im[:,:,0])

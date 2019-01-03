@@ -109,6 +109,9 @@ class imdb(object):
     raise NotImplementedError
 
   def _get_widths(self):
+   # for i in range(self.num_images):
+	#print(i)
+	#print(self.image_path_at(i))
     return [PIL.Image.open(self.image_path_at(i)).size[0]
             for i in range(self.num_images)]
 

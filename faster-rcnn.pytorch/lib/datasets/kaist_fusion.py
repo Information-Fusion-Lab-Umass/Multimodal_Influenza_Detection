@@ -61,19 +61,21 @@ class kaist_thermal(imdb):
         """
         Construct an image path from the image's "index" identifier.
         """
-       
+        #print(index)
         image_path=(self._data_path +'/'+ self._image_set + '/' + index + self._image_ext) #train
+        #print(image_path)
         return image_path
 
     def _load_image_set_index(self):
         """
         Load the indexes listed in this dataset's image set file.
         """
-        image_set_file =(self._data_path+ '/Imagesetfiles/' + self._image_set+ '.txt')
+        image_set_file =(self._data_path+ '/Imagesetfiles/' + self._image_set+ '_imagesetfile.txt')
 	assert os.path.exists(image_set_file), \
                 'Path does not exist: {}'.format(image_set_file)
         with open(image_set_file) as f:
             image_index = [x.strip() for x in f.readlines()]
+        #print(image_index)
         return image_index
 
 
@@ -89,7 +91,7 @@ class kaist_thermal(imdb):
 
         This function loads/saves from/to a cache file to speed up future calls.
         """
-        cache_file =(self.cache_path + '/' +self.name + '/'+  '_gt_roidb.pkl')
+        cache_file =(self.cache_path + '/' +self.name +  '_gt_roidb.pkl')
         if os.path.exists(cache_file):
             with open(cache_file, 'rb') as fid:
                 roidb = cPickle.load(fid)   
@@ -212,8 +214,8 @@ class kaist_thermal(imdb):
         Load image and bounding boxes info from text file in the kaist dataset
         format.
         """
-
-        filename =(self._data_path+ '/anno_'+self._image_set '/' + index +'.txt') #train
+	print(self._image_set)
+        filename =(self._data_path+ '/anno_'+self._image_set +'/' + index +'.txt') #train
         
         with open(filename) as f:
             lines = f.readlines()
@@ -270,8 +272,9 @@ class kaist_thermal(imdb):
                 continue
             print 'Writing {} Kaist results file'.format(cls)
             # save the predictions here
+            output_dir=self._data_path+'/output'
             filename=output_dir+'/' + 'det_' + self._image_set + '.txt'
-            with open(filename, 'wt') as f:
+            with open(filename, 'w+') as f:
                 for im_ind, index in enumerate(self.image_index):
                     dets = all_boxes[cls_ind][im_ind]
                     if dets == []:
@@ -282,7 +285,7 @@ class kaist_thermal(imdb):
                                 format(index, dets[k, -1],
                                        dets[k, 0] + 1, dets[k, 1] + 1,
                                        dets[k, 2] + 1, dets[k, 3] + 1))
-        return comp_id
+        #return comp_id
 
     def _get_voc_results_file_template(self):
         filename=output_dir+'/' + 'det_' + self._image_set + '.txt'
@@ -296,7 +299,7 @@ class kaist_thermal(imdb):
         
         cachedir = (self._data_path + '/' + self._image_set+'_annotations_cache')
 
-        imagesetfile = (self._data_path + '/Imagesetfiles/' + self._image_set+ '.txt')
+        imagesetfile = (self._data_path + '/Imagesetfiles/' + self._image_set+ '_imagesetfile.txt')
         
         aps = []
         if not os.path.isdir(output_dir):
@@ -304,6 +307,8 @@ class kaist_thermal(imdb):
         for i, cls in enumerate(self._classes):
             if cls == '__background__':
                 continue
+            output_dir=self._data_path+'/output'
+
             filename=output_dir+'/' + 'det_' + self._image_set + '.txt'
             rec, prec, ap = voc_eval_miss_rate(
                 filename, annopath, imagesetfile, cls, cachedir, ovthresh=0.5,
@@ -318,7 +323,7 @@ class kaist_thermal(imdb):
             print("aps")
             print(aps)
             print('AP for {} = {:.4f}'.format(cls, ap))
-            with open((output_dir, self.image_set + '_pr.pkl'), 'wb') as f:
+            with open((output_dir+'/'+ self._image_set + '_pr.pkl'), 'wb') as f:
                 cPickle.dump({'rec': rec, 'prec': prec, 'ap': ap}, f)
         print('Mean AP = {:.4f}'.format(np.mean(aps)))
         print('~~~~~~~~')
