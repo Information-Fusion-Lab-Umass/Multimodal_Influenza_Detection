@@ -310,27 +310,18 @@ class kaist_thermal(imdb):
             output_dir=self._data_path+'/output'
 
             filename=output_dir+'/' + 'det_' + self._image_set + '.txt'
-            rec, prec, ap = voc_eval_miss_rate(
+            rec, prec = voc_eval_miss_rate(
                 filename, annopath, imagesetfile, cls, cachedir, ovthresh=0.5,
                 use_07_metric = False)
-            print("precision")
-            print(prec)
-            print("recall")
-            print(rec)
-            print("ap")
-            print(ap)
-            aps += [ap]
-            print("aps")
-            print(aps)
+            #aps += [ap]
+            #print("aps")
+            #print(aps)
+            ap=0
             print('AP for {} = {:.4f}'.format(cls, ap))
             with open((output_dir+'/'+ self._image_set + '_pr.pkl'), 'wb') as f:
                 cPickle.dump({'rec': rec, 'prec': prec, 'ap': ap}, f)
-        print('Mean AP = {:.4f}'.format(np.mean(aps)))
         print('~~~~~~~~')
         print('Results:')
-        for ap in aps:
-            print('{:.3f}'.format(ap))
-        print('{:.3f}'.format(np.mean(aps)))
         print('~~~~~~~~')
         print('')
         print('--------------------------------------------------------------')

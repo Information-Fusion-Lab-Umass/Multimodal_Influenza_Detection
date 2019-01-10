@@ -431,8 +431,10 @@ def voc_eval_miss_rate(detpath,
         fp[d] = 1.
 
   # compute precision recall
-  fp = np.cumsum(fp)
-  tp = np.cumsum(tp)
+  #fp = np.cumsum(fp)
+  fp=np/sum(fp)  
+  #tp = np.cumsum(tp)
+  tp=np/sum(tp)  
   print ("true positive")
   print(tp)
   print('npos')
@@ -446,8 +448,8 @@ def voc_eval_miss_rate(detpath,
   print("prec")
   print(prec)
 
-  ap = voc_ap(rec, prec, use_07_metric)
+  #ap = voc_ap(rec, prec, use_07_metric)
   #print("ap")
   #print(ap)
 
-  return rec, prec, ap
+  return rec, prec
