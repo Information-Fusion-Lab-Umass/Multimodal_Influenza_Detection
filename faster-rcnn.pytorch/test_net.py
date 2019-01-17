@@ -76,13 +76,13 @@ def parse_args():
                       default=0, type=int)
   parser.add_argument('--checksession', dest='checksession',
                       help='checksession to load model',
-                      default=7, type=int)
+                      default=12, type=int)
   parser.add_argument('--checkepoch', dest='checkepoch',
                       help='checkepoch to load network',
-                      default=10, type=int)
+                      default=40, type=int)
   parser.add_argument('--checkpoint', dest='checkpoint',
                       help='checkpoint to load network',
-                      default=44315, type=int)
+                      default=11, type=int)
   parser.add_argument('--vis', dest='vis',
                       help='visualization mode',
                       action='store_true')
@@ -201,8 +201,9 @@ if __name__ == '__main__':
     fasterRCNN.cuda()
 
   start = time.time()
-  max_per_image = 100
+  #max_per_image = 100
 
+  max_per_image = 7 #for kaist
   vis = args.vis
 
   if vis:
@@ -293,7 +294,7 @@ if __name__ == '__main__':
             keep = nms(cls_dets, cfg.TEST.NMS)
             cls_dets = cls_dets[keep.view(-1).long()]
             if vis:
-              im2show = vis_detections(im2show, imdb.classes[j], cls_dets.cpu().numpy(), 0.8) #overfit = 0.93
+              im2show = vis_detections(im2show, imdb.classes[j], cls_dets.cpu().numpy(), 0.1) #overfit = 0.93
             all_boxes[j][i] = cls_dets.cpu().numpy()
           else:
             all_boxes[j][i] = empty_array
@@ -318,7 +319,7 @@ if __name__ == '__main__':
 
       if vis:
           #cv2.imwrite('visualize'+str(i)+'.png', im2show)
-          cv2.imwrite('new_annotations_visualize_complete_test_set/result'+str(i)+'.png', im2show)
+          cv2.imwrite('result'+str(i)+'.png', im2show)
           #pdb.set_trace()
           #cv2.imshow('test', im2show)
           #cv2.waitKey(0)
@@ -327,6 +328,7 @@ if __name__ == '__main__':
       pickle.dump(all_boxes, f, pickle.HIGHEST_PROTOCOL)
 
   print('Evaluating detections')
+  #print(all_boxes)
   imdb.evaluate_detections(all_boxes, output_dir)
 
   end = time.time()

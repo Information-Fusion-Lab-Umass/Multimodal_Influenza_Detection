@@ -36,16 +36,17 @@ class vgg16(_fasterRCNN):
 
     vgg.classifier = nn.Sequential(*list(vgg.classifier._modules.values())[:-1])
     #for child in vgg.children():	
-    vgg.features=nn.Sequential(*list(vgg.features._modules.values())[:-1])
+    #vgg.features=nn.Sequential(*list(vgg.features._modules.values())[:-1])
+    self.RCNN_base = nn.Sequential(*list(vgg.features._modules.values())[:-1])
 
-    self.RCNN_base_before_pool = vgg.features[0:23]
-    self.RCNN_base_after_pool = vgg.features[24:]
+    #self.RCNN_base_before_pool = vgg.features[0:23]
+    #self.RCNN_base_after_pool = vgg.features[24:]
     # Fix the layers before conv3:
     ##print(len(*list(child[:])))
     #print(len(self.RCNN_base_before_pool))
     #print(summary(self.RCNN_base_before_pool,(3,512,512)))
     for layer in range(10):
-        for p in self.RCNN_base_before_pool[layer].parameters(): p.requires_grad = False
+        for p in self.RCNN_base[layer].parameters(): p.requires_grad = False
 
     # self.RCNN_base = _RCNN_base(vgg.features, self.classes, self.dout_base_model)
 

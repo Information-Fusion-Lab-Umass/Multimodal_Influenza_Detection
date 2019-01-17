@@ -351,8 +351,8 @@ def voc_eval_miss_rate(detpath,
   detfile = detpath.format(classname)
   with open(detfile, 'r') as f:
     lines = f.readlines()
-    print("detections")
-    print(lines)
+    #print("detections")
+    #print(lines)
   splitlines = [x.strip().split(' ') for x in lines]
   image_ids = [x[0] for x in splitlines]
   confidence = np.array([float(x[1]) for x in splitlines])
@@ -376,8 +376,8 @@ def voc_eval_miss_rate(detpath,
       bb = BB[d, :].astype(float)
       ovmax = -np.inf
       BBGT = R['bbox'].astype(float)
-      print ("BBGT")
-      print (BBGT)
+      #print ("BBGT")
+      #print (BBGT)
 
       if BBGT.size > 0:
         # compute overlaps
@@ -402,8 +402,8 @@ def voc_eval_miss_rate(detpath,
         #print ("ih")
         #print(ih)
         inters = iw * ih
-        print("intersection")
-        print(inters)
+        #print("intersection")
+        #print(inters)
     
         # union
         uni = ((bb[2] - bb[0] + 1.) * (bb[3] - bb[1] + 1.) +
@@ -415,8 +415,8 @@ def voc_eval_miss_rate(detpath,
         #print("overlaps")
         #print(overlaps)
         ovmax = np.max(overlaps)
-        print("ovmax")
-        print(ovmax)
+        #print("ovmax")
+        #print(ovmax)
         jmax = np.argmax(overlaps)
         #print("jmax")
         #print(jmax)
@@ -432,9 +432,10 @@ def voc_eval_miss_rate(detpath,
 
   # compute precision recall
   #fp = np.cumsum(fp)
-  fp=np/sum(fp)  
+  fp=np.sum(fp)  
   #tp = np.cumsum(tp)
-  tp=np/sum(tp)  
+  print(fp)
+  tp=np.sum(tp)  
   print ("true positive")
   print(tp)
   print('npos')

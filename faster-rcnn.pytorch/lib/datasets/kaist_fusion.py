@@ -214,7 +214,7 @@ class kaist_thermal(imdb):
         Load image and bounding boxes info from text file in the kaist dataset
         format.
         """
-	print(self._image_set)
+	#print(self._image_set)
         filename =(self._data_path+ '/anno_'+self._image_set +'/' + index +'.txt') #train
         
         with open(filename) as f:
@@ -272,15 +272,22 @@ class kaist_thermal(imdb):
                 continue
             print 'Writing {} Kaist results file'.format(cls)
             # save the predictions here
+            #print(all_boxes)
             output_dir=self._data_path+'/output'
             filename=output_dir+'/' + 'det_' + self._image_set + '.txt'
-            with open(filename, 'w+') as f:
+            with open(filename, 'wt') as f:
                 for im_ind, index in enumerate(self.image_index):
                     dets = all_boxes[cls_ind][im_ind]
-                    if dets == []:
+                    #print('dets')
+                    #print(dets)
+		    if dets == []:
                         continue
                     # the VOCdevkit expects 1-based indices
                     for k in xrange(dets.shape[0]):
+                     	#print(dets[k-1])
+ 		 	# since we are writing to fle with only 3 decimal points :3f[see below], we filter out all detections with confidence less than thaand do not write them to the file
+			if(dets[k,-1]<1e-3):
+			    continue
                         f.write('{:s} {:.3f} {:.1f} {:.1f} {:.1f} {:.1f}\n'.
                                 format(index, dets[k, -1],
                                        dets[k, 0] + 1, dets[k, 1] + 1,
