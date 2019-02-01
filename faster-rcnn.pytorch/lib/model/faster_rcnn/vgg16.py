@@ -30,6 +30,7 @@ class vgg16(_fasterRCNN):
   def _init_modules(self):
     vgg = models.vgg16().to('cuda')
     if self.pretrained:
+	print('pretrained')
         print("Loading pretrained weights from %s" %(self.model_path))
         state_dict = torch.load(self.model_path)
         vgg.load_state_dict({k:v for k,v in state_dict.items() if k in vgg.state_dict()})

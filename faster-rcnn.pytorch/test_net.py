@@ -57,8 +57,8 @@ def parse_args():
                       help='set config keys', default=None,
                       nargs=argparse.REMAINDER)
   parser.add_argument('--load_dir', dest='load_dir',
-                      help='directory to load models', default='../../mnt/nfs/scratch1/shasvatmukes/models',
-                      type=str)
+                      help='directory to load models', default='../../../../../../../mnt/nfs/scratch1/shasvatmukes/models/'
+                      ,type=str)
   parser.add_argument('--cuda', dest='cuda',
                       help='whether use CUDA',
                       action='store_true')
@@ -79,10 +79,10 @@ def parse_args():
                       default=12, type=int)
   parser.add_argument('--checkepoch', dest='checkepoch',
                       help='checkepoch to load network',
-                      default=40, type=int)
+                      default=30, type=int)
   parser.add_argument('--checkpoint', dest='checkpoint',
                       help='checkpoint to load network',
-                      default=11, type=int)
+                      default=16115, type=int)
   parser.add_argument('--vis', dest='vis',
                       help='visualization mode',
                       action='store_true')
@@ -126,7 +126,7 @@ if __name__ == '__main__':
       args.set_cfgs = ['ANCHOR_SCALES', '[4, 8, 16, 32]', 'ANCHOR_RATIOS', '[0.5,1,2]']
   elif args.dataset == "kaist":
       args.imdb_name = "train_subset"
-      args.imdbval_name = "train_subset"#change here
+      args.imdbval_name ="night_test"#change here
       args.set_cfgs = ['ANCHOR_SCALES', '[0.05, 0.1, 0.25, 0.5]', 'ANCHOR_RATIOS', '[0.5,1,2]', 'MAX_NUM_GT_BOXES', '30']#scales=[4,8,16,32]--default
   
   args.cfg_file = "cfgs/{}_ls.yml".format(args.net) if args.large_scale else "cfgs/{}.yml".format(args.net)
@@ -296,6 +296,7 @@ if __name__ == '__main__':
             if vis:
               im2show = vis_detections(im2show, imdb.classes[j], cls_dets.cpu().numpy(), 0.1) #overfit = 0.93
             all_boxes[j][i] = cls_dets.cpu().numpy()
+            #print(all_boxes)
           else:
             all_boxes[j][i] = empty_array
       #print('all_boxes')
