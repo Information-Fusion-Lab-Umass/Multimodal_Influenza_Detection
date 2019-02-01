@@ -1,3 +1,4 @@
+
 # --------------------------------------------------------
 # Fast/er R-CNN
 # Licensed under The MIT License [see LICENSE for details]
@@ -117,7 +118,7 @@ def voc_eval(detpath,
   if not os.path.isdir(cachedir):
     os.mkdir(cachedir)
   cachefile = os.path.join(cachedir, '%s_annots.pkl' % imagesetfile)
-  print(cachefile)
+  #print(cachefile)
   # read list of images
   with open(imagesetfile, 'r') as f:
     lines = f.readlines()
@@ -147,14 +148,15 @@ def voc_eval(detpath,
   class_recs = {}
   npos = 0 #0.0001#0
   for imagename in imagenames:
+    #recs is a dict with key:imagename, val:list of dicts[each dict in the list having 3 keys-- bbox, diff , name]  
+    #recs[imagename] is a list
     R = [obj for obj in recs[imagename]]
-    bbox=np.array([x['bbox'] for x in R])
+    # R is a list of dicts
+    bbox=np.array([x['bbox'] for x in R])# x is a dict[each element of list is a dict]
     difficult = np.array([x['difficult'] for x in R]).astype(np.bool)
     det = [False] * len(R)
     npos=npos+len(R)
-    #npos = npos + sum(~difficult)
-    #print("npos")
-    #print(npos)
+    # mapping: imagename: array of all bbox in that image
     class_recs[imagename] = {'bbox': bbox,
                              'difficult': difficult,
                              'det': det}
@@ -169,7 +171,7 @@ def voc_eval(detpath,
   image_ids = [x[0] for x in splitlines]
   confidence = np.array([float(x[1]) for x in splitlines])
   BB = np.array([[float(z) for z in x[2:]] for x in splitlines])
-
+  
   nd = len(image_ids)
   tp = np.zeros(nd)
   fp = np.zeros(nd)
@@ -184,16 +186,16 @@ def voc_eval(detpath,
     # go down dets and mark TPs and FPs
     for d in range(nd):
       R = class_recs[image_ids[d]]
+      # R is a dict
       bb = BB[d, :].astype(float)
       ovmax = -np.inf
+      # R['bbox'] is an numoy array of all the bbox in the given image
       BBGT = R['bbox'].astype(float)
       #print ("BBGT")
       #print (BBGT)
 
       if BBGT.size > 0:
-        # compute overlaps
-        # intersection
-       # print("inside if")  
+  
         ixmin = np.maximum(BBGT[:, 0], bb[0])
         #print("ixmin")
         #print(ixmin)
@@ -243,16 +245,11 @@ def voc_eval(detpath,
 
   # compute precision recall
   fp = np.cumsum(fp)
-  print ("false positive")
-  print (fp)
-  print(fp.shape)
-  print(fp[:100])
-  print(fp[-100:])
   print(tp.shape)
   tp = np.cumsum(tp)
   print ("true positive")
-  print (tp[:100])
-  print(tp[-100:])
+  print (truep)
+ 
   #print('npos')
   #print(npos)
   #temp=npos-tp
@@ -354,8 +351,8 @@ def voc_eval_miss_rate(detpath,
   detfile = detpath.format(classname)
   with open(detfile, 'r') as f:
     lines = f.readlines()
-    print("detections")
-    print(lines)
+    #print("detections")
+    #print(lines)
   splitlines = [x.strip().split(' ') for x in lines]
   image_ids = [x[0] for x in splitlines]
   confidence = np.array([float(x[1]) for x in splitlines])
@@ -379,8 +376,8 @@ def voc_eval_miss_rate(detpath,
       bb = BB[d, :].astype(float)
       ovmax = -np.inf
       BBGT = R['bbox'].astype(float)
-      print ("BBGT")
-      print (BBGT)
+      #print ("BBGT")
+      #print (BBGT)
 
       if BBGT.size > 0:
         # compute overlaps
@@ -405,8 +402,8 @@ def voc_eval_miss_rate(detpath,
         #print ("ih")
         #print(ih)
         inters = iw * ih
-        print("intersection")
-        print(inters)
+        #print("intersection")
+        #print(inters)
     
         # union
         uni = ((bb[2] - bb[0] + 1.) * (bb[3] - bb[1] + 1.) +
@@ -418,8 +415,8 @@ def voc_eval_miss_rate(detpath,
         #print("overlaps")
         #print(overlaps)
         ovmax = np.max(overlaps)
-        print("ovmax")
-        print(ovmax)
+        #print("ovmax")
+        #print(ovmax)
         jmax = np.argmax(overlaps)
         #print("jmax")
         #print(jmax)
@@ -434,39 +431,26 @@ def voc_eval_miss_rate(detpath,
         fp[d] = 1.
 
   # compute precision recall
-  fp = np.cumsum(fp)
-  print ("false positive")
-  print (fp)
-  print(fp.shape)
-  print(fp[:100])
-  print(fp[-100:])
-  print(tp.shape)
-  tp = np.cumsum(tp)
+  #fp = np.cumsum(fp)
+  fp=np.sum(fp)  
+  #tp = np.cumsum(tp)
+  print(fp)
+  tp=np.sum(tp)  
   print ("true positive")
-  print (tp[:100])
-  print(tp[-100:])
+  print(tp)
   print('npos')
   print(npos)
-  #temp=npos-tp
-  #print('false negative')
-  #print(temp[:100])
-  #print()
-  #print()
   rec = tp / float(npos)
-  miss_rate=(npos-tp)/float(npos)
-  print('miss rate')
-  print(tp)
-  print(npos)
-  print(miss_rate)
-  # avoid divide by zero in case the first detection matches a difficult
-  # ground truth
+
   print("recall")
   print (rec)
+
   prec = tp / np.maximum(tp + fp, np.finfo(np.float64).eps)
   print("prec")
   print(prec)
-  ap = voc_ap(rec, prec, use_07_metric)
-  print("ap")
-  print(ap)
 
-  return rec, prec, ap
+  #ap = voc_ap(rec, prec, use_07_metric)
+  #print("ap")
+  #print(ap)
+
+  return rec, prec
