@@ -57,8 +57,8 @@ def parse_args():
                       help='set config keys', default=None,
                       nargs=argparse.REMAINDER)
   parser.add_argument('--load_dir', dest='load_dir',
-                      help='directory to load models', default="models",
-                      type=str)
+                      help='directory to load models', default='../../../../../../../mnt/nfs/scratch1/shasvatmukes/models/'
+                      ,type=str)
   parser.add_argument('--cuda', dest='cuda',
                       help='whether use CUDA',
                       action='store_true')
@@ -79,10 +79,10 @@ def parse_args():
                       default=1, type=int)
   parser.add_argument('--checkepoch', dest='checkepoch',
                       help='checkepoch to load network',
-                      default=20, type=int)
+                      default=10, type=int)
   parser.add_argument('--checkpoint', dest='checkpoint',
                       help='checkpoint to load network',
-                      default=9, type=int)
+                      default=11, type=int)
   parser.add_argument('--vis', dest='vis',
                       help='visualization mode',
                       action='store_true')
@@ -125,8 +125,8 @@ if __name__ == '__main__':
       args.imdbval_name = "vg_150-50-50_minival"
       args.set_cfgs = ['ANCHOR_SCALES', '[4, 8, 16, 32]', 'ANCHOR_RATIOS', '[0.5,1,2]']
   elif args.dataset == "kaist":
-      args.imdb_name = "kaist_train-all02"
-      args.imdbval_name = "kaist_test-all02"#change here
+      args.imdb_name = "train_subset"
+      args.imdbval_name ="train_subset"#change here
       args.set_cfgs = ['ANCHOR_SCALES', '[0.05, 0.1, 0.25, 0.5]', 'ANCHOR_RATIOS', '[0.5,1,2]', 'MAX_NUM_GT_BOXES', '30']#scales=[4,8,16,32]--default
   
   args.cfg_file = "cfgs/{}_ls.yml".format(args.net) if args.large_scale else "cfgs/{}.yml".format(args.net)
@@ -146,6 +146,7 @@ if __name__ == '__main__':
   print('{:d} roidb entries'.format(len(roidb)))
 
   input_dir = args.load_dir + "/" + args.net + "/" + args.dataset
+  
   if not os.path.exists(input_dir):
     raise Exception('There is no input directory for loading network from ' + input_dir)
   load_name = os.path.join(input_dir,
@@ -200,8 +201,9 @@ if __name__ == '__main__':
     fasterRCNN.cuda()
 
   start = time.time()
-  max_per_image = 100
+  #max_per_image = 100
 
+  max_per_image = 7 #for kaist
   vis = args.vis
 
   if vis:
@@ -292,8 +294,9 @@ if __name__ == '__main__':
             keep = nms(cls_dets, cfg.TEST.NMS)
             cls_dets = cls_dets[keep.view(-1).long()]
             if vis:
-              im2show = vis_detections(im2show, imdb.classes[j], cls_dets.cpu().numpy(), 0.8) #overfit = 0.93
+              im2show = vis_detections(im2show, imdb.classes[j], cls_dets.cpu().numpy(), 0.1) #overfit = 0.93
             all_boxes[j][i] = cls_dets.cpu().numpy()
+            #print(all_boxes)
           else:
             all_boxes[j][i] = empty_array
       #print('all_boxes')
@@ -317,8 +320,7 @@ if __name__ == '__main__':
 
       if vis:
           #cv2.imwrite('visualize'+str(i)+'.png', im2show)
-	  #pdb.set_trace()
-          cv2.imwrite('new_annotations_visualize_complete_test_set/result'+str(i)+'.png', im2show)
+          cv2.imwrite('result'+str(i)+'.png', im2show)
           #pdb.set_trace()
           #cv2.imshow('test', im2show)
           #cv2.waitKey(0)
@@ -327,6 +329,7 @@ if __name__ == '__main__':
       pickle.dump(all_boxes, f, pickle.HIGHEST_PROTOCOL)
 
   print('Evaluating detections')
+  #print(all_boxes)
   imdb.evaluate_detections(all_boxes, output_dir)
 
   end = time.time()
