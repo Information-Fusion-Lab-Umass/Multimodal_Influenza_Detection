@@ -110,10 +110,10 @@ def parse_args():
                       default=False, type=bool)
   parser.add_argument('--checksession', dest='checksession',
                       help='checksession to load model',
-                      default=12, type=int)
+                      default=1, type=int)
   parser.add_argument('--checkepoch', dest='checkepoch',
                       help='checkepoch to load model',
-                      default=1, type=int)
+                      default=20, type=int)
   parser.add_argument('--checkpoint', dest='checkpoint',
                       help='checkpoint to load model',
                       default=11, type=int)
@@ -294,7 +294,9 @@ if __name__ == '__main__':
     args.session = checkpoint['session']
     args.start_epoch = checkpoint['epoch']
     fasterRCNN.load_state_dict(checkpoint['model'])
+    #print(checkpoint['optimizer'])
     optimizer.load_state_dict(checkpoint['optimizer'])
+    
     lr = optimizer.param_groups[0]['lr']
     if 'pooling_mode' in checkpoint.keys():
       cfg.POOLING_MODE = checkpoint['pooling_mode']

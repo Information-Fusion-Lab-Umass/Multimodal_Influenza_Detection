@@ -49,12 +49,12 @@ class _fasterRCNN(nn.Module):
         num_boxes = num_boxes.data
 	#print("num_boxes")
 	#print(num_boxes)
-
+	#print(im_data.shape)
         # feed image data to base model to obtain base feature map
         base_feat = self.RCNN_base(im_data)
-	#print("base_feat")
+	#print(base_feat[0])
 	#print(type(base_feat))
-
+	#print(im_data.shape)
         # feed base feature map tp RPN to obtain rois
         rois, rpn_loss_cls, rpn_loss_bbox = self.RCNN_rpn(base_feat, im_info, gt_boxes, num_boxes)
 	#print('rois')
