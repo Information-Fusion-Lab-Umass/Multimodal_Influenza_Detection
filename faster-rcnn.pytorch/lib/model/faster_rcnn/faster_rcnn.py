@@ -38,32 +38,17 @@ class _fasterRCNN(nn.Module):
 
     def forward(self, im_data, im_info, gt_boxes, num_boxes):
         batch_size = im_data.size(0)
-	
-	#print("Inside Faster R-CNN")
+
         im_info = im_info.data
-	#print("im_info")
-	#print(im_info)
         gt_boxes = gt_boxes.data
-	#print("gt_boxes")
-	#print(gt_boxes)
         num_boxes = num_boxes.data
-	#print("num_boxes")
-	#print(num_boxes)
-	#print(im_data.shape)
+
         # feed image data to base model to obtain base feature map
         base_feat = self.RCNN_base(im_data)
-	#print(base_feat[0])
-	#print(type(base_feat))
-	#print(im_data.shape)
+
         # feed base feature map tp RPN to obtain rois
         rois, rpn_loss_cls, rpn_loss_bbox = self.RCNN_rpn(base_feat, im_info, gt_boxes, num_boxes)
-	#print('rois')
-	#print(rois.size())
-	#print(rois)
-	#print('printing losses')
-	#print(rpn_loss_cls)
-	#print(rpn_loss_bbox)
-	
+
         # if it is training phrase, then use ground trubut bboxes for refining
         if self.training:
             roi_data = self.RCNN_proposal_target(rois, gt_boxes, num_boxes)
@@ -121,10 +106,7 @@ class _fasterRCNN(nn.Module):
 
             # bounding box regression L1 loss
             RCNN_loss_bbox = _smooth_l1_loss(bbox_pred, rois_target, rois_inside_ws, rois_outside_ws)
-            rpn_loss_cls = torch.unsqueeze(rpn_loss_cls, 0)
-            rpn_loss_bbox = torch.unsqueeze(rpn_loss_bbox, 0)
-            RCNN_loss_cls = torch.unsqueeze(RCNN_loss_cls, 0)
-            RCNN_loss_bbox = torch.unsqueeze(RCNN_loss_bbox, 0)
+
 
         cls_prob = cls_prob.view(batch_size, rois.size(1), -1)
         bbox_pred = bbox_pred.view(batch_size, rois.size(1), -1)
@@ -152,3 +134,4 @@ class _fasterRCNN(nn.Module):
     def create_architecture(self):
         self._init_modules()
         self._init_weights()
+
