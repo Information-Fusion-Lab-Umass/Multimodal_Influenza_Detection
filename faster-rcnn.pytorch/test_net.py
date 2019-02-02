@@ -57,7 +57,7 @@ def parse_args():
                       help='set config keys', default=None,
                       nargs=argparse.REMAINDER)
   parser.add_argument('--load_dir', dest='load_dir',
-                      help='directory to load models', default='../../../../../../../mnt/nfs/scratch1/shasvatmukes/models/'
+                      help='directory to load models', default='../../../../../../../mnt/nfs/scratch1/shasvatmukes/models'
                       ,type=str)
   parser.add_argument('--cuda', dest='cuda',
                       help='whether use CUDA',
