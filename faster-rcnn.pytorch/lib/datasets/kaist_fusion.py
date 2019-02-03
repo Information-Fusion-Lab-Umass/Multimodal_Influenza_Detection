@@ -1,5 +1,4 @@
-# --------------------------------------------------------
-# Fast R-CNN
+#t R-CNN
 # Copyright (c) 2015 Microsoft
 # Licensed under The MIT License [see LICENSE for details]
 # Written by Ross Girshick
@@ -244,7 +243,7 @@ class kaist_thermal(imdb):
             # adjusting for annotation format 
             x2 = x1 + x2
             y2 = y1 + y2
-            print(x1,y1,x2,y2)
+            
             boxes[ix, :] = [x1, y1, x2, y2] #removed -1 from each coordinate
             gt_classes[ix] = cls
             overlaps[ix, cls] = 1.0
@@ -381,3 +380,4 @@ if __name__ == '__main__':
     d = kaist('train-all02')
     res = d.roidb
     from IPython import embed; embed()
+

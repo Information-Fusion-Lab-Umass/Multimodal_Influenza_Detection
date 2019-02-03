@@ -1,5 +1,4 @@
-# --------------------------------------------------------
-# Fast R-CNN
+#t R-CNN
 # Copyright (c) 2015 Microsoft
 # Licensed under The MIT License [see LICENSE for details]
 # Written by Ross Girshick and Xinlei Chen
@@ -271,3 +270,4 @@ class imdb(object):
   def competition_mode(self, on):
     """Turn competition mode on or off."""
     pass
+

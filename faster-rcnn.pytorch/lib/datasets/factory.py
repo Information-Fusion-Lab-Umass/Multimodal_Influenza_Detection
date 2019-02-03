@@ -1,5 +1,4 @@
-# --------------------------------------------------------
-# Fast R-CNN
+#t R-CNN
 # Copyright (c) 2015 Microsoft
 # Licensed under The MIT License [see LICENSE for details]
 # Written by Ross Girshick
@@ -87,3 +86,4 @@ def get_imdb(name):
 def list_imdbs():
   """List all registered imdbs."""
   return list(__sets.keys())
+

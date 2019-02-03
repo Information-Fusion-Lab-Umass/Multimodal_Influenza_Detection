@@ -1,6 +1,4 @@
-
-# --------------------------------------------------------
-# Fast/er R-CNN
+#t/er R-CNN
 # Licensed under The MIT License [see LICENSE for details]
 # Written by Bharath Hariharan
 # --------------------------------------------------------
@@ -454,3 +452,4 @@ def voc_eval_miss_rate(detpath,
   #print(ap)
 
   return rec, prec
+
