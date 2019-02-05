@@ -203,3 +203,9 @@ lib/model/utils/bbox.c
 lib/pycocotools/_mask.c
 run_logs/frcnn*
 run.sh
+new_annotations_visualize_complete_test_set
+visualize_complete_test_set/*
+visualize_test/*
+models/
+output/
+result/

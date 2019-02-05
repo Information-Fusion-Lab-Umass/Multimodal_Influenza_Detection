@@ -35,7 +35,7 @@ from model.faster_rcnn.resnet import resnet
 #adding import
 from datasets.factory import get_imdb
 
-from torchsummary import summary
+#from torchsummary import summary
 
 def parse_args():
   """
@@ -102,7 +102,7 @@ def parse_args():
 # set training session
   parser.add_argument('--s', dest='session',
                       help='training session',
-                      default=1, type=int)
+                      default=21, type=int)
 
 # resume trained model
   parser.add_argument('--r', dest='resume',
@@ -110,7 +110,7 @@ def parse_args():
                       default=False, type=bool)
   parser.add_argument('--checksession', dest='checksession',
                       help='checksession to load model',
-                      default=1, type=int)
+                      default=20, type=int)
   parser.add_argument('--checkepoch', dest='checkepoch',
                       help='checkepoch to load model',
                       default=10, type=int)
@@ -184,7 +184,7 @@ if __name__ == '__main__':
   elif args.dataset == "kaist":
       args.imdb_name = "kaist_train-all02"
       args.imdbval_name = "train-all02"
-      args.set_cfgs = ['ANCHOR_SCALES', '[0.05, 0.1, 0.25, 0.5]', 'ANCHOR_RATIOS', '[0.5, 1, 2]', 'MAX_NUM_GT_BOXES', '30']#scales=[4,8,16,32] ratios = [0.5, 1, 2]--default
+      args.set_cfgs = ['ANCHOR_SCALES', '[1,1.5, 2]', 'ANCHOR_RATIOS', '[0.5, 1, 2]', 'MAX_NUM_GT_BOXES', '30']#scales=[4,8,16,32] ratios = [0.5, 1, 2]--default
   
   args.cfg_file = "cfgs/{}_ls.yml".format(args.net) if args.large_scale else "cfgs/{}.yml".format(args.net)
 
@@ -283,7 +283,7 @@ if __name__ == '__main__':
   if args.cuda:
     fasterRCNN.cuda()
   
-  print(fasterRCNN,(3,600,800))
+  #print(fasterRCNN,(3,600,800))
 
 
   if args.resume:

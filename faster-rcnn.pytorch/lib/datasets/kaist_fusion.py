@@ -25,8 +25,8 @@ class kaist_thermal(imdb):
         imdb.__init__(self, image_set)  # image_set: train04 or test
         self._image_set = image_set
         self._devkit_path = self._get_default_path()
-	self._devkit_path = '/home/dghose/Project/Influenza_Detection/Data/KAIST/Train/combined_train' #train
-        #self._devkit_path = '/home/dghose/Project/Influenza_Detection/Data/KAIST/Test/' #test
+	#self._devkit_path = '/home/dghose/Project/Influenza_Detection/Data/KAIST/Train/subset_train' #train
+        self._devkit_path = '/home/dghose/Project/Influenza_Detection/Data/KAIST/Test/' #test
         #self._devkit_path = '../../data/overfit/'
 	self._data_path = os.path.join(self._devkit_path)
         self._classes = ('__background__', # always index 0
@@ -65,8 +65,8 @@ class kaist_thermal(imdb):
                                   #index + self._image_ext)
         #image_path_2 = os.path.join(self._data_path, self._image_set, 'thermal',index + self._image_ext)
         #assert (os.path.exists(image_path) ,  'Path does not exist: {}'.format(image_path))
-        #image_path=os.path.join('/home/dghose/Project/Influenza_Detection/Data/KAIST/Train/set05/lwir/', index+self._image_ext) #train
-        image_path=os.path.join('/home/dghose/Project/Influenza_Detection/Data/KAIST/Train/combined_train', index+self._image_ext) #test
+        #image_path=os.path.join('/home/dghose/Project/Influenza_Detection/Data/KAIST/Train/subset_train/', index+self._image_ext) #train
+        image_path=os.path.join('/home/dghose/Project/Influenza_Detection/Data/KAIST/Test/combined_test', index+self._image_ext) #test
         #image_path=os.path.join('../../data/overfit/', index+self._image_ext)
         #image_path=os.path.join('/home/dghose/Project/Influenza_Detection/Data/KAIST/Train/set05/sample/', index+self._image_ext) #overfit
         #image_path=os.path.join('../../data/lwir/', index+self._image_ext)
@@ -82,8 +82,8 @@ class kaist_thermal(imdb):
         #image_set_file = os.path.join(self._data_path, self._image_set,
         #                              self._image_set + '.txt')
         
-	#image_set_file = '/home/dghose/Project/Influenza_Detection/Code/Multimodal_Influenza_Detection/faster-rcnn.pytorch/imagesetfile.txt' #train
-        image_set_file = '/home/dghose/Project/Influenza_Detection/Code/Multimodal_Influenza_Detection/faster-rcnn.pytorch/train_imagesetfile.txt' #test
+	#image_set_file = '/home/dghose/Project/Influenza_Detection/Code/Multimodal_Influenza_Detection/faster-rcnn.pytorch/Imagesetfiles/subset_imagesetfile.txt' #train
+        image_set_file = '/home/dghose/Project/Influenza_Detection/Code/Multimodal_Influenza_Detection/faster-rcnn.pytorch/Imagesetfiles/test_imagesetfile.txt' #test
 
 	#image_set_file='../../data/imagesetfile_overfit.txt'
 	#image_set_file = '/home/dghose/Project/Influenza_Detection/Code/Multimodal_Influenza_Detection/faster-rcnn.pytorch/imagesetfile_overfit_test.txt' #overfit
@@ -232,8 +232,8 @@ class kaist_thermal(imdb):
         format.
         """
 
-        #filename = os.path.join('/home/dghose/Project/Influenza_Detection/Data/Labels/annotations/set05/V000', index + '.txt') #train
-        filename = os.path.join('/home/dghose/Project/Influenza_Detection/Data/Labels/annotations/anno_train', index + '.txt') #test
+        #filename = os.path.join('/home/dghose/Project/Influenza_Detection/Data/Labels/annotations/subset_anno',index + '.txt') #train
+        filename = os.path.join('/home/dghose/Project/Influenza_Detection/Data/Labels/annotations/anno_test', index + '.txt') #test
         # print 'Loading: {}'.format(filename)
 	#filename=os.path.join('../../data/annotations/set05/V000',index+'.txt')
         with open(filename) as f:
@@ -330,8 +330,8 @@ class kaist_thermal(imdb):
 
 
     def _do_python_eval(self, output_dir='output'):
-        #annopath = os.path.join('/home/dghose/Project/Influenza_Detection/Data/Labels/annotations/set05/V000', '{:s}.txt') #train
-        annopath = os.path.join('/home/dghose/Project/Influenza_Detection/Data/Labels/annotations/anno_train', '{:s}.txt') #test
+        #annopath = os.path.join('/home/dghose/Project/Influenza_Detection/Data/Labels/annotations/subset_anno', '{:s}.txt') #train
+        annopath = os.path.join('/home/dghose/Project/Influenza_Detection/Data/Labels/annotations/anno_test', '{:s}.txt') #test
         #annopath=os.path.join('../../data/annotations/set05/V000','{:s}.txt')
 	#imagesetfile = '/home/dghose/Project/Influenza_Detection/Code/Multimodal_Influenza_Detection/faster-rcnn.pytorch/imagesetfile.txt'
         #imagesetfile='../../data/imagesetfile_overfit.txt'
@@ -340,7 +340,7 @@ class kaist_thermal(imdb):
 
         #annopath = os.path.join('/home/dghose/Project/Influenza_Detection/Data/Labels/annotations/set05/V000', '{:s}.txt')
         #imagesetfile = '/home/dghose/Project/Influenza_Detection/Code/Multimodal_Influenza_Detection/faster-rcnn.pytorch/imagesetfile.txt' #train
-        imagesetfile = '/home/dghose/Project/Influenza_Detection/Code/Multimodal_Influenza_Detection/faster-rcnn.pytorch/train_imagesetfile.txt' #test
+        imagesetfile = '/home/dghose/Project/Influenza_Detection/Code/Multimodal_Influenza_Detection/faster-rcnn.pytorch/Imagesetfiles/test_imagesetfile.txt' #test
         #imagesetfile = '/home/dghose/Project/Influenza_Detection/Code/Multimodal_Influenza_Detection/faster-rcnn.pytorch/imagesetfile_overfit_test.txt'#overfit
 
         cachedir = os.path.join(self._devkit_path, 'annotations_cache')
