@@ -209,3 +209,4 @@ visualize_test/*
 models/
 output/
 result/
+run_logs/
