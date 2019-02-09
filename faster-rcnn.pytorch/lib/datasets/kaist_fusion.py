@@ -335,7 +335,8 @@ class kaist_thermal(imdb):
             # save the predictions here
             #print(all_boxes)
             output_dir=self._data_path+'/output'
-            filename=output_dir+'/' + 'det_' + self._image_set + '.txt'
+            #filename=output_dir+'/' + 'det_' + self._image_set + '.txt'
+            filename='temp.txt'
             with open(filename, 'wt') as f:
                 for im_ind, index in enumerate(self.image_index):
                     dets = all_boxes[cls_ind][im_ind]
@@ -349,6 +350,7 @@ class kaist_thermal(imdb):
             # since we are writing to fle with only 3 decimal points :3f[see below], we filter out all detections with confidence less than thaand do not write them to the file
                         if(dets[k,-1]<1e-3):
                             continue
+                        # print(dets[k])
                         f.write('{:s} {:.3f} {:.1f} {:.1f} {:.1f} {:.1f}\n'.
                                 format(index, dets[k, -1],
                                        dets[k, 0] + 1, dets[k, 1] + 1,
@@ -438,7 +440,8 @@ class kaist_thermal(imdb):
                 continue
             output_dir=self._data_path+'/output'
 
-            filename=output_dir+'/' + 'det_' + self._image_set + '.txt'
+            #filename=output_dir+'/' + 'det_' + self._image_set + '.txt'
+            filename='temp.txt'
             rec, prec = voc_eval_miss_rate(
                 filename, annopath, imagesetfile, cls, cachedir, ovthresh=0.5,
                 use_07_metric = False)

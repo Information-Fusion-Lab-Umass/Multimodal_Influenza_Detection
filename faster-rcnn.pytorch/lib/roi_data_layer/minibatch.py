@@ -77,7 +77,8 @@ def _get_image_blob(roidb, scale_inds):
   processed_ims = []
   im_scales = []
   for i in range(num_images):
-    im = cv2.imread(roidb[i]['image'],cv2.IMREAD_GRAYSCALE)
+    #im = cv2.imread(roidb[i]['image'],cv2.IMREAD_GRAYSCALE)
+    im = cv2.imread(roidb[i]['image'],-1)
     #im = imread(roidb[i]['image'])
     #print(im.shape)
    	

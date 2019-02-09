@@ -51,6 +51,7 @@ class _fasterRCNN(nn.Module):
 	#print(num_boxes)
 
         # feed image data to base model to obtain base feature map
+        #print (im_data.shape)
         base_feat = self.RCNN_base(im_data)
 	#print("base_feat")
 	#print(type(base_feat))

@@ -46,7 +46,7 @@ for year in ['2015']:
 
 
 for split in ['combined_train','combined_test','day_train','day_test','night_train','night_test', \
-'train_combined_salient_ir','test_combined_salient_ir','train_subset','salient_combined_train','salient_combined_test']:
+'train_combined_salient_ir','test_combined_salient_ir','train_subset','salient_combined_train','salient_combined_test', 'train_subset_100']:
 #for split in ['day_train','day_test','night_train','night_test','train_subset']:
   name=split
   #name = 'kaist_{}'.format(split)
