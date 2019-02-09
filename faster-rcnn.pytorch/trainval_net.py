@@ -182,7 +182,7 @@ if __name__ == '__main__':
       args.imdbval_name = "vg_150-50-50_minival"
       args.set_cfgs = ['ANCHOR_SCALES', '[2, 4, 8, 16]', 'ANCHOR_RATIOS', '[0.5,1,2]', 'MAX_NUM_GT_BOXES', '50']#sclaes=[4,8,16,32]--default
   elif args.dataset == "kaist":
-      args.imdb_name = "train_subset"
+      args.imdb_name = "train_subset_100"
       args.imdbval_name = "train-all02"
       args.set_cfgs = ['ANCHOR_SCALES', '[0.05, 0.1, 0.25, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4]', 'ANCHOR_RATIOS', '[0.5, 1, 2]', 'MAX_NUM_GT_BOXES', '30']#scales=[4,8,16,32] ratios = [0.5, 1, 2]--default
   
@@ -352,6 +352,10 @@ if __name__ == '__main__':
       loss.backward()
       #print("after loss backward")
       if args.net == "vgg16":
+          clip_gradient(fasterRCNN, 10.)
+      elif args.net == "res50":
+          clip_gradient(fasterRCNN, 10.)
+      elif args.net == "res101":
           clip_gradient(fasterRCNN, 10.)
       optimizer.step()
 
