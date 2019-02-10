@@ -58,4 +58,13 @@ pretraining with vgg16 weights from https://download.pytorch.org/models/vgg16-39
 4382266 - overfitting best model for complete set05 - 20 epochs
 ---------------------------------------------------------------------------------
 4387704 - 20 epochs on complete dataset
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+4695218 - 7 epochs - session 23 - ratios: 0.05, 0.1, 0.25, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4 - complete training set
+4693700 - 10 epochs - session 20 - ratios: 0.5, 1, 1.5 - complete test set
+4698125 - 10 epochs - session 24 - saliency train - ratios between 0.05 to 4
+4698763 - 10 epochs - session 26 - saliency ir train - ratios between 0.05 to 4
 
+4700141 - first test on combined saliency test - weights from session 24
+4701079 - first test on saliency ir images - batch size 16 - weights from session 26
+4701928 - first test on day test weights from 23

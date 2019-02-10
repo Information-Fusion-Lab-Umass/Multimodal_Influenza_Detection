@@ -209,3 +209,6 @@ visualize_test/*
 models/
 output/
 result/
+visualize_overfit/*
+visualize/*
+visualize_*
