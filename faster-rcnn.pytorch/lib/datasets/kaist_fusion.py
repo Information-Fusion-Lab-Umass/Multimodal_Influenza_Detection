@@ -17,6 +17,7 @@ import cPickle
 import subprocess
 from model.utils.config import cfg
 from .voc_eval import voc_eval_miss_rate
+from .voc_eval import voc_eval_thesis
 
 
 class kaist_thermal(imdb):
@@ -439,9 +440,13 @@ class kaist_thermal(imdb):
             output_dir=self._data_path+'/output'
 
             filename=output_dir+'/' + 'det_' + self._image_set + '.txt'
-            rec, prec = voc_eval_miss_rate(
+            #rec, prec = voc_eval_miss_rate(
+                #filename, annopath, imagesetfile, cls, cachedir, ovthresh=0.5,
+                #use_07_metric = False)
+            rec, prec = voc_eval_thesis(
                 filename, annopath, imagesetfile, cls, cachedir, ovthresh=0.5,
                 use_07_metric = False)
+
             #aps += [ap]
             #print("aps")
             #print(aps)

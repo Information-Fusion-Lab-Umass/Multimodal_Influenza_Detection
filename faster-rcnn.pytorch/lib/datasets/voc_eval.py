@@ -432,6 +432,8 @@ def voc_eval_miss_rate(detpath,
   #fp = np.cumsum(fp)
   fp=np.sum(fp)  
   #tp = np.cumsum(tp)
+  print("false positive")
+  print(fp)
   tp=np.sum(tp)  
   print ("true positive")
   print(tp)
@@ -493,7 +495,7 @@ def voc_eval_thesis(detpath,
   with open(imagesetfile, 'r') as f:
     lines = f.readlines()
   imagenames = [x.strip() for x in lines]
-  print(imagenames)
+  #print(imagenames)
   if not os.path.isfile(cachefile):
     # load annotations
     recs = {}
@@ -518,14 +520,15 @@ def voc_eval_thesis(detpath,
   class_recs = {}
   npos = 0 #0.0001#0
   for imagename in imagenames:
-    R = [obj for obj in recs[imagename]]
+    R = [obj for obj in recs[imagename] if obj['name'] == classname]
     bbox = np.array([x['bbox'] for x in R])
-    #difficult = np.array([x['difficult'] for x in R]).astype(np.bool)
+    difficult = np.array([x['difficult'] for x in R]).astype(np.bool)
     det = [False] * len(R)
-    npos = npos + len(R)
+    npos = npos + sum(~difficult)
     #print("npos")
     #print(npos)
     class_recs[imagename] = {'bbox': bbox,
+                              'difficult':difficult,
                              'det': det}
 
   # read dets
@@ -615,6 +618,7 @@ def voc_eval_thesis(detpath,
   #fp = np.cumsum(fp)
   fp=np.sum(fp)  
   #tp = np.cumsum(tp)
+  print("false positive")
   print(fp)
   tp=np.sum(tp)  
   print ("true positive")

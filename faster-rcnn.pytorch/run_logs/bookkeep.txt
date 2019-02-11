@@ -68,3 +68,7 @@ pretraining with vgg16 weights from https://download.pytorch.org/models/vgg16-39
 4700141 - first test on combined saliency test - weights from session 24
 4701079 - first test on saliency ir images - batch size 16 - weights from session 26
 4701928 - first test on day test weights from 23
+4702181 -  first test on salient_night_test with weights trained for salient_combined_train for 10 epochs - precision 0.488  recall 0.633  
+
+4702176 - first test on salient ir day - weights from session 26 - precision 0.459  recall  0.567
+4702195 - first test on salient ir night - weights from session 26 - precision 0.441  recall  0.658
