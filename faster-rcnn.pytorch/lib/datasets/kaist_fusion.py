@@ -17,6 +17,7 @@ import cPickle
 import subprocess
 from model.utils.config import cfg
 from .voc_eval import voc_eval_miss_rate
+from .voc_eval import voc_eval_thesis
 
 
 class kaist_thermal(imdb):
@@ -50,7 +51,6 @@ class kaist_thermal(imdb):
 
     def image_path_at(self, i):
         """
-        Return the absolute path to image i in the image sequence.
         """
         return self.image_path_from_index(self._image_index[i])
 
@@ -334,9 +334,9 @@ class kaist_thermal(imdb):
             print 'Writing {} Kaist results file'.format(cls)
             # save the predictions here
             #print(all_boxes)
-            output_dir=self._data_path+'/output'
-            #filename=output_dir+'/' + 'det_' + self._image_set + '.txt'
-            filename='temp.txt'
+            output_dir=self._data_path+'/output_deep'
+            filename=output_dir+'/' + 'det_' + self._image_set + '.txt'
+            #filename='temp.txt'
             with open(filename, 'wt') as f:
                 for im_ind, index in enumerate(self.image_index):
                     dets = all_boxes[cls_ind][im_ind]
@@ -368,7 +368,7 @@ class kaist_thermal(imdb):
 
 
 
-    def _do_python_eval(self, output_dir='output'):
+    def _do_python_eval(self, output_dir='output_deep'):
         '''
         #annopath = os.path.join('/home/dghose/Project/Influenza_Detection/Data/Labels/annotations/subset_anno', '{:s}.txt') #train
         annopath = os.path.join('/home/dghose/Project/Influenza_Detection/Data/Labels/annotations/anno_test', '{:s}.txt') #test
@@ -438,13 +438,16 @@ class kaist_thermal(imdb):
         for i, cls in enumerate(self._classes):
             if cls == '__background__':
                 continue
-            output_dir=self._data_path+'/output'
+            output_dir=self._data_path+'/output_deep'
 
-            #filename=output_dir+'/' + 'det_' + self._image_set + '.txt'
-            filename='temp.txt'
-            rec, prec = voc_eval_miss_rate(
+            filename=output_dir+'/' + 'det_' + self._image_set + '.txt'
+            #rec, prec = voc_eval_miss_rate(
+                #filename, annopath, imagesetfile, cls, cachedir, ovthresh=0.5,
+                #use_07_metric = False)
+            rec, prec = voc_eval_thesis(
                 filename, annopath, imagesetfile, cls, cachedir, ovthresh=0.5,
                 use_07_metric = False)
+
             #aps += [ap]
             #print("aps")
             #print(aps)
@@ -470,7 +473,7 @@ class kaist_thermal(imdb):
 
 
 
-    def _do_matlab_eval(self, comp_id, output_dir='output'):
+    def _do_matlab_eval(self, comp_id, output_dir='output_deep'):
         rm_results = self.config['cleanup']
 
         path = os.path.join(os.path.dirname(__file__),

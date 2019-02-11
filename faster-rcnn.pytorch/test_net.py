@@ -126,7 +126,7 @@ if __name__ == '__main__':
       args.set_cfgs = ['ANCHOR_SCALES', '[4, 8, 16, 32]', 'ANCHOR_RATIOS', '[0.5,1,2]']
   elif args.dataset == "kaist":
       args.imdb_name = "kaist_test-all02"
-      args.imdbval_name = "train_subset_100"#change here
+      args.imdbval_name = "combined_test"#"test_combined_salient_ir"#change here
       args.set_cfgs = ['ANCHOR_SCALES', '[0.05, 0.1, 0.25, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4 ]', 'ANCHOR_RATIOS', '[0.5,1,2]', 'MAX_NUM_GT_BOXES', '30']#scales=[4,8,16,32]--default 1,1.5, 2
   
   args.cfg_file = "cfgs/{}_ls.yml".format(args.net) if args.large_scale else "cfgs/{}.yml".format(args.net)
@@ -224,7 +224,8 @@ if __name__ == '__main__':
   data_iter = iter(dataloader)
 
   _t = {'im_detect': time.time(), 'misc': time.time()}
-  det_file = os.path.join(output_dir, 'detections.pkl')
+  #det_file = os.path.join(output_dir, 'detections.pkl')
+  #det_file = "/home/dghose/Project/detections.pkl"
 
   fasterRCNN.eval()
   empty_array = np.transpose(np.array([[],[],[],[],[]]), (1,0))
@@ -318,13 +319,13 @@ if __name__ == '__main__':
       if vis:
           #cv2.imwrite('visualize'+str(i)+'.png', im2show)
 	  #pdb.set_trace()
-          cv2.imwrite('visualize_overfit/result'+str(i)+'.png', im2show)
+          cv2.imwrite('/mnt/nfs/scratch1/dghose/Kaist/visualize/visualize_30x_combined_test/result'+str(i)+'.png', im2show)
           #pdb.set_trace()
           #cv2.imshow('test', im2show)
           #cv2.waitKey(0)
 
-  with open(det_file, 'wb') as f:
-      pickle.dump(all_boxes, f, pickle.HIGHEST_PROTOCOL)
+  #with open(det_file, 'wb') as f:
+      #pickle.dump(all_boxes, f, pickle.HIGHEST_PROTOCOL)
 
   print('Evaluating detections')
   imdb.evaluate_detections(all_boxes, output_dir)
