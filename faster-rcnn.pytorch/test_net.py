@@ -319,7 +319,7 @@ if __name__ == '__main__':
       if vis:
           #cv2.imwrite('visualize'+str(i)+'.png', im2show)
 	  #pdb.set_trace()
-          cv2.imwrite('/mnt/nfs/scratch1/dghose/Kaist/visualize/visualize_30x_combined_test/result'+str(i)+'.png', im2show)
+          cv2.imwrite('/mnt/nfs/scratch1/dchakraborty/infrared/visualize/visualize_combined_test/result'+str(i)+'.png', im2show)
           #pdb.set_trace()
           #cv2.imshow('test', im2show)
           #cv2.waitKey(0)

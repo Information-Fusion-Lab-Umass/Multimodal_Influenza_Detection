@@ -72,3 +72,8 @@ pretraining with vgg16 weights from https://download.pytorch.org/models/vgg16-39
 
 4702176 - first test on salient ir day - weights from session 26 - precision 0.459  recall  0.567
 4702195 - first test on salient ir night - weights from session 26 - precision 0.441  recall  0.658
+4702251 - train on combined_train - resnet50 - session10 - precision 0.5033 recall 0.7306
+4703560 - first test on night_test for Kaist session 10
+4703561 - first test on day_test for kaist session 10
+4703562 - first test on combined_test for kaist session 10
+

@@ -265,12 +265,12 @@ __C.EPS = 1e-14
 
 # Root directory of project
 #__C.ROOT_DIR = osp.abspath(osp.join(osp.dirname(__file__), '..', '..', '..'))
-__C.ROOT_DIR = osp.abspath('/mnt/nfs/scratch1/dchakraborty/')
-
+#__C.ROOT_DIR = osp.abspath('/mnt/nfs/scratch1/dchakraborty/')
+__C.ROOT_DIR = osp.abspath('/mnt/nfs/scratch1/dghose/')
 # Data directory
 #__C.DATA_DIR = osp.abspath(osp.join(__C.ROOT_DIR, 'data'))
 #__C.DATA_DIR = osp.abspath(osp.join(__C.ROOT_DIR, 'Kaist'))
-__C.DATA_DIR = osp.abspath(osp.join(__C.ROOT_DIR, 'Kaist_test_30X'))
+__C.DATA_DIR = osp.abspath(osp.join(__C.ROOT_DIR, 'Kaist'))
 
 
 # Name (or path to) the matlab executable
