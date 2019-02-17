@@ -57,7 +57,7 @@ def parse_args():
                       help='set config keys', default=None,
                       nargs=argparse.REMAINDER)
   parser.add_argument('--load_dir', dest='load_dir',
-                      help='directory to load models', default="models",
+                      help='directory to load models', default="/mnt/nfs/scratch1/shasvatmukes/model_weights/models",
                       type=str)
   parser.add_argument('--cuda', dest='cuda',
                       help='whether use CUDA',
@@ -76,13 +76,13 @@ def parse_args():
                       default=0, type=int)
   parser.add_argument('--checksession', dest='checksession',
                       help='checksession to load model',
-                      default=1, type=int)
+                      default=23, type=int)
   parser.add_argument('--checkepoch', dest='checkepoch',
                       help='checkepoch to load network',
-                      default=20, type=int)
+                      default=6, type=int)
   parser.add_argument('--checkpoint', dest='checkpoint',
                       help='checkpoint to load network',
-                      default=9, type=int)
+                      default=44315, type=int)
   parser.add_argument('--vis', dest='vis',
                       help='visualization mode',
                       action='store_true')
@@ -126,7 +126,7 @@ if __name__ == '__main__':
       args.set_cfgs = ['ANCHOR_SCALES', '[4, 8, 16, 32]', 'ANCHOR_RATIOS', '[0.5,1,2]']
   elif args.dataset == "kaist":
       args.imdb_name = "kaist_test-all02"
-      args.imdbval_name = "combined_test"#"test_combined_salient_ir"#change here
+      args.imdbval_name = "night_test"#"test_combined_salient_ir"#change here
       args.set_cfgs = ['ANCHOR_SCALES', '[0.05, 0.1, 0.25, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4 ]', 'ANCHOR_RATIOS', '[0.5,1,2]', 'MAX_NUM_GT_BOXES', '30']#scales=[4,8,16,32]--default 1,1.5, 2
   
   args.cfg_file = "cfgs/{}_ls.yml".format(args.net) if args.large_scale else "cfgs/{}.yml".format(args.net)
@@ -207,7 +207,7 @@ if __name__ == '__main__':
   if vis:
     thresh = 0.05
   else:
-    thresh = 0.0
+    thresh = 0
 
   save_name = 'faster_rcnn_10'
   num_images = len(imdb.image_index)
@@ -215,6 +215,7 @@ if __name__ == '__main__':
                for _ in xrange(imdb.num_classes)]
 
   output_dir = get_output_dir(imdb, save_name)
+  print(output_dir)
   dataset = roibatchLoader(roidb, ratio_list, ratio_index, 1, \
                         imdb.num_classes, training=False, normalize = False)
   dataloader = torch.utils.data.DataLoader(dataset, batch_size=1,
@@ -319,7 +320,7 @@ if __name__ == '__main__':
       if vis:
           #cv2.imwrite('visualize'+str(i)+'.png', im2show)
 	  #pdb.set_trace()
-          cv2.imwrite('/mnt/nfs/scratch1/dghose/Kaist/visualize/visualize_30x_combined_test/result'+str(i)+'.png', im2show)
+          cv2.imwrite('/mnt/nfs/scratch1/dghose/Kaist/visualize/visualize_30x_night_test/result'+str(i)+'.png', im2show)
           #pdb.set_trace()
           #cv2.imshow('test', im2show)
           #cv2.waitKey(0)

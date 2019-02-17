@@ -212,3 +212,4 @@ result/
 visualize_overfit/*
 visualize/*
 visualize_*/
+run_logs/*

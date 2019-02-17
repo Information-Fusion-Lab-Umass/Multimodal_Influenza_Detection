@@ -18,7 +18,7 @@ import subprocess
 from model.utils.config import cfg
 from .voc_eval import voc_eval_miss_rate
 from .voc_eval import voc_eval_thesis
-
+from .voc_eval import voc_eval_fppi_LAMR
 
 class kaist_thermal(imdb):
     def __init__(self, image_set, devkit_path='/home/dghose/Project/Influenza_Detection/Data/KAIST/Train/combined_train'):
@@ -335,7 +335,7 @@ class kaist_thermal(imdb):
             print 'Writing {} Kaist results file'.format(cls)
             # save the predictions here
             #print(all_boxes)
-            output_dir=self._data_path+'/output'
+            output_dir=self._data_path+'/output_shasvat'
             filename=output_dir+'/' + 'det_' + self._image_set + '.txt'
             with open(filename, 'wt') as f:
                 for im_ind, index in enumerate(self.image_index):
@@ -437,13 +437,13 @@ class kaist_thermal(imdb):
         for i, cls in enumerate(self._classes):
             if cls == '__background__':
                 continue
-            output_dir=self._data_path+'/output'
+            output_dir=self._data_path+'/output_shasvat'
 
             filename=output_dir+'/' + 'det_' + self._image_set + '.txt'
             #rec, prec = voc_eval_miss_rate(
                 #filename, annopath, imagesetfile, cls, cachedir, ovthresh=0.5,
                 #use_07_metric = False)
-            rec, prec = voc_eval_thesis(
+            rec, prec = voc_eval_thesis(self._image_set,
                 filename, annopath, imagesetfile, cls, cachedir, ovthresh=0.5,
                 use_07_metric = False)
 
