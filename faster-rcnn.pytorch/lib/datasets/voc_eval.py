@@ -14,6 +14,8 @@ import matplotlib
 matplotlib.use('Agg')
 from matplotlib import pyplot as plt
 import math
+from matplotlib.ticker import FormatStrFormatter
+
 def parse_rec(filename):
 
   """ Parse a PASCAL VOC xml file """
@@ -678,21 +680,26 @@ def log_average_miss_rate(imageset,recall, fp_cumsum, num_images):
 
     # Use 9 evenly spaced reference points in log-space
     ref = np.logspace(-2.0, 0.0, num = 9)
+    #print(ref)
+    ref_tmp=np.copy(ref)
     for i, ref_i in enumerate(ref):
         # np.where() will always find at least 1 index, since min(ref) = 0.01 and min(fppi_tmp) = -1.0
         j = np.where(fppi_tmp <= ref_i)[-1][-1]
         ref[i] = mr_tmp[j]
 
     # log(0) is undefined, so we use the np.maximum(1e-10, ref)
-    print(ref)
+    #print(ref)
     np.save('/mnt/nfs/scratch1/dghose/Kaist_test_30X/fppi_mr_plots/'+imageset+'.npy',ref)
     plt.xscale('log')
     plt.yscale('log')
     plt.title('Miss rate vs FPPI on log-log scale')
     plt.xlabel('False Positives Per Image')
     plt.ylabel('Miss Rate')
-    
-    plt.plot(ref)
+    #print(ref_tmp)
+    #print(ref)
+    plt.gca().yaxis.set_major_formatter(FormatStrFormatter('%.1f'))
+
+    plt.plot(ref_tmp,ref)
     plt.savefig('/mnt/nfs/scratch1/dghose/Kaist_test_30X/fppi_mr_plots/'+imageset+'.png')
     lamr = math.exp(np.mean(np.log(np.maximum(1e-10, ref))))
 

@@ -8,7 +8,7 @@ disp(output_dir)
 disp(extra_param)
 
 VOCopts = get_voc_opts(path);
-addpath('/home/dghose/Project/Influenza_Detection/Data/KAIST/Train/VOCcode');
+%addpath('VOCcode');
 VOCopts.testset = test_set;
 
 for i = 1:length(VOCopts.classes)

@@ -474,6 +474,7 @@ class kaist_thermal(imdb):
 
     def _do_matlab_eval(self, comp_id, output_dir='output'):
         rm_results = self.config['cleanup']
+	output_dir=self._data_path+'/output_shasvat'
 
         path = os.path.join(os.path.dirname(__file__),
                             'VOCdevkit-matlab-wrapper')
