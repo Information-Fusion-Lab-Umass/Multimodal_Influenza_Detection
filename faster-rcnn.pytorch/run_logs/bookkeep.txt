@@ -77,3 +77,12 @@ pretraining with vgg16 weights from https://download.pytorch.org/models/vgg16-39
 4703561 - first test on day_test for kaist session 10
 4703562 - first test on combined_test for kaist session 10
 
+4710811 - 15 epochs - session 100 - resnet101 - combined_train - 4 gpu - bs 4
+4710819 - 15 epochs - session 101 - resnet101 - salient combined train - 3 gpu - bs 3
+4710821 - 15 epochs - session 102 - resnet101 - train combined salient ir - 3 gpu - bs 3
+
+
+
+
+
+

@@ -59,6 +59,9 @@ def parse_args():
   parser.add_argument('--load_dir', dest='load_dir',
                       help='directory to load models', default="models",
                       type=str)
+  parser.add_argument('--data_split', dest='data_split',
+                      help='data split to use - combined_train, etc.',
+                      default='train_subset', type=str)
   parser.add_argument('--cuda', dest='cuda',
                       help='whether use CUDA',
                       action='store_true')
@@ -86,6 +89,9 @@ def parse_args():
   parser.add_argument('--vis', dest='vis',
                       help='visualization mode',
                       action='store_true')
+  parser.add_argument('--vis_dir', dest='vis_dir',
+                      help='directory to store visualizations', default="visualize",
+                      type=str)
   args = parser.parse_args()
   return args
 
@@ -126,7 +132,7 @@ if __name__ == '__main__':
       args.set_cfgs = ['ANCHOR_SCALES', '[4, 8, 16, 32]', 'ANCHOR_RATIOS', '[0.5,1,2]']
   elif args.dataset == "kaist":
       args.imdb_name = "kaist_test-all02"
-      args.imdbval_name = "combined_test"#"test_combined_salient_ir"#change here
+      args.imdbval_name = args.data_split#"test_combined_salient_ir"#change here
       args.set_cfgs = ['ANCHOR_SCALES', '[0.05, 0.1, 0.25, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4 ]', 'ANCHOR_RATIOS', '[0.5,1,2]', 'MAX_NUM_GT_BOXES', '30']#scales=[4,8,16,32]--default 1,1.5, 2
   
   args.cfg_file = "cfgs/{}_ls.yml".format(args.net) if args.large_scale else "cfgs/{}.yml".format(args.net)
@@ -206,6 +212,8 @@ if __name__ == '__main__':
 
   if vis:
     thresh = 0.05
+    if not os.path.exists(args.vis_dir):
+      os.makedirs(args.vis_dir)
   else:
     thresh = 0.0
 
@@ -319,7 +327,8 @@ if __name__ == '__main__':
       if vis:
           #cv2.imwrite('visualize'+str(i)+'.png', im2show)
 	  #pdb.set_trace()
-          cv2.imwrite('/mnt/nfs/scratch1/dchakraborty/infrared/visualize/visualize_combined_test/result'+str(i)+'.png', im2show)
+          #cv2.imwrite('/mnt/nfs/scratch1/dchakraborty/infrared/visualize/visualize_subset/result'+str(i)+'.png', im2show)
+          cv2.imwrite(os.path.join(args.vis_dir, 'result{}.png'.format(i)), im2show)
           #pdb.set_trace()
           #cv2.imshow('test', im2show)
           #cv2.waitKey(0)
