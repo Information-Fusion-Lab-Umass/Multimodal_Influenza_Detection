@@ -8,7 +8,8 @@ disp(output_dir)
 disp(extra_param)
 
 VOCopts = get_voc_opts(path);
-%addpath('VOCcode');
+disp(path+'VOCcode');
+addpath(path+'VOCcode');
 VOCopts.testset = test_set;
 
 for i = 1:length(VOCopts.classes)

@@ -689,7 +689,7 @@ def log_average_miss_rate(imageset,recall, fp_cumsum, num_images):
 
     # log(0) is undefined, so we use the np.maximum(1e-10, ref)
     #print(ref)
-    np.save('/mnt/nfs/scratch1/dghose/Kaist_test_30X/fppi_mr_plots/'+imageset+'.npy',ref)
+    np.save('/mnt/nfs/scratch1/dghose/Kaist_test_30X/fppi_mr_plots/vgg16/'+imageset+'.npy',ref)
     plt.xscale('log')
     plt.yscale('log')
     plt.title('Miss rate vs FPPI on log-log scale')
@@ -700,9 +700,10 @@ def log_average_miss_rate(imageset,recall, fp_cumsum, num_images):
     plt.gca().yaxis.set_major_formatter(FormatStrFormatter('%.1f'))
 
     plt.plot(ref_tmp,ref)
-    plt.savefig('/mnt/nfs/scratch1/dghose/Kaist_test_30X/fppi_mr_plots/'+imageset+'.png')
+    plt.savefig('/mnt/nfs/scratch1/dghose/Kaist_test_30X/fppi_mr_plots/vgg16/'+imageset+'.png')
     lamr = math.exp(np.mean(np.log(np.maximum(1e-10, ref))))
-
+    print('lamr')
+    print(lamr)	
     return lamr, mr, fppi
 
 def voc_eval_fppi_LAMR(detpath,
