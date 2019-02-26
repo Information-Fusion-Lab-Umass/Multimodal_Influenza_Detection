@@ -82,6 +82,9 @@ pretraining with vgg16 weights from https://download.pytorch.org/models/vgg16-39
 4710821 - 15 epochs - session 102 - resnet101 - train combined salient ir - 3 gpu - bs 3
 
 
+4738587 - 10 epochs - session 112 - resnet101 - combined_train - 3 gpu - bs 1
+4738586 - 10 epochs - session 111 - resnet101 - salient combined train - 3 gpu - bs 1
+4738585 - 10 epochs - session 110 - resnet101 - train combined salient ir - 3 gpu - bs 1
 
 
 
