@@ -57,7 +57,7 @@ def parse_args():
                       help='set config keys', default=None,
                       nargs=argparse.REMAINDER)
   parser.add_argument('--load_dir', dest='load_dir',
-                      help='directory to load models', default="/mnt/nfs/scratch1/shasvatmukes/model_weights/models",
+                      help='directory to load models', default="/mnt/nfs/scratch1/shasvatmukes/model_weights/models/vgg16/kaist/",
                       type=str)
   parser.add_argument('--cuda', dest='cuda',
                       help='whether use CUDA',
@@ -86,6 +86,10 @@ def parse_args():
   parser.add_argument('--vis', dest='vis',
                       help='visualization mode',
                       action='store_true')
+  parser.add_argument('--data_split', dest='data_split',
+                      help='data split to use - combined_train, etc.',
+                      default='train_subset', type=str)
+
   args = parser.parse_args()
   return args
 
@@ -126,8 +130,8 @@ if __name__ == '__main__':
       args.set_cfgs = ['ANCHOR_SCALES', '[4, 8, 16, 32]', 'ANCHOR_RATIOS', '[0.5,1,2]']
   elif args.dataset == "kaist":
       args.imdb_name = "kaist_test-all02"
-      args.imdbval_name = "combined_test"#"test_day_salient_ir"#change here
-      args.set_cfgs = ['ANCHOR_SCALES', '[0.05, 0.1, 0.25, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4 ]', 'ANCHOR_RATIOS', '[0.5,1,2]', 'MAX_NUM_GT_BOXES', '30']#scales=[4,8,16,32]--default 1,1.5, 2
+      args.imdbval_name = args.data_split#"test_day_salient_ir"#change here
+      args.set_cfgs = ['ANCHOR_SCALES', '[32, 42, 54, 71, 92, 119, 154, 200, 256]', 'ANCHOR_RATIOS', '[0.39, 0.44, 0.51]', 'MAX_NUM_GT_BOXES', '30']#scales=[4,8,16,32]--default 1,1.5, 2
   
   args.cfg_file = "cfgs/{}_ls.yml".format(args.net) if args.large_scale else "cfgs/{}.yml".format(args.net)
 
@@ -320,7 +324,7 @@ if __name__ == '__main__':
       if vis:
           #cv2.imwrite('visualize'+str(i)+'.png', im2show)
 	  #pdb.set_trace()
-          cv2.imwrite('/mnt/nfs/scratch1/dghose/Kaist_test_30X/visualize_vgg16/combined_test/result'+str(i)+'.png', im2show)
+          cv2.imwrite('/mnt/nfs/scratch1/dghose/Kaist_test_30X/visualize_vgg16/'+args.data_split+'/result'+str(i)+'.png', im2show)
           #pdb.set_trace()
           #cv2.imshow('test', im2show)
           #cv2.waitKey(0)

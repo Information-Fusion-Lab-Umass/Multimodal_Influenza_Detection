@@ -15,6 +15,7 @@ import math
 import torchvision.models as models
 from model.faster_rcnn.faster_rcnn import _fasterRCNN
 import pdb
+from torchsummary import summary
 
 class vgg16(_fasterRCNN):
   def __init__(self, classes, pretrained=False, class_agnostic=False):
@@ -36,14 +37,25 @@ class vgg16(_fasterRCNN):
     vgg.classifier = nn.Sequential(*list(vgg.classifier._modules.values())[:-1])
 
     # not using the last maxpool layer
-    self.RCNN_base = nn.Sequential(*list(vgg.features._modules.values())[:-1])
+    ##############removing 4th max pool ---starts here##################################
+    #self.RCNN_base = nn.Sequential(*list(vgg.features._modules.values())[:-1])##original
+    
 
+    self.RCNN_base_before_pool = nn.Sequential(*list(vgg.features._modules.values())[:23])# as per the count 24the layer is 4th max pool=23rd index[0 based indexing]
+    self.RCNN_base_after_pool = nn.Sequential(*list(vgg.features._modules.values())[24:-1])
+    #print(summary(self.RCNN_base_before_pool,(3,512,640)))
+    #print(summary(self.RCNN_base__pool,(3,512,512)))
+
+    ###################changes end here#####################################################
+    ###########due to above change########################
     # Fix the layers before conv3:
-    for layer in range(10):
-      for p in self.RCNN_base[layer].parameters(): p.requires_grad = False
+    #for layer in range(10):
+    #  for p in self.RCNN_base[layer].parameters(): p.requires_grad = False
 
     # self.RCNN_base = _RCNN_base(vgg.features, self.classes, self.dout_base_model)
-
+    #for layer in range(10):
+    #  for p in self.RCNN_base_before_pool[layer].parameters(): p.requires_grad = False
+    #######################################################3
     self.RCNN_top = vgg.classifier
 
     # not using the last maxpool layer
