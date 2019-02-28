@@ -16,8 +16,11 @@ import torchvision.models as models
 from model.faster_rcnn.faster_rcnn import _fasterRCNN
 import pdb
 from torchsummary import summary
-
+#import vgg16_modified
+from torchvision.models.vgg import model_urls
+from model.faster_rcnn.modified_vgg16 import vgg16 as vgg16_
 class vgg16(_fasterRCNN):
+  
   def __init__(self, classes, pretrained=False, class_agnostic=False):
     self.model_path = '/mnt/nfs/scratch1/shasvatmukes/model_weights/models/vgg16/pretrained_weights/vgg16-397923af.pth'
     #self.model_path = '/home/dghose/Project/Influenza_Detection/Code/Multimodal_Influenza_Detection/faster-rcnn.pytorch/models/vgg16/pretrained_weights/vgg16-397923af.pth'
@@ -28,33 +31,89 @@ class vgg16(_fasterRCNN):
     _fasterRCNN.__init__(self, classes, class_agnostic)
 
   def _init_modules(self):
-    vgg = models.vgg16()
+    ################------------------##########################
+    model_urls['vgg16'] = model_urls['vgg16'].replace('https://', 'http://')
+    pretrained = models.vgg16(pretrained=True)
+    #pretrained=models.vgg16()
+    #print('printing pretrained')
+    #print(pretrained)
+    #pretrained_dict=torch.load(self.model_path)
+    print("original state dict")
+    pretrained_dict = pretrained.state_dict()
+    print(pretrained_dict.keys())
+
+    vgg = vgg16_()
+    vgg_dict = vgg.state_dict()
+    idx = 0
+    print("no max pool",vgg_dict.keys())
+
+    for k, v in pretrained_dict.items():
+        if int(k.split('.')[1]) > 22:
+            break
+
+        vgg_dict[k] = v
+        print("in loop", k)
+        #if int(k.split('.')[1]) > 22:
+        #    break
+    vgg_dict['features.23.weight'] = pretrained_dict['features.24.weight']
+    vgg_dict['features.23.bias'] = pretrained_dict['features.24.bias']
+    vgg_dict['features.25.weight'] = pretrained_dict['features.26.weight']
+    vgg_dict['features.25.bias'] = pretrained_dict['features.26.bias']
+    vgg_dict['features.27.weight'] = pretrained_dict['features.28.weight']
+    vgg_dict['features.27.bias'] = pretrained_dict['features.28.bias']
+    print (vgg_dict['features.27.bias'] == pretrained_dict['features.28.bias'])
+    #print('pretrained_dict before updation')
+    #print(pretrained_dict.keys())
+    #pretrained_dict = {k: v for k, v in pretrained_dict.items() if k in vgg_dict}
+    #print('pretrained_dict.keys()')
+    #print(pretrained_dict.keys())
+    #print('vgg_dict.keys()')
+    #print(vgg_dict.keys())
+    #vgg_dict.update(pretrained_dict) 
+    vgg.load_state_dict(vgg_dict)
+ 
+
+    ######################################-________###################################
+    '''
     if self.pretrained:
         print("Loading pretrained weights from %s" %(self.model_path))
         state_dict = torch.load(self.model_path)
         vgg.load_state_dict({k:v for k,v in state_dict.items() if k in vgg.state_dict()})
-
+    '''
     vgg.classifier = nn.Sequential(*list(vgg.classifier._modules.values())[:-1])
-
+    
     # not using the last maxpool layer
     ##############removing 4th max pool ---starts here##################################
-    #self.RCNN_base = nn.Sequential(*list(vgg.features._modules.values())[:-1])##original
     
+    self.RCNN_base = nn.Sequential(*list(vgg.features._modules.values()))##original
+    print(self.RCNN_base)
 
-    self.RCNN_base_before_pool = nn.Sequential(*list(vgg.features._modules.values())[:23])# as per the count 24the layer is 4th max pool=23rd index[0 based indexing]
-    self.RCNN_base_after_pool = nn.Sequential(*list(vgg.features._modules.values())[24:-1])
+    #self.RCNN_base_before_pool = nn.Sequential(*list(vgg.features._modules.values())[:23])# as per the count 24the layer is 4th max pool=23rd index[0 based indexing]
+    #self.RCNN_base_after_pool = nn.Sequential(*list(vgg.features._modules.values())[24:-1])
+    #print(self.RCNN_base_before_pool)
+    #print(self.RCNN_base_after_pool)
+    
+    '''
+    list1 = list(vgg.features._modules.values())[:23] 
+    list1.extend(list(vgg.features._modules.values())[24:-1])
+    self.RCNN_base_new = nn.Sequential(*list1)
+    print(self.RCNN_base_new)
+    '''
+
+    
+    #self.RCNN_new=nn.Sequential(
     #print(summary(self.RCNN_base_before_pool,(3,512,640)))
     #print(summary(self.RCNN_base__pool,(3,512,512)))
 
     ###################changes end here#####################################################
     ###########due to above change########################
     # Fix the layers before conv3:
-    #for layer in range(10):
-    #  for p in self.RCNN_base[layer].parameters(): p.requires_grad = False
+    for layer in range(10):
+      for p in self.RCNN_base[layer].parameters(): p.requires_grad = False
 
     # self.RCNN_base = _RCNN_base(vgg.features, self.classes, self.dout_base_model)
     #for layer in range(10):
-    #  for p in self.RCNN_base_before_pool[layer].parameters(): p.requires_grad = False
+    #  for p in self.RCNN_base_new[layer].parameters(): p.requires_grad = False
     #######################################################3
     self.RCNN_top = vgg.classifier
 

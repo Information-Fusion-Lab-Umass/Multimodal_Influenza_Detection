@@ -53,11 +53,11 @@ class _fasterRCNN(nn.Module):
         # feed image data to base model to obtain base feature map
         ##############changes for incorporating removal of vgg16 4th max pool layer####################
 	#print(im_data.shape)
-        feature_map=self.RCNN_base_before_pool(im_data)
+        #feature_map=self.RCNN_base_before_pool(im_data)
 	#print(feature_map.shape)
-        base_feat=self.RCNN_base_after_pool(feature_map)	
+        #base_feat=self.RCNN_base_after_pool(feature_map)	
         #print(base_feat.shape)
-        #base_feat = self.RCNN_base(im_data)
+        base_feat = self.RCNN_base(im_data)
 	###########################---------------------##############################################
 	#print("base_feat")
 	#print(type(base_feat))
