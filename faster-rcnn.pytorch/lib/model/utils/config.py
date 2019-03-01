@@ -266,9 +266,6 @@ __C.EPS = 1e-14
 # Root directory of project
 #__C.ROOT_DIR = osp.abspath(osp.join(osp.dirname(__file__), '..', '..', '..'))
 __C.ROOT_DIR = osp.abspath('../../../../../../../mnt/nfs/scratch1/dghose/')
-
-# Data directory
-#__C.DATA_DIR = osp.abspath(osp.join(__C.ROOT_DIR, 'data'))
 __C.DATA_DIR = osp.abspath(osp.join(__C.ROOT_DIR, 'Kaist'))
 #__C.DATA_DIR = osp.abspath(osp.join(__C.ROOT_DIR, 'Kaist_test_30X'))
 
@@ -294,10 +291,14 @@ __C.POOLING_SIZE = 7
 __C.MAX_NUM_GT_BOXES = 20
 
 # Anchor scales for RPN
-__C.ANCHOR_SCALES = [8,16,32]#original: 8,16,32
+
+# Data directory
+#__C.DATA_DIR = osp.abspath(osp.join(__C.ROOT_DIR, 'data'))
+#scales for RPN
+__C.ANCHOR_SCALES = [32, 42, 54, 71, 92, 119, 154, 200, 256]#original: 8,16,32
 #[32, 42, 54, 71, 92, 119, 154, 200, 256]
 # Anchor ratios for RPN
-__C.ANCHOR_RATIOS = [0.05,0.20,0.25]#0.5,1,2
+__C.ANCHOR_RATIOS = [0.39, 0.44, 0.51]#0.5,1,2
 
 # Feature stride for RPN
 __C.FEAT_STRIDE = [16, ]

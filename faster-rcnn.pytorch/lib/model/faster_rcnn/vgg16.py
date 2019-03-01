@@ -53,6 +53,10 @@ class vgg16(_fasterRCNN):
 
         vgg_dict[k] = v
         print("in loop", k)
+        print('vgg_dict[k]')
+        print(type(vgg_dict[k]))
+  	print('tyoe v')
+	print(type(v)) 
         #if int(k.split('.')[1]) > 22:
         #    break
     vgg_dict['features.23.weight'] = pretrained_dict['features.24.weight']
@@ -82,11 +86,11 @@ class vgg16(_fasterRCNN):
     '''
     vgg.classifier = nn.Sequential(*list(vgg.classifier._modules.values())[:-1])
     print(pretrained.features)
-    part_one = list(pretrained.features.children())[0:25]
-    part_two = list(pretrained.features.children())[26:30]
-    #part_one.extend(part_two)
-    #self.RCNN_base  = nn.Sequential(*part_one)
-    self.RCNN_base = vgg.features
+    part_one = list(pretrained.features.children())[0:23]
+    part_two = list(pretrained.features.children())[24:30]
+    part_one.extend(part_two)
+    self.RCNN_base  = nn.Sequential(*part_one)
+    #self.RCNN_base = vgg.features
     print(self.RCNN_base)
     # not using the last maxpool layer
     ##############removing 4th max pool ---starts here##################################
