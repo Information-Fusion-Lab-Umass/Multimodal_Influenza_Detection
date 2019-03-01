@@ -122,6 +122,10 @@ def parse_args():
                       help='whether use tensorboard',
                       action='store_true')
 
+  parser.add_argument('--data_split', dest='data_split',
+                      help='data split to use - combined_train, etc.',
+                      default='train_subset', type=str)
+
   args = parser.parse_args()
   return args
 
@@ -182,9 +186,9 @@ if __name__ == '__main__':
       args.imdbval_name = "vg_150-50-50_minival"
       args.set_cfgs = ['ANCHOR_SCALES', '[2, 4, 8, 16]', 'ANCHOR_RATIOS', '[0.5,1,2]', 'MAX_NUM_GT_BOXES', '50']#sclaes=[4,8,16,32]--default
   elif args.dataset == "kaist":
-      args.imdb_name ="train_subset"#"train_combined_salient_ir"
+      args.imdb_name =args.data_split#"train_combined_salient_ir"
       args.imdbval_name = "combined_train"
-      args.set_cfgs = ['ANCHOR_SCALES', '[0.05, 0.1, 0.25, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4]', 'ANCHOR_RATIOS', '[0.5, 1, 2]', 'MAX_NUM_GT_BOXES', '30']#scales=[4,8,16,32] ratios = [0.5, 1, 2]--default
+      args.set_cfgs = ['ANCHOR_SCALES', '[32, 42, 54, 71, 92, 119, 154, 200, 256]', 'ANCHOR_RATIOS', '[0.39, 0.44, 0.51]', 'MAX_NUM_GT_BOXES', '30']#scales=[4,8,16,32] ratios = [0.5, 1, 2]--default
   
   args.cfg_file = "cfgs/{}_ls.yml".format(args.net) if args.large_scale else "cfgs/{}.yml".format(args.net)
 

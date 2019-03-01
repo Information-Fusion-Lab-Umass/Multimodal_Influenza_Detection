@@ -270,7 +270,7 @@ __C.ROOT_DIR = osp.abspath('../../../../../../../mnt/nfs/scratch1/dghose/')
 # Data directory
 #__C.DATA_DIR = osp.abspath(osp.join(__C.ROOT_DIR, 'data'))
 #__C.DATA_DIR = osp.abspath(osp.join(__C.ROOT_DIR, 'Kaist'))
-__C.DATA_DIR = osp.abspath(osp.join(__C.ROOT_DIR, 'Kaist_test_30X'))
+__C.DATA_DIR = osp.abspath(osp.join(__C.ROOT_DIR, 'Kaist'))
 
 
 # Name (or path to) the matlab executable
@@ -293,12 +293,12 @@ __C.POOLING_SIZE = 7
 # Maximal number of gt rois in an image during Training
 __C.MAX_NUM_GT_BOXES = 20
 
-# Anchor scales for RPN
-__C.ANCHOR_SCALES = [8,16,32]
-
+# Anchor scales for #RPN
+#__C.ANCHOR_SCALES = [8,16,32]
+__C.ANCHOR_SCALES= [32, 42, 54, 71, 92, 119, 154, 200, 256]
 # Anchor ratios for RPN
-__C.ANCHOR_RATIOS = [0.05,0.20,0.25]#0.5,1,2
-
+#__C.ANCHOR_RATIOS = [0.05,0.20,0.25]#0.5,1,2
+__C.ANCHOR_RATIOS=[0.39, 0.44, 0.51]
 # Feature stride for RPN
 __C.FEAT_STRIDE = [16, ]
 
