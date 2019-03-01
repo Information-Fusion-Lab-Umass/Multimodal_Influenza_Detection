@@ -294,8 +294,8 @@ __C.POOLING_SIZE = 7
 __C.MAX_NUM_GT_BOXES = 20
 
 # Anchor scales for RPN
-__C.ANCHOR_SCALES = [8,16,32]
-
+__C.ANCHOR_SCALES = [8,16,32]#original: 8,16,32
+#[32, 42, 54, 71, 92, 119, 154, 200, 256]
 # Anchor ratios for RPN
 __C.ANCHOR_RATIOS = [0.05,0.20,0.25]#0.5,1,2
 

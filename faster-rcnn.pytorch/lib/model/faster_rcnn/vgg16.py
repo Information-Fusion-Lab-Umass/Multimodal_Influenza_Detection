@@ -61,7 +61,7 @@ class vgg16(_fasterRCNN):
     vgg_dict['features.25.bias'] = pretrained_dict['features.26.bias']
     vgg_dict['features.27.weight'] = pretrained_dict['features.28.weight']
     vgg_dict['features.27.bias'] = pretrained_dict['features.28.bias']
-    print (vgg_dict['features.27.bias'] == pretrained_dict['features.28.bias'])
+    print (vgg_dict['features.0.bias'] == pretrained_dict['features.0.bias'])
     #print('pretrained_dict before updation')
     #print(pretrained_dict.keys())
     #pretrained_dict = {k: v for k, v in pretrained_dict.items() if k in vgg_dict}
@@ -81,13 +81,23 @@ class vgg16(_fasterRCNN):
         vgg.load_state_dict({k:v for k,v in state_dict.items() if k in vgg.state_dict()})
     '''
     vgg.classifier = nn.Sequential(*list(vgg.classifier._modules.values())[:-1])
-    
+    print(pretrained.features)
+    part_one = list(pretrained.features.children())[0:25]
+    part_two = list(pretrained.features.children())[26:30]
+    #part_one.extend(part_two)
+    #self.RCNN_base  = nn.Sequential(*part_one)
+    self.RCNN_base = vgg.features
+    print(self.RCNN_base)
     # not using the last maxpool layer
     ##############removing 4th max pool ---starts here##################################
+    #print(vgg.features)
+    #print(vgg.features._modules)
+    #self.RCNN_base = nn.Sequential(*list(pretrained.features._modules.values())[:-1])##original
+    #print('priting original vgg without 5th pool')
+    #print(self.RCNN_base)
     
-    self.RCNN_base = nn.Sequential(*list(vgg.features._modules.values()))##original
-    print(self.RCNN_base)
-
+    #self.RCNN_base=vgg.features
+    #self.RCNN_base=pretrained.features
     #self.RCNN_base_before_pool = nn.Sequential(*list(vgg.features._modules.values())[:23])# as per the count 24the layer is 4th max pool=23rd index[0 based indexing]
     #self.RCNN_base_after_pool = nn.Sequential(*list(vgg.features._modules.values())[24:-1])
     #print(self.RCNN_base_before_pool)
