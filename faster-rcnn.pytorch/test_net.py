@@ -146,7 +146,17 @@ if __name__ == '__main__':
   cfg.TRAIN.USE_FLIPPED = False
   imdb, roidb, ratio_list, ratio_index = combined_roidb_new(args.imdbval_name, False)
   imdb.competition_mode(on=True)
-
+  #print(roidb[0])
+  vis_list=[] 
+  
+  for index in range(len(roidb)):
+	image=roidb[index]['image']
+        print(image)
+	image_name=image.split('/')[-1]
+	image_name.split('.')[0]
+	print('image name')
+ 	print(image_name)
+	vis_list.append(image_name)
   print('{:d} roidb entries'.format(len(roidb)))
 
   input_dir = args.load_dir + "/" + args.net + "/" + args.dataset
@@ -324,7 +334,7 @@ if __name__ == '__main__':
       if vis:
           #cv2.imwrite('visualize'+str(i)+'.png', im2show)
 	  #pdb.set_trace()
-          cv2.imwrite('/mnt/nfs/scratch1/dghose/Kaist_test_30X/visualize_vgg16/'+args.data_split+'/result'+str(i)+'.png', im2show)
+          cv2.imwrite('/mnt/nfs/scratch1/dghose/Kaist_test_30X/visualize_vgg16/'+args.data_split+'/'+vis_list[i], im2show)
           #pdb.set_trace()
           #cv2.imshow('test', im2show)
           #cv2.waitKey(0)
