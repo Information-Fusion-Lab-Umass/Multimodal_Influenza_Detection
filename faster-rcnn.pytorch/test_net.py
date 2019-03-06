@@ -151,10 +151,10 @@ if __name__ == '__main__':
   
   for index in range(len(roidb)):
 	image=roidb[index]['image']
-        print(image)
+        #print(image)
 	image_name=image.split('/')[-1]
 	image_name.split('.')[0]
-	print('image name')
+	#print('image name')
  	print(image_name)
 	vis_list.append(image_name)
   print('{:d} roidb entries'.format(len(roidb)))
