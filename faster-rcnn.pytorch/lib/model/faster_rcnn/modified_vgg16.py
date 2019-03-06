@@ -81,8 +81,8 @@ def make_layers(cfg, batch_norm=False):
             in_channels = v
     
     temp= nn.Sequential(*layers)
-    print('in make layers')
-    print(temp)
+    #print('in make layers')
+    #print(temp)
     return temp
 
 cfg = {
@@ -156,7 +156,7 @@ def vgg16(pretrained=False, **kwargs):
     Args:
         pretrained (bool): If True, returns a model pre-trained on ImageNet
     """
-    print('reaching here')
+    #print('reaching here')
     if pretrained:
         kwargs['init_weights'] = False
     #print(

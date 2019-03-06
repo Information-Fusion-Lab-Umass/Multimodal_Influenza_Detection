@@ -38,25 +38,25 @@ class vgg16(_fasterRCNN):
     #print('printing pretrained')
     #print(pretrained)
     #pretrained_dict=torch.load(self.model_path)
-    print("original state dict")
+    #print("original state dict")
     pretrained_dict = pretrained.state_dict()
-    print(pretrained_dict.keys())
+    #print(pretrained_dict.keys())
 
     vgg = vgg16_()
     vgg_dict = vgg.state_dict()
     idx = 0
-    print("no max pool",vgg_dict.keys())
+    #print("no max pool",vgg_dict.keys())
 
     for k, v in pretrained_dict.items():
         if int(k.split('.')[1]) > 22:
             break
 
         vgg_dict[k] = v
-        print("in loop", k)
-        print('vgg_dict[k]')
-        print(type(vgg_dict[k]))
-  	print('tyoe v')
-	print(type(v)) 
+        #print("in loop", k)
+        #print('vgg_dict[k]')
+        #print(type(vgg_dict[k]))
+  	#print('tyoe v')
+	#print(type(v)) 
         #if int(k.split('.')[1]) > 22:
         #    break
     vgg_dict['features.23.weight'] = pretrained_dict['features.24.weight']
@@ -65,7 +65,7 @@ class vgg16(_fasterRCNN):
     vgg_dict['features.25.bias'] = pretrained_dict['features.26.bias']
     vgg_dict['features.27.weight'] = pretrained_dict['features.28.weight']
     vgg_dict['features.27.bias'] = pretrained_dict['features.28.bias']
-    print (vgg_dict['features.0.bias'] == pretrained_dict['features.0.bias'])
+    #print (vgg_dict['features.0.bias'] == pretrained_dict['features.0.bias'])
     #print('pretrained_dict before updation')
     #print(pretrained_dict.keys())
     #pretrained_dict = {k: v for k, v in pretrained_dict.items() if k in vgg_dict}
@@ -85,13 +85,13 @@ class vgg16(_fasterRCNN):
         vgg.load_state_dict({k:v for k,v in state_dict.items() if k in vgg.state_dict()})
     '''
     vgg.classifier = nn.Sequential(*list(vgg.classifier._modules.values())[:-1])
-    print(pretrained.features)
+    #print(pretrained.features)
     part_one = list(pretrained.features.children())[0:23]
     part_two = list(pretrained.features.children())[24:30]
     part_one.extend(part_two)
     self.RCNN_base  = nn.Sequential(*part_one)
     #self.RCNN_base = vgg.features
-    print(self.RCNN_base)
+    #print(self.RCNN_base)
     # not using the last maxpool layer
     ##############removing 4th max pool ---starts here##################################
     #print(vgg.features)
