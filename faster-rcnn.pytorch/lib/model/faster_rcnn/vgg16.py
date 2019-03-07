@@ -34,6 +34,7 @@ class vgg16(_fasterRCNN):
     ################------------------##########################
     model_urls['vgg16'] = model_urls['vgg16'].replace('https://', 'http://')
     pretrained = models.vgg16(pretrained=True)
+    print(pretrained)
     #pretrained=models.vgg16()
     #print('printing pretrained')
     #print(pretrained)
@@ -84,14 +85,22 @@ class vgg16(_fasterRCNN):
         state_dict = torch.load(self.model_path)
         vgg.load_state_dict({k:v for k,v in state_dict.items() if k in vgg.state_dict()})
     '''
-    vgg.classifier = nn.Sequential(*list(vgg.classifier._modules.values())[:-1])
+    #vgg.classifier = nn.Sequential(*list(pretrained.classifier._modules.values())[:-1])
     #print(pretrained.features)
     part_one = list(pretrained.features.children())[0:23]
     part_two = list(pretrained.features.children())[24:30]
     part_one.extend(part_two)
     self.RCNN_base  = nn.Sequential(*part_one)
-    #self.RCNN_base = vgg.features
-    #print(self.RCNN_base)
+    #self.RCNN_base = nn.Sequential(*list(pretrained.features.children())[:-1])
+    print(self.RCNN_base)
+    class_part_one = list(pretrained.classifier.children())[0:2]
+    class_part_two = list(pretrained.classifier.children())[3:5] 
+    class_part_one.extend(class_part_two)
+    self.RCNN_top  = nn.Sequential(*class_part_one)
+
+    #self.RCNN_top=nn.Sequential(*list(pretrained.classifier.children())[:-1])
+
+    print(self.RCNN_top)
     # not using the last maxpool layer
     ##############removing 4th max pool ---starts here##################################
     #print(vgg.features)
@@ -129,7 +138,7 @@ class vgg16(_fasterRCNN):
     #for layer in range(10):
     #  for p in self.RCNN_base_new[layer].parameters(): p.requires_grad = False
     #######################################################3
-    self.RCNN_top = vgg.classifier
+    #self.RCNN_top = vgg.classifier
 
     # not using the last maxpool layer
     self.RCNN_cls_score = nn.Linear(4096, self.n_classes)

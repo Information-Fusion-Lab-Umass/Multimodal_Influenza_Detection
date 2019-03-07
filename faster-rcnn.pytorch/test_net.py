@@ -186,7 +186,7 @@ if __name__ == '__main__':
   if 'pooling_mode' in checkpoint.keys():
     cfg.POOLING_MODE = checkpoint['pooling_mode']
 
-
+  print(fasterRCNN)
   print('load model successfully!')
   # initilize the tensor holder here.
   im_data = torch.FloatTensor(1)
