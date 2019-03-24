@@ -550,6 +550,8 @@ def voc_eval_thesis(imageset,detpath,
   fppi={}# a dict mapping image name to the number of false positives the image
    
   nd = len(image_ids)
+  print('nd')
+  print(nd)
   tp = np.zeros(nd)
   fp = np.zeros(nd)
 
@@ -610,35 +612,47 @@ def voc_eval_thesis(imageset,detpath,
         jmax = np.argmax(overlaps)
         #print("jmax")
         #print(jmax)
+        
 
-      if ovmax > ovthresh:
+        ''' 	
+      	if ovmax > ovthresh:
           if not R['det'][jmax]:
             tp[d] = 1.
             R['det'][jmax] = 1
           else:
             fp[d] = 1.
-      else:
-        fp[d] = 1.
-
+        else:
+         fp[d] = 1.
+        '''
+        if ovmax > ovthresh:
+          if not R['difficult'][jmax]:
+            if not R['det'][jmax]:
+              tp[d] = 1.
+              R['det'][jmax] = 1
+            else:
+              fp[d] = 1.
+        else:
+          fp[d] = 1.
+ 
   # compute precision recall
   fp = np.cumsum(fp)
   #fp=np.sum(fp)  
   tp = np.cumsum(tp)
-  #print("false positive")
-  #print(fp)
+  print("false positive")
+  print(fp)
   #tp=np.sum(tp)  
-  #print ("true positive")
-  #print(tp)
-  #print('npos')
-  #print(npos)
+  print ("true positive")
+  print(tp)
+  print('npos')
+  print(npos)
   rec = tp / float(npos)
 
-  #print("recall")
-  #print (rec)
+  print("recall")
+  print (rec)
 
   prec = tp / np.maximum(tp + fp, np.finfo(np.float64).eps)
-  #print("prec")
-  #print(prec)
+  print("prec")
+  print(prec)
 
   ap = voc_ap(rec, prec, use_07_metric)
   print("ap")

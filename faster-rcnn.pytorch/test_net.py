@@ -57,7 +57,7 @@ def parse_args():
                       help='set config keys', default=None,
                       nargs=argparse.REMAINDER)
   parser.add_argument('--load_dir', dest='load_dir',
-                      help='directory to load models', default="/mnt/nfs/scratch1/shasvatmukes/model_weights/models/vgg16/kaist/",
+                      help='directory to load models', default="/mnt/nfs/scratch1/shasvatmukes/model_weights/models/vgg16/kaist",
                       type=str)
   parser.add_argument('--cuda', dest='cuda',
                       help='whether use CUDA',
@@ -130,8 +130,8 @@ if __name__ == '__main__':
   elif args.dataset == "kaist":
       args.imdb_name = "kaist_test-all02"
       args.imdbval_name = args.data_split#"test_day_salient_ir"#change here
-      args.set_cfgs = ['ANCHOR_SCALES', '[32, 42, 54, 71, 92, 119, 154, 200, 256]', 'ANCHOR_RATIOS', '[0.39, 0.44, 0.51]', 'MAX_NUM_GT_BOXES', '30']#scales=[4,8,16,32]--default 1,1.5, 2
-  
+      args.set_cfgs = ['ANCHOR_SCALES', '[0.05, 0.1, 0.25, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4]', 'ANCHOR_RATIOS', '[0.5,1,2]', 'MAX_NUM_GT_BOXES', '30']#scales=[4,8,16,32]--default 1,1.5, 2
+  #[0.05, 0.1, 0.25, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4] [0.5,1,2]
   args.cfg_file = "cfgs/{}_ls.yml".format(args.net) if args.large_scale else "cfgs/{}.yml".format(args.net)
 
   if args.cfg_file is not None:
@@ -297,7 +297,7 @@ if __name__ == '__main__':
             keep = nms(cls_dets, cfg.TEST.NMS)
             cls_dets = cls_dets[keep.view(-1).long()]
             if vis:
-              im2show = vis_detections(im2show, imdb.classes[j], cls_dets.cpu().numpy(), 0.01) #overfit = 0.93
+              im2show = vis_detections(im2show, imdb.classes[j], cls_dets.cpu().numpy(), 0.9) #overfit = 0.93
             all_boxes[j][i] = cls_dets.cpu().numpy()
           else:
             all_boxes[j][i] = empty_array

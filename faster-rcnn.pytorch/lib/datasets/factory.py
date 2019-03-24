@@ -45,8 +45,7 @@ for year in ['2015']:
     __sets[name] = (lambda split=split, year=year: coco(split, year))
 
 
-for split in ['train_subset_100','test_day_salient_ir','test_night_salient_ir','salient_day_test','salient_night_test','combined_train','combined_test','day_train','day_test','night_train','night_test', \
-'train_combined_salient_ir','test_combined_salient_ir','train_subset','salient_combined_train','salient_combined_test']:
+for split in ['R3_salient_day_test','R3_salient_night_test','R3_train_combined_salient_ir','R3_salient_combined_train','R3_test_combined_salient_ir','R3_test_day_salient_ir','R3_test_night_salient_ir','R3_salient_combined_test','pica_train_combined_salient_ir','pica_salient_combined_train','pica_salient_day_test','pica_salient_night_test','pica_test_combined_salient_ir','pica_test_day_salient_ir','pica_test_night_salient_ir','pica_salient_combined_test','train_subset_100','test_day_salient_ir','test_night_salient_ir','salient_day_test','salient_night_test','combined_train','combined_test','day_train','day_test','night_train','night_test', 'train_combined_salient_ir','test_combined_salient_ir','train_subset','salient_combined_train','salient_combined_test']:
 #for split in ['day_train','day_test','night_train','night_test','train_subset']:
   name=split
   #name = 'kaist_{}'.format(split)
