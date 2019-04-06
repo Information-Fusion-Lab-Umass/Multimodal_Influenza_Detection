@@ -614,15 +614,15 @@ def voc_eval_thesis(imageset,detpath,
         #print(jmax)
         
 
-        ''' 	
-      	if ovmax > ovthresh:
-          if not R['det'][jmax]:
-            tp[d] = 1.
-            R['det'][jmax] = 1
-          else:
-            fp[d] = 1.
+         	
+      if ovmax > ovthresh:
+        if not R['det'][jmax]:
+           tp[d] = 1.
+           R['det'][jmax] = 1
         else:
-         fp[d] = 1.
+           fp[d] = 1.
+      else:
+        fp[d] = 1.
         '''
         if ovmax > ovthresh:
           if not R['difficult'][jmax]:
@@ -633,7 +633,7 @@ def voc_eval_thesis(imageset,detpath,
               fp[d] = 1.
         else:
           fp[d] = 1.
- 
+ 	'''
   # compute precision recall
   fp = np.cumsum(fp)
   #fp=np.sum(fp)  
