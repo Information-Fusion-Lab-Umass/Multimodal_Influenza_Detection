@@ -154,7 +154,7 @@ if __name__ == '__main__':
 	image_name=image.split('/')[-1]
 	image_name.split('.')[0]
 	#print('image name')
- 	print(image_name)
+ 	#print(image_name)
 	vis_list.append(image_name)
   
   print('{:d} roidb entries'.format(len(roidb)))
@@ -229,7 +229,7 @@ if __name__ == '__main__':
                for _ in xrange(imdb.num_classes)]
 
   output_dir = get_output_dir(imdb, save_name)
-  print(output_dir)
+  #print(output_dir)
   dataset = roibatchLoader(roidb, ratio_list, ratio_index, 1, \
                         imdb.num_classes, training=False, normalize = False)
   dataloader = torch.utils.data.DataLoader(dataset, batch_size=1,

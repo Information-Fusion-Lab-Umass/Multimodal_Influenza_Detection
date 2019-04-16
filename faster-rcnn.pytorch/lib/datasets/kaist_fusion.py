@@ -24,7 +24,7 @@ class kaist_thermal(imdb):
         imdb.__init__(self, image_set)  # image_set: train04 or test
         self._image_set = image_set
         self._devkit_path = self._get_default_path()
-    self._data_path = os.path.join(self._devkit_path)
+        self._data_path = os.path.join(self._devkit_path)
         self._classes = ('__background__', # always index 0
                          'person')
         self._class_to_ind = dict(zip(self.classes, xrange(self.num_classes)))
@@ -320,16 +320,6 @@ class kaist_thermal(imdb):
             print('AP for {} = {:.4f}'.format(cls, ap))
             with open((output_dir+'/'+ self._image_set + '_pr.pkl'), 'wb') as f:
                 cPickle.dump({'rec': rec, 'prec': prec, 'ap': ap}, f)
-        print('~~~~~~~~')
-        print('Results:')
-        print('~~~~~~~~')
-        print('')
-        print('--------------------------------------------------------------')
-        print('Results computed with the **unofficial** Python eval code.')
-        print('Results should be very close to the official MATLAB eval code.')
-        print('Recompute with `./tools/reval.py --matlab ...` for your paper.')
-        print('-- Thanks, The Management')
-        print('--------------------------------------------------------------')
 
 
 
@@ -340,7 +330,7 @@ class kaist_thermal(imdb):
 
     def _do_matlab_eval(self, comp_id, output_dir='output'):
         rm_results = self.config['cleanup']
-    output_dir=self._data_path+'/output_shasvat'
+        output_dir=self._data_path+'/output_shasvat'
 
         path = os.path.join(os.path.dirname(__file__),
                             'VOCdevkit-matlab-wrapper')

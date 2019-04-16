@@ -142,7 +142,7 @@ class imdb(object):
     """
     # Record max overlap value for each gt box
     # Return vector of overlap values
-    print("inside evaluate_recall")
+    #print("inside evaluate_recall")
     areas = {'all': 0, 'small': 1, 'medium': 2, 'large': 3,
              '96-128': 4, '128-256': 5, '256-512': 6, '512-inf': 7}
     area_ranges = [[0 ** 2, 1e5 ** 2],  # all
@@ -161,10 +161,10 @@ class imdb(object):
     for i in range(self.num_images):
       # Checking for max_overlaps == 1 avoids including crowd annotations
       # (...pretty hacking :/)
-      print("inside if")
+      #print("inside if")
       max_gt_overlaps = self.roidb[i]['gt_overlaps'].toarray().max(axis=1)
-      print("max_gt_overlaps")
-      print(max_gt_overlaps)
+      #print("max_gt_overlaps")
+      #print(max_gt_overlaps)
       gt_inds = np.where((self.roidb[i]['gt_classes'] > 0) &
                          (max_gt_overlaps == 1))[0]
       gt_boxes = self.roidb[i]['boxes'][gt_inds, :]

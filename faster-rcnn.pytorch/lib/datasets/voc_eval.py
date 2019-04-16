@@ -176,8 +176,8 @@ def voc_eval(imageset,detpath,
   fppi={}# a dict mapping image name to the number of false positives the image
    
   nd = len(image_ids)
-  print('nd')
-  print(nd)
+  #print('nd')
+  #print(nd)
   tp = np.zeros(nd)
   fp = np.zeros(nd)
 
@@ -199,39 +199,19 @@ def voc_eval(imageset,detpath,
 
       if BBGT.size > 0:
         # compute overlaps
-        # intersection
-       # print("inside if")  
         ixmin = np.maximum(BBGT[:, 0], bb[0])
-        #print("ixmin")
-        #print(ixmin)
         iymin = np.maximum(BBGT[:, 1], bb[1])
-        #print("iymin")
-        #print(iymin)
         ixmax = np.minimum(BBGT[:, 2], bb[2])
-        #print("ixmax")
-        #print(ixmax)
         iymax = np.minimum(BBGT[:, 3], bb[3])
-        #print("iymax")
-        #print(iymax)
         iw = np.maximum(np.absolute(ixmax - ixmin + 1.), 0.)
-        #print ("iw")
-        #print (iw)
         ih = np.maximum(np.absolute(iymax - iymin + 1.), 0.)
-        #print ("ih")
-        #print(ih)
         inters = iw * ih
-        #print("intersection")
-        #print(inters)
     
         # union
         uni = ((bb[2] - bb[0] + 1.) * (bb[3] - bb[1] + 1.) +
                (BBGT[:, 2] - BBGT[:, 0] + 1.) *
                (BBGT[:, 3] - BBGT[:, 1] + 1.) - inters)
-        #print("union")
-        #print(uni)
         overlaps = inters / uni
-        #print("overlaps")
-        #print(overlaps)
         ovmax = np.max(overlaps)
         #print("ovmax")
         #print(ovmax)
@@ -249,39 +229,17 @@ def voc_eval(imageset,detpath,
            fp[d] = 1.
       else:
         fp[d] = 1.
-        '''
-        if ovmax > ovthresh:
-          if not R['difficult'][jmax]:
-            if not R['det'][jmax]:
-              tp[d] = 1.
-              R['det'][jmax] = 1
-            else:
-              fp[d] = 1.
-        else:
-          fp[d] = 1.
- 	'''
   # compute precision recall
   fp = np.cumsum(fp)
   #fp=np.sum(fp)  
   tp = np.cumsum(tp)
-  print("false positive")
-  print(fp)
-  #tp=np.sum(tp)  
-  print ("true positive")
-  print(tp)
-  print('npos')
-  print(npos)
   rec = tp / float(npos)
 
-  print("recall")
-  print (rec)
 
   prec = tp / np.maximum(tp + fp, np.finfo(np.float64).eps)
-  print("prec")
-  print(prec)
 
   ap = voc_ap(rec, prec, use_07_metric)
-  print("ap")
+  print("MAP")
   print(ap)
   
   lamr, mr, fppi = log_average_miss_rate(imageset,rec, fp, nd)
