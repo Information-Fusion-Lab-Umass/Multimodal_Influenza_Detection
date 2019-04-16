@@ -4,7 +4,7 @@
 This repository contains the code for our [paper](https://arxiv.org/abs/1904.06859) published in [CVPR PBVS 2019 workshop](http://vcipl-okstate.org/pbvs/19/).
 If you find our work useful in your research, please do consider citing us:
 
-##Citation
+## Citation
 @inproceedings{Kaist_Salient_Pedestrian_Dataset,
   author    = {Debasmita Ghose and
                Shasvat Desai and
