@@ -39,30 +39,15 @@ class _fasterRCNN(nn.Module):
     def forward(self, im_data, im_info, gt_boxes, num_boxes):
         batch_size = im_data.size(0)
 	
-	#print("Inside Faster R-CNN")
-        im_info = im_info.data
-	#print("im_info")
-	#print(im_info)
-        gt_boxes = gt_boxes.data
-	#print("gt_boxes")
-	#print(gt_boxes)
-        num_boxes = num_boxes.data
-	#print("num_boxes")
-	#print(num_boxes)
-
+	    im_info = im_info.data
+	    gt_boxes = gt_boxes.data
+	    num_boxes = num_boxes.data
+	
         # feed image data to base model to obtain base feature map
         base_feat = self.RCNN_base(im_data)
-	#print("base_feat")
-	#print(type(base_feat))
-
+	
         # feed base feature map tp RPN to obtain rois
         rois, rpn_loss_cls, rpn_loss_bbox = self.RCNN_rpn(base_feat, im_info, gt_boxes, num_boxes)
-	#print('rois')
-	#print(rois.size())
-	#print(rois)
-	#print('printing losses')
-	#print(rpn_loss_cls)
-	#print(rpn_loss_bbox)
 	
         # if it is training phrase, then use ground trubut bboxes for refining
         if self.training:

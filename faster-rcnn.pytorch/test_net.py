@@ -145,7 +145,7 @@ if __name__ == '__main__':
   cfg.TRAIN.USE_FLIPPED = False
   imdb, roidb, ratio_list, ratio_index = combined_roidb_new(args.imdbval_name, False)
   imdb.competition_mode(on=True)
-  ''' 
+   
   vis_list=[] 
   
   for index in range(len(roidb)):
@@ -156,7 +156,7 @@ if __name__ == '__main__':
 	#print('image name')
  	print(image_name)
 	vis_list.append(image_name)
-  '''
+  
   print('{:d} roidb entries'.format(len(roidb)))
   
   input_dir = args.load_dir + "/" + args.net + "/" + args.dataset
@@ -312,8 +312,7 @@ if __name__ == '__main__':
             all_boxes[j][i] = cls_dets.cpu().numpy()
           else:
             all_boxes[j][i] = empty_array
-      #print('all_boxes')
-      #print(all_boxes)  
+     
       # Limit to max_per_image detections *over all classes*
       if max_per_image > 0:
           image_scores = np.hstack([all_boxes[j][i][:, -1]
@@ -332,19 +331,13 @@ if __name__ == '__main__':
       sys.stdout.flush()
 
       if vis:
-          #cv2.imwrite('visualize'+str(i)+'.png', im2show)
-	  #pdb.set_trace()
+        
+	  
           cv2.imwrite('/mnt/nfs/scratch1/dghose/Kaist_test_30X/visualize_vgg16/'+args.data_split+'/result'+str(i)+'.png', im2show)
-          #print('/mnt/nfs/scratch1/dghose/Kaist_test_30X/visualize_vgg16/'+args.data_split+'/'+vis_list[i])
           #cv2.imwrite('/mnt/nfs/scratch1/dghose/Kaist_test_30X/visualize_vgg16/'+args.data_split+'/'+vis_list[i], im2show)
 
-          #pdb.set_trace()
-          #cv2.imshow('test', im2show)
-          #cv2.waitKey(0)
-
-  #with open(det_file, 'wb') as f:
-      #pickle.dump(all_boxes, f, pickle.HIGHEST_PROTOCOL)
-
+          
+  
   print('Evaluating detections')
   imdb.evaluate_detections(all_boxes, output_dir)
 
