@@ -5,7 +5,7 @@ This repository contains the code for our [paper](https://arxiv.org/abs/1904.068
 
 Thermal images are mainly used to detect the presence of people at night or in bad lighting conditions, but perform poorly at daytime. To solve this problem, most state-of-the-art techniques use a fusion network that uses features from paired thermal and color images. We propose to augment thermal images with their saliency maps as an attention mechanism to provide better cues to the pedestrian detector, especially during daytime. We investigate how such an approach results in improved performance for pedestrian detection using only thermal images, eliminating the need for color image pairs. We train a state-of-the art Faster R-CNN for pedestrian detection and explore the added effect of PiCA-Net and R3-Net as saliency detectors. Our proposed approach results in an absolute improvement of 13.4 points and 19.4 points in log average miss rate over the baseline in day and night images respectively. We also annotate and release pixel level masks of pedestrians on a subset of the KAIST Multispectral Pedestrian Detection dataset, which is a first publicly available dataset for salient pedestrian detection.
 
-For more details visit our [website](https://information-fusion-lab-umass.github.io/Salient-Pedestrian-Detection/)
+For more details, please visit our [website](https://information-fusion-lab-umass.github.io/Salient-Pedestrian-Detection/)
 
 
 
@@ -30,21 +30,13 @@ cd faster-rcnn.pytorch && mkdir data
 
 ### Data Preparation
 
+Please download the thermal image dataset from[this link](https://sites.google.com/site/pedestrianbenchmark/)
 
+For downloading the saliency dataset, i.e thermal images with their corresponding pixel-level annotations, please visit [our webpage](https://information-fusion-lab-umass.github.io/Salient-Pedestrian-Detection/) for more information
 
 ### Pretrained Model
 
-We used two pretrained models in our experiments, VGG and ResNet101. You can download these two models from:
-
-* VGG16: [Dropbox](https://www.dropbox.com/s/s3brpk0bdq60nyb/vgg16_caffe.pth?dl=0), [VT Server](https://filebox.ece.vt.edu/~jw2yang/faster-rcnn/pretrained-base-models/vgg16_caffe.pth)
-
-* ResNet101: [Dropbox](https://www.dropbox.com/s/iev3tkbz5wyyuz9/resnet101_caffe.pth?dl=0), [VT Server](https://filebox.ece.vt.edu/~jw2yang/faster-rcnn/pretrained-base-models/resnet101_caffe.pth)
-
-Download them and put them into the data/pretrained_model/.
-
-**NOTE**. We compare the pretrained models from Pytorch and Caffe, and surprisingly find Caffe pretrained models have slightly better performance than Pytorch pretrained. We would suggest to use Caffe pretrained models from the above link to reproduce our results.
-
-**If you want to use pytorch pre-trained models, please remember to transpose images from BGR to RGB, and also use the same data transformer (minus mean and normalize) as used in pretrained model.**
+We release the pretrained weights for the best epochs of all the experiments we performed. To download them , please visit [our webpage](https://information-fusion-lab-umass.github.io/Salient-Pedestrian-Detection/)
 
 ### Compilation
 
