@@ -89,13 +89,17 @@ It will compile all the modules you need, including NMS, ROI_Pooing, ROI_Align a
 ## Important files
 1. [trainval_net.py](https://github.com/DebasmitaGhose/Multimodal_Influenza_Detection/blob/fppi_LAMR/faster-rcnn.pytorch/trainval_net.py)
 2. [factory.py](https://github.com/DebasmitaGhose/Multimodal_Influenza_Detection/blob/fppi_LAMR/faster-rcnn.pytorch/lib/datasets/factory.py)
+If using your custom dataset, it should go in here
 3. [kaist_fusion.py](https://github.com/DebasmitaGhose/Multimodal_Influenza_Detection/blob/fppi_LAMR/faster-rcnn.pytorch/lib/datasets/kaist_fusion.py)
+This file contains the entirepipeline for reading the dataset.
 4. [test_net.py](https://github.com/DebasmitaGhose/Multimodal_Influenza_Detection/blob/fppi_LAMR/faster-rcnn.pytorch/test_net.py)
 5. [imdb.py](https://github.com/DebasmitaGhose/Multimodal_Influenza_Detection/blob/fppi_LAMR/faster-rcnn.pytorch/lib/datasets/imdb.py)
 6. [voc_eval.py](https://github.com/DebasmitaGhose/Multimodal_Influenza_Detection/blob/fppi_LAMR/faster-rcnn.pytorch/lib/datasets/voc_eval.py)
-7.[faster_rcnn.py](https://github.com/DebasmitaGhose/Multimodal_Influenza_Detection/blob/fppi_LAMR/faster-rcnn.pytorch/lib/model/faster_rcnn/faster_rcnn.py)
+This file contains the evaluation code
+7. [faster_rcnn.py](https://github.com/DebasmitaGhose/Multimodal_Influenza_Detection/blob/fppi_LAMR/faster-rcnn.pytorch/lib/model/faster_rcnn/faster_rcnn.py)
 8. [vgg.py](https://github.com/DebasmitaGhose/Multimodal_Influenza_Detection/blob/fppi_LAMR/faster-rcnn.pytorch/lib/model/faster_rcnn/vgg16.py)
 9. [config.py](https://github.com/DebasmitaGhose/Multimodal_Influenza_Detection/blob/fppi_LAMR/faster-rcnn.pytorch/lib/model/utils/config.py)
+Set the ROOT_DIR and the DATA_DIR here according to the location of your data.
 
 ## Train
 
