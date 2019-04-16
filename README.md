@@ -84,6 +84,19 @@ It will compile all the modules you need, including NMS, ROI_Pooing, ROI_Align a
 
 **As pointed out in this [issue](https://github.com/jwyang/faster-rcnn.pytorch/issues/16), if you encounter some error during the compilation, you might miss to export the CUDA paths to your environment.**
 
+## Important instructions to run our network on your dataset
+
+## Important files
+1. [trainval_net.py](https://github.com/DebasmitaGhose/Multimodal_Influenza_Detection/blob/fppi_LAMR/faster-rcnn.pytorch/trainval_net.py)
+2. [factory.py](https://github.com/DebasmitaGhose/Multimodal_Influenza_Detection/blob/fppi_LAMR/faster-rcnn.pytorch/lib/datasets/factory.py)
+3. [kaist_fusion.py](https://github.com/DebasmitaGhose/Multimodal_Influenza_Detection/blob/fppi_LAMR/faster-rcnn.pytorch/lib/datasets/kaist_fusion.py)
+4. [test_net.py](https://github.com/DebasmitaGhose/Multimodal_Influenza_Detection/blob/fppi_LAMR/faster-rcnn.pytorch/test_net.py)
+5. [imdb.py](https://github.com/DebasmitaGhose/Multimodal_Influenza_Detection/blob/fppi_LAMR/faster-rcnn.pytorch/lib/datasets/imdb.py)
+6. [voc_eval.py](https://github.com/DebasmitaGhose/Multimodal_Influenza_Detection/blob/fppi_LAMR/faster-rcnn.pytorch/lib/datasets/voc_eval.py)
+7.[faster_rcnn.py](https://github.com/DebasmitaGhose/Multimodal_Influenza_Detection/blob/fppi_LAMR/faster-rcnn.pytorch/lib/model/faster_rcnn/faster_rcnn.py)
+8. [vgg.py](https://github.com/DebasmitaGhose/Multimodal_Influenza_Detection/blob/fppi_LAMR/faster-rcnn.pytorch/lib/model/faster_rcnn/vgg16.py)
+9. [config.py](https://github.com/DebasmitaGhose/Multimodal_Influenza_Detection/blob/fppi_LAMR/faster-rcnn.pytorch/lib/model/utils/config.py)
+
 ## Train
 
 Before training, set the right directory to save and load the trained models. Change the arguments "save_dir" and "load_dir" in trainval_net.py and test_net.py to adapt to your environment.
